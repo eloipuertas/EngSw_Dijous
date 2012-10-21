@@ -1,5 +1,6 @@
 package mygame;
 
+import mygame.model.character.CharacterMainJMonkey;
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.plugins.ZipLocator;
 import com.jme3.bullet.BulletAppState;
@@ -24,7 +25,7 @@ import com.jme3.scene.shape.Box;
  * @author normenhansen
  */
 public class Main extends SimpleApplication {
-    Personatge player;
+    CharacterMainJMonkey player;
     private BulletAppState bulletAppState;
     private RigidBodyControl landscape;
     private CharacterControl playercontrol;
@@ -37,7 +38,7 @@ public class Main extends SimpleApplication {
 
     @Override
     public void simpleInitApp() {
-        player = new Personatge();
+        player = new CharacterMainJMonkey();
         stateManager.attach(player);
         
         bulletAppState = new BulletAppState();

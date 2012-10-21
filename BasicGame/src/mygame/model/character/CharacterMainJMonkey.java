@@ -1,4 +1,4 @@
-package mygame;
+package mygame.model.character;
  
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
@@ -20,13 +20,14 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import mygame.Main;
  
 /**
  * Example 9 - How to make walls and floors solid.
  * This collision code uses Physics and a custom Action Listener.
  * @author normen, with edits by Zathras
  */
-public class Personatge extends AbstractAppState
+public class CharacterMainJMonkey extends AbstractAppState
         implements ActionListener {
  
   private Spatial sceneModel;
