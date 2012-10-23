@@ -1,0 +1,3 @@
+[submodule "EngSw_Dijous"]
+	path = EngSw_Dijous
+	url = git@github.com:eloipuertas/EngSw_Dijous.git
