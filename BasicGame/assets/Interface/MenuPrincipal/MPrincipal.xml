@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nifty>
+ 
+  <screen id="start" controller="mygame.States.MenuPrincipalState" >
+    <layer id="background" backgroundColor="#0000">
+      <!-- ... -->
+    </layer>
+    <layer id="foreground" backgroundColor="#0000" childLayout="center">
+      <panel id="panelBotones" height="25%" width="50%" align="center"  childLayout="vertical"
+             backgroundColor="#00f8">  
+        <panel id="panelBotonNuevoJuego" height="50%" width="100%" valign="center" childLayout="center" 
+             backgroundColor="#44f8">  
+              <interact onClick="newGame()"/>
+                <effect>
+                  <onStartScreen name="move" mode="in" direction="top" length="300" startDelay="0" inherit="true"/>
+                  <onEndScreen name="move" mode="out" direction="bottom" length="300" startDelay="0" inherit="true"/>
+                  <onHover name="pulsate" scaleFactor="0.008" startColor="#f600" endColor="#ffff" post="true"/>
+                </effect>
+            <text id="text" font="aurulent-sans-16.fnt" color="#000f" text="Nuevo Juego" align="center" valign="center" />
+        </panel>
+        <panel id="panelBotonSalir" height="50%" width="100%" valign="center" childLayout="center"
+             backgroundColor="#88f8">  
+              <interact onClick="quitMenu()"/>
+                <effect>
+                  <onStartScreen name="move" mode="in" direction="top" length="300" startDelay="0" inherit="true"/>
+                  <onEndScreen name="move" mode="out" direction="bottom" length="300" startDelay="0" inherit="true"/>
+                  <onHover name="pulsate" scaleFactor="0.008" startColor="#f600" endColor="#ffff" post="true"/>
+                </effect>
+            <text id="text" font="aurulent-sans-16.fnt" color="#000f" text="Salir" align="center" valign="center" />
+        </panel>
+      </panel>
+    </layer>
+  </screen>
+  
+  
+  
+  
+   <screen id="pausa" controller="mygame.Main" >
+    <layer id="background" backgroundColor="#0000">
+      <!-- ... -->
+    </layer>
+    <layer id="foreground" backgroundColor="#0000" childLayout="center">
+      <panel id="panelBotones" height="25%" width="50%" align="center"  childLayout="vertical"
+             backgroundColor="#00f8">  
+        <panel id="panelBotonContinuar" height="50%" width="100%" valign="center" childLayout="center" 
+             backgroundColor="#44f8">  
+              <interact onClick="newGame()"/>
+                <effect>
+                  <onStartScreen name="move" mode="in" direction="top" length="300" startDelay="0" inherit="true"/>
+                  <onEndScreen name="move" mode="out" direction="bottom" length="300" startDelay="0" inherit="true"/>
+                  <onHover name="pulsate" scaleFactor="0.008" startColor="#f600" endColor="#ffff" post="true"/>
+                </effect>
+            <text id="text" font="aurulent-sans-16.fnt" color="#000f" text="Continuar" align="center" valign="center" />
+        </panel>
+        <panel id="panelBotonSalir" height="50%" width="100%" valign="center" childLayout="center"
+             backgroundColor="#88f8">  
+              <interact onClick="quitMenu()"/>
+                <effect>
+                  <onStartScreen name="move" mode="in" direction="top" length="300" startDelay="0" inherit="true"/>
+                  <onEndScreen name="move" mode="out" direction="bottom" length="300" startDelay="0" inherit="true"/>
+                  <onHover name="pulsate" scaleFactor="0.008" startColor="#f600" endColor="#ffff" post="true"/>
+                </effect>
+            <text id="text" font="aurulent-sans-16.fnt" color="#000f" text="Salir" align="center" valign="center" />
+        </panel>
+      </panel>
+    </layer>
+  </screen>
+  <screen id="end">
+   
+  </screen>
+
+    
+</nifty>
+
+    
