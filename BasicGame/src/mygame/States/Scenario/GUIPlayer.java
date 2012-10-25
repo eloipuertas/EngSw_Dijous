@@ -4,11 +4,6 @@
  */
 package mygame.States.Scenario;
 
-import com.jme3.app.SimpleApplication;
-import com.jme3.app.state.AbstractAppState;
-import com.jme3.asset.AssetManager;
-import com.jme3.niftygui.NiftyJmeDisplay;
-import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.elements.render.TextRenderer;
 import de.lessvoid.nifty.screen.Screen;
@@ -18,58 +13,52 @@ import de.lessvoid.nifty.screen.ScreenController;
  *
  * @author Harpo
  */
-public class GUIPlayer extends AbstractAppState implements ScreenController {
-
-    private AssetManager assetManager;
-
-    private Nifty nifty;
-    private int vida = 100;
-    private int municion = 100;
+public class GUIPlayer{
+    
+    private int vidas;
+    private int municion;
+    private int salud;
+    private Element elementoNifty;
+    private ScreenController screenController;
     private Screen screen;
-    private Element niftyElement;
     
-    public GUIPlayer(SimpleApplication app) {
- 
-        this.assetManager  = app.getAssetManager(); 
-   
-        
-        //GUI Menu
-        NiftyJmeDisplay niftyDisplay = new NiftyJmeDisplay(assetManager,
-                                                      app.getInputManager(),
-                                                      app.getAudioRenderer(),
-                                                      app.getGuiViewPort());
-        nifty = niftyDisplay.getNifty();
-        nifty.fromXml("Interface/RunningGame/GUIrunningGame.xml", "start", this);
-        app.getGuiViewPort().addProcessor(niftyDisplay);
-        
+    public GUIPlayer(Screen screen1){
+          
+        this.screen = screen1;
+               
+        this.setVidasGUI(3);
+        this.setMunicionGUI(1220);
+        this.setSaludGUI(100);
+     
+    }
 
-        //Municion
-        setMunicionGUI(municion);
-        
-        //Vida
-        niftyElement = this.screen.findElementByName("vida");
-        setVidaGUI(vida);
-        
-        
-        niftyElement.getRenderer(TextRenderer.class).setText("Vida : "+vida+"%"); 
-        
-    }
     
-    public void setVidaGUI(int vidaNueva){
+     public void setVidasGUI(int vida){
        
-       niftyElement = this.screen.findElementByName("vida");
-       niftyElement.getRenderer(TextRenderer.class).setText("Vida : "+vidaNueva+"%"); 
-       this.vida = vidaNueva;
+       this.elementoNifty = this.screen.findElementByName("vidas");
+       this.elementoNifty.getRenderer(TextRenderer.class).setText("Vidas : "+vida); 
+       this.vidas = vida;
+    }
+ 
+    public int getVidasGUI(){
+        return this.salud;
     }
     
-    public int getVidaGUI(){
-        return vida;
+    public void setSaludGUI(int saludNueva){
+       
+       this.elementoNifty = this.screen.findElementByName("salud");
+       this.elementoNifty.getRenderer(TextRenderer.class).setText("Salud : "+saludNueva+"%"); 
+       this.salud = saludNueva;
+    }
+ 
+    public int getSaludGUI(){
+        return this.salud;
     }
     
     public void setMunicionGUI(int municionNueva){
-       
-       niftyElement = this.screen.findElementByName("municion");
-       niftyElement.getRenderer(TextRenderer.class).setText("Munición : "+municionNueva+"%"); 
+      
+      this.elementoNifty = this.screen.findElementByName("municion");
+       this.elementoNifty.getRenderer(TextRenderer.class).setText("Munición : "+municionNueva+" balas"); 
        this.municion = municionNueva;
     }
     
@@ -77,16 +66,4 @@ public class GUIPlayer extends AbstractAppState implements ScreenController {
         return municion;
     }
 
-    public void bind(Nifty nifty, Screen screen) {
-        this.nifty = nifty;
-        this.screen = screen;
-    }
-
-    public void onStartScreen() {
-        
-    }
-
-    public void onEndScreen() {
-     
-    }
 }
