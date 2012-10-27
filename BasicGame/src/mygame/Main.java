@@ -1,6 +1,7 @@
 package mygame;
 
 import com.jme3.app.SimpleApplication;
+import com.jme3.audio.AudioNode;
 import com.jme3.bullet.BulletAppState;
 import mygame.States.MenuPrincipalState;
 import mygame.States.RunningGameState;
@@ -11,6 +12,7 @@ public class Main extends SimpleApplication {
     private MenuPrincipalState menuPrincipal;
     private RunningGameState runningGame;
     private boolean isRunning;
+    private AudioNode audio_environment;
     
     public static void main(String[] args) {
         Main app = new Main();
@@ -29,6 +31,9 @@ public class Main extends SimpleApplication {
         
         //Mostramos el Menu Principal
         stateManager.attach(menuPrincipal);
+        
+        // Inicializa musica
+        initAudio();
   
     }
  
@@ -58,10 +63,17 @@ public class Main extends SimpleApplication {
           menuPrincipal.setIsRunningMenuPrincipal(true);
       }
       
-      runningGame.updateRunningGame();
-      
-     
+      runningGame.updateRunningGame();   
     
   }
+  
+    private void initAudio(){
+        audio_environment = new AudioNode(assetManager, "Sounds/Environment/Dark_music_Vampirical.ogg",false);
+        audio_environment.setLooping(true);
+        audio_environment.setVolume(2);
+        rootNode.attachChild(audio_environment);
+        audio_environment.play();
+  
+    }
     
 }
