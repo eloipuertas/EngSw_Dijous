@@ -16,6 +16,7 @@ import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
+import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
@@ -34,6 +35,7 @@ public class CharacterMainJMonkey extends AbstractAppState
   private BulletAppState bulletAppState;
   private RigidBodyControl landscape;
   private CharacterControl player;
+  private Node playerShape;
   private Vector3f walkDirection = new Vector3f();
   private boolean left = false, right = false, up = false, down = false;
   private SimpleApplication app;
@@ -53,9 +55,15 @@ public class CharacterMainJMonkey extends AbstractAppState
     player.setFallSpeed(30);
     player.setGravity(30);
     player.setPhysicsLocation(new Vector3f(0, 10, 0));
-
     
-    bulletAppState.getPhysicsSpace().add(player);
+    Spatial playerShapes = app.getAssetManager().loadModel("Character/mergeAll.001.mesh.xml");
+    //Material playerMaterial = new Material(app.getAssetManager(), "Character/First_person.material");
+    //playerShapes.setMaterial(playerMaterial);
+    playerShapes.addControl(player);
+    
+    app.getRootNode().attachChild(playerShapes);
+    
+    bulletAppState.getPhysicsSpace().add(playerShapes);
   }
  
   public void setState(BulletAppState state){
