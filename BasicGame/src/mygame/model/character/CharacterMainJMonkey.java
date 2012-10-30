@@ -56,9 +56,8 @@ public class CharacterMainJMonkey extends AbstractAppState
     player.setGravity(30);
     player.setPhysicsLocation(new Vector3f(0, 10, 0));
     
-    Spatial playerShapes = app.getAssetManager().loadModel("Character/mergeAll.001.mesh.xml");
-    //Material playerMaterial = new Material(app.getAssetManager(), "Character/First_person.material");
-    //playerShapes.setMaterial(playerMaterial);
+    Spatial playerShapes = app.getAssetManager().loadModel("Character/Cube.002.mesh.xml");
+    //Material playerMaterial = app.getAssetManager().loadMaterial("Character/Cube.002.j3m");
     playerShapes.addControl(player);
     
     app.getRootNode().attachChild(playerShapes);
