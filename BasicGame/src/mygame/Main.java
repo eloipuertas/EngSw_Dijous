@@ -70,10 +70,9 @@ public class Main extends SimpleApplication {
     private void initAudio(){
         audio_environment = new AudioNode(assetManager, "Sounds/Environment/Dark_music_Vampirical.ogg",false);
         audio_environment.setLooping(true);
-        audio_environment.setVolume(2);
+        audio_environment.setVolume(0.3f);
         rootNode.attachChild(audio_environment);
         audio_environment.play();
-  
     }
     
 }
