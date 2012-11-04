@@ -5,6 +5,7 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.plugins.ZipLocator;
+import com.jme3.audio.AudioNode;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.collision.shapes.CapsuleCollisionShape;
 import com.jme3.bullet.collision.shapes.CollisionShape;
@@ -40,6 +41,7 @@ public class CharacterMainJMonkey extends AbstractAppState
   private boolean left = false, right = false, up = false, down = false;
   private SimpleApplication app;
   private Main m;
+  private AudioNode audio_footstep;
   
 
     @Override
@@ -63,6 +65,7 @@ public class CharacterMainJMonkey extends AbstractAppState
     app.getRootNode().attachChild(playerShapes);
     
     bulletAppState.getPhysicsSpace().add(playerShapes);
+    initAudio();
   }
  
   public void setState(BulletAppState state){
@@ -98,6 +101,8 @@ public class CharacterMainJMonkey extends AbstractAppState
     } else if (binding.equals("Jump")) {
       player.jump();
     }
+    if (left || right || up || down) audio_footstep.play();
+    else audio_footstep.pause();
   }
  
   /**
@@ -124,4 +129,11 @@ public class CharacterMainJMonkey extends AbstractAppState
   public Vector3f getPlayerPosition(){
       return player.getPhysicsLocation();
   }
+  
+  private void initAudio(){
+    audio_footstep = new AudioNode(app.getAssetManager(), "Sounds/Effects/footsteps.wav",false);
+    audio_footstep.setLooping(true);
+    audio_footstep.setVolume(5.0f);
+    app.getRootNode().attachChild(audio_footstep);
+   }
 }
