@@ -6,6 +6,7 @@ package mygame.model.zombie;
 
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
+import com.jme3.audio.AudioNode;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.control.CharacterControl;
 import com.jme3.math.Vector3f;
@@ -22,6 +23,7 @@ public class ZombieManager {
     private Node rootNode = new Node("gameRoot");
     private SimpleApplication  app;
     private ArrayList<Zombie> zombies = new ArrayList<Zombie>();
+    private AudioNode audio_zombie;
 
     public ZombieManager(Application app, int numberZombies) {
         /**
@@ -36,6 +38,9 @@ public class ZombieManager {
             zombies.add(z);
             addZombieToScene(z);
         }
+        
+        initAudio(); // initializes audio
+
     }
 
     private void addZombieToScene(Zombie z) {
@@ -65,7 +70,15 @@ public class ZombieManager {
                 zc.setWalkDirection(new Vector3f(0,0,0));
             }
         }
-
+        audio_zombie.play();
 
     }
+    
+    private void initAudio(){
+        audio_zombie = new AudioNode(app.getAssetManager(), "Sounds/Effects/Zombies1.wav",false);
+        audio_zombie.setLooping(true);
+        audio_zombie.setVolume(0.5f);
+        app.getRootNode().attachChild(audio_zombie);
+ 
+   }
 }
