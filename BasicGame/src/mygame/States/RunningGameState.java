@@ -9,6 +9,7 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
+import com.jme3.asset.plugins.ZipLocator;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.RigidBodyControl;
@@ -82,7 +83,11 @@ public class RunningGameState extends AbstractAppState {
 
     public void loadMap() {
 
-        sceneModel = assetManager.loadModel("Scenes/montextura.j3o");
+        //sceneModel = assetManager.loadModel("Scenes/montextura.j3o");
+        //sceneModel.setLocalScale(2f);
+
+        assetManager.registerLocator("town.zip", ZipLocator.class);
+        sceneModel = assetManager.loadModel("main.scene");
         sceneModel.setLocalScale(2f);
 
         // We set up collision detection for the scene by creating a

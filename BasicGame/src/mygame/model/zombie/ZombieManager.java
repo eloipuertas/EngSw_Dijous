@@ -11,8 +11,6 @@ import com.jme3.bullet.control.CharacterControl;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import java.util.ArrayList;
-import mygame.Main;
-import mygame.model.character.CharacterMainJMonkey;
 
 /**
  *
@@ -50,15 +48,22 @@ public class ZombieManager {
         Vector3f walkDirection = new Vector3f();
         
         for (Zombie z : zombies) {
-            float speed = z.getSpeed();
+
             CharacterControl zc = z.getControl();
             Vector3f zombiePos = zc.getPhysicsLocation();
-            
-            walkDirection.set(new Vector3f((playerPos.x - zombiePos.x) * speed, 0, (playerPos.z - zombiePos.z) * speed));
-            viewDirection.set(new Vector3f((playerPos.x - zombiePos.x) * speed, 0, (playerPos.z - zombiePos.z) * speed));
+            float xdist = playerPos.x - zombiePos.x;
+            float zdist = playerPos.z - zombiePos.z;
+            if (((xdist * xdist) + (zdist * zdist)) < 1000) {
+                float speed = z.getSpeed();
 
-            zc.setWalkDirection(walkDirection);
-            zc.setViewDirection(viewDirection);
+                walkDirection.set(new Vector3f((playerPos.x - zombiePos.x) * speed, 0, (playerPos.z - zombiePos.z) * speed));
+                viewDirection.set(new Vector3f((playerPos.x - zombiePos.x) * speed, 0, (playerPos.z - zombiePos.z) * speed));
+
+                zc.setWalkDirection(walkDirection);
+                zc.setViewDirection(viewDirection);
+            }else{
+                zc.setWalkDirection(new Vector3f(0,0,0));
+            }
         }
 
 
