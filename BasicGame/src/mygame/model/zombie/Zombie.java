@@ -24,6 +24,7 @@ public class Zombie {
     Zombie(SimpleApplication app,float x, float y, float z, float speed) {   
         CapsuleCollisionShape capsule = new CapsuleCollisionShape(3f, 4f);
         zombieControl = new CharacterControl(capsule, 0.01f);
+        //Afegit el nou model
         zombieShape = (Node) app.getAssetManager().loadModel("Models/Oto/Oto.mesh.xml");
 
         zombieShape.addControl(zombieControl);
