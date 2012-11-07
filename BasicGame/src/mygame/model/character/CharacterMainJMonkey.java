@@ -122,11 +122,19 @@ public class CharacterMainJMonkey extends AbstractAppState
     Vector3f camDir = app.getCamera().getDirection().clone().multLocal(0.6f);
     Vector3f camLeft = app.getCamera().getLeft().clone().multLocal(0.4f);
     walkDirection.set(0, 0, 0);
-    if (left)  { walkDirection.addLocal(camLeft); }
-    if (right) { walkDirection.addLocal(camLeft.negate()); }
-    if (up)    { walkDirection.addLocal(camDir); }
-    if (down)  { walkDirection.addLocal(camDir.negate()); }
-    if (run)  { walkDirection.addLocal(camDir.mult(5)); }
+    if(run){
+        if (left)  { walkDirection.addLocal(camLeft.mult(3)); }
+        if (right) { walkDirection.addLocal(camLeft.negate().mult(3)); }
+        if (up)    { walkDirection.addLocal(camDir.mult(3)); }
+        if (down)  { walkDirection.addLocal(camDir.negate().mult(3)); }
+    }else{
+        if (left)  { walkDirection.addLocal(camLeft); }
+        if (right) { walkDirection.addLocal(camLeft.negate()); }
+        if (up)    { walkDirection.addLocal(camDir); }
+        if (down)  { walkDirection.addLocal(camDir.negate()); }
+    }   
+    
+    //if (run)  { walkDirection.addLocal(camDir.mult(5)); }
     player.setWalkDirection(walkDirection);
     app.getCamera().setLocation(player.getPhysicsLocation());
   }
