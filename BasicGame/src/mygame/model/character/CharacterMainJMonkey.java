@@ -38,7 +38,7 @@ public class CharacterMainJMonkey extends AbstractAppState
   private CharacterControl player;
   private Node playerShape;
   private Vector3f walkDirection = new Vector3f();
-  private boolean left = false, right = false, up = false, down = false, run = false;
+  private boolean left = false, right = false, up = false, down = false, run = false, turnLeft = false, turnRight = false;
   private SimpleApplication app;
   private Main m;
   private AudioNode audio_footstep;
@@ -58,13 +58,12 @@ public class CharacterMainJMonkey extends AbstractAppState
     player.setGravity(30);
     player.setPhysicsLocation(new Vector3f(0, 10, 0));
     
-    Spatial playerShapes = app.getAssetManager().loadModel("Character/Cube.002.mesh.xml");
+    Node playerShapes = (Node) app.getAssetManager().loadModel("Character/Cube.002.mesh.xml");
     //Material playerMaterial = app.getAssetManager().loadMaterial("Character/Cube.002.j3m");
     playerShapes.addControl(player);
     
+    bulletAppState.getPhysicsSpace().add(player);
     app.getRootNode().attachChild(playerShapes);
-    
-    bulletAppState.getPhysicsSpace().add(playerShapes);
     initAudio();
   }
  
@@ -80,12 +79,16 @@ public class CharacterMainJMonkey extends AbstractAppState
     app.getInputManager().addMapping("Up", new KeyTrigger(KeyInput.KEY_W));
     app.getInputManager().addMapping("Down", new KeyTrigger(KeyInput.KEY_S));
     app.getInputManager().addMapping("Run", new KeyTrigger(KeyInput.KEY_SPACE));
+    //app.getInputManager().addMapping("TurnLeft", new KeyTrigger(KeyInput.KEY_LEFT));
+    //app.getInputManager().addMapping("TurnRight", new KeyTrigger(KeyInput.KEY_RIGHT));
     //app.getInputManager().addMapping("Jump", new KeyTrigger(KeyInput.KEY_SPACE));
     app.getInputManager().addListener(this, "Left");
     app.getInputManager().addListener(this, "Right");
     app.getInputManager().addListener(this, "Up");
     app.getInputManager().addListener(this, "Down");
     app.getInputManager().addListener(this, "Run");
+    app.getInputManager().addListener(this, "TurnLeft");
+    app.getInputManager().addListener(this, "TurnRight");
     //app.getInputManager().addListener(this, "Jump");
   }
  
@@ -102,7 +105,12 @@ public class CharacterMainJMonkey extends AbstractAppState
       down = value;
     } else if (binding.equals("Run")) {
       run = value;
-    } //else if (binding.equals("Jump")) {
+    } else if (binding.equals("TurnLeft")) {
+      turnLeft = value;
+    } else if (binding.equals("TurnRight")) {
+      turnRight = value;
+    }
+    //else if (binding.equals("Jump")) {
       //player.jump();
     //}
     if (left || right || up || down) audio_footstep.play();
@@ -127,11 +135,13 @@ public class CharacterMainJMonkey extends AbstractAppState
         if (right) { walkDirection.addLocal(camLeft.negate().mult(3)); }
         if (up)    { walkDirection.addLocal(camDir.mult(3)); }
         if (down)  { walkDirection.addLocal(camDir.negate().mult(3)); }
+        if (turnLeft | turnRight)  { walkDirection.addLocal(camDir.mult(3)); }
     }else{
         if (left)  { walkDirection.addLocal(camLeft); }
         if (right) { walkDirection.addLocal(camLeft.negate()); }
         if (up)    { walkDirection.addLocal(camDir); }
         if (down)  { walkDirection.addLocal(camDir.negate()); }
+        if (turnLeft | turnRight)  { walkDirection.addLocal(camDir); }
     }   
     
     //if (run)  { walkDirection.addLocal(camDir.mult(5)); }
