@@ -38,7 +38,7 @@ public class CharacterMainJMonkey extends AbstractAppState
   private CharacterControl player;
   private Node playerShape;
   private Vector3f walkDirection = new Vector3f();
-  private boolean left = false, right = false, up = false, down = false;
+  private boolean left = false, right = false, up = false, down = false, run = false;
   private SimpleApplication app;
   private Main m;
   private AudioNode audio_footstep;
@@ -79,12 +79,14 @@ public class CharacterMainJMonkey extends AbstractAppState
     app.getInputManager().addMapping("Right", new KeyTrigger(KeyInput.KEY_D));
     app.getInputManager().addMapping("Up", new KeyTrigger(KeyInput.KEY_W));
     app.getInputManager().addMapping("Down", new KeyTrigger(KeyInput.KEY_S));
-    app.getInputManager().addMapping("Jump", new KeyTrigger(KeyInput.KEY_SPACE));
+    app.getInputManager().addMapping("Run", new KeyTrigger(KeyInput.KEY_SPACE));
+    //app.getInputManager().addMapping("Jump", new KeyTrigger(KeyInput.KEY_SPACE));
     app.getInputManager().addListener(this, "Left");
     app.getInputManager().addListener(this, "Right");
     app.getInputManager().addListener(this, "Up");
     app.getInputManager().addListener(this, "Down");
-    app.getInputManager().addListener(this, "Jump");
+    app.getInputManager().addListener(this, "Run");
+    //app.getInputManager().addListener(this, "Jump");
   }
  
   /** These are our custom actions triggered by key presses.
@@ -98,9 +100,11 @@ public class CharacterMainJMonkey extends AbstractAppState
       up = value;
     } else if (binding.equals("Down")) {
       down = value;
-    } else if (binding.equals("Jump")) {
-      player.jump();
-    }
+    } else if (binding.equals("Run")) {
+      run = value;
+    } //else if (binding.equals("Jump")) {
+      //player.jump();
+    //}
     if (left || right || up || down) audio_footstep.play();
     else audio_footstep.pause();
   }
@@ -122,6 +126,7 @@ public class CharacterMainJMonkey extends AbstractAppState
     if (right) { walkDirection.addLocal(camLeft.negate()); }
     if (up)    { walkDirection.addLocal(camDir); }
     if (down)  { walkDirection.addLocal(camDir.negate()); }
+    if (run)  { walkDirection.addLocal(camDir.mult(5)); }
     player.setWalkDirection(walkDirection);
     app.getCamera().setLocation(player.getPhysicsLocation());
   }
