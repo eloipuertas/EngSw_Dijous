@@ -36,7 +36,7 @@ public class Zombie implements AnimEventListener {
         CapsuleCollisionShape capsule = new CapsuleCollisionShape(3f, 4f);
         zombieControl = new CharacterControl(capsule, 0.01f);
         //Afegit el nou model
-        zombieShape = (Node) app.getAssetManager().loadModel("Models/Oto/Oto.mesh.xml");
+        zombieShape = (Node) app.getAssetManager().loadModel("Models/zombie/zombie.j3o");
 
         zombieShape.addControl(zombieControl);
         zombieControl.setPhysicsLocation(position);
