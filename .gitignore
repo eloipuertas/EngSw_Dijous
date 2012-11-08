@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Added by TEAM-F:
 private.properties
 
@@ -168,3 +169,8 @@ pip-log.txt
 
 # Mac crap
 .DS_Store
+=======
+/BasicGame/nbproject/private/
+/BasicGame/build/
+/BasicGame/dist/
+>>>>>>> origin/TEAM-F

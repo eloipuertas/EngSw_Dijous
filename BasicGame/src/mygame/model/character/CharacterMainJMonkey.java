@@ -134,7 +134,7 @@ public class CharacterMainJMonkey extends AbstractAppState
     //app.getInputManager().addMapping("TurnRight", new KeyTrigger(KeyInput.KEY_RIGHT));
     //app.getInputManager().addMapping("Jump", new KeyTrigger(KeyInput.KEY_SPACE));
 
-    app.getInputManager().addMapping("Jump", new KeyTrigger(KeyInput.KEY_SPACE));
+    app.getInputManager().addMapping("Jump", new KeyTrigger(KeyInput.KEY_J));
     app.getInputManager().addMapping("Mute", new KeyTrigger(KeyInput.KEY_M));
     app.getInputManager().addMapping("Paused", new KeyTrigger(KeyInput.KEY_P));
 
@@ -175,6 +175,33 @@ public class CharacterMainJMonkey extends AbstractAppState
             player.jump();
         } 
     }
+    
+    if (binding.equals("Mute")) {               //@Emilio nuevo, para mutear
+            if(contadorMute != 0){
+                reproducirAudio();
+                contadorMute--;
+            }else{
+                contadorMute = 1;
+            } 
+        } 
+    if (binding.equals("Paused")){               //@Emilio nuevo, para pausar
+        if(!isPaused){
+            if(contadorPause==2){
+                isPaused = true; 
+            }
+         }else{
+            if(contadorPause==0){
+                isPaused = false;
+                contadorPause = 4;
+            }
+          }  
+          contadorPause--;
+
+    
+        } else if (binding.equals("Run")) {
+            run = value;
+        }
+    
     
     if (binding.equals("Mute")) {               //@Emilio nuevo, para mutear
             if(contadorMute != 0){
