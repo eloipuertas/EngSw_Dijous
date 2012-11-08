@@ -36,7 +36,7 @@ public class Zombie implements AnimEventListener {
         CapsuleCollisionShape capsule = new CapsuleCollisionShape(3f, 4f);
         zombieControl = new CharacterControl(capsule, 0.01f);
         //Afegit el nou model
-        zombieShape = (Node) app.getAssetManager().loadModel("Models/zombie/zombie.j3o");
+        zombieShape = (Node) app.getAssetManager().loadModel("Models/zombie/zombie.mesh.j3o");
 
         zombieShape.addControl(zombieControl);
         zombieControl.setPhysicsLocation(position);
@@ -65,7 +65,8 @@ public class Zombie implements AnimEventListener {
 
         control = zombieShape.getControl(AnimControl.class);
         channel = control.createChannel();
-        channel.setAnim("stand");
+        channel.setAnim("walk");
+        //channel.setAnim("stand"); de moment no te animacio stand
     }
 
     public void update(Vector3f playerPos) {
@@ -90,20 +91,22 @@ public class Zombie implements AnimEventListener {
             zombieControl.setViewDirection(viewDirection);
 
             //Animation
-            if (!channel.getAnimationName().equals("Walk")) {
-                channel.setAnim("Walk", 0.50f);
+            if (!channel.getAnimationName().equals("walk")) {
+                channel.setAnim("walk", 0.50f);
                 channel.setLoopMode(LoopMode.Loop);
             }
         } else {
             audio_zombie.stop();
             zombieControl.setWalkDirection(new Vector3f(0, 0, 0));
-            channel.setAnim("stand");
+            //channel.setAnim("stand"); de moment no te animacio stand
+            channel.setAnim("walk");
         }
     }
 
     public void onAnimCycleDone(AnimControl control, AnimChannel channel, String animName) {
-        if (animName.equals("Walk")) {
-            channel.setAnim("stand", 0.50f);
+        if (animName.equals("walk")) {
+            //channel.setAnim("stand", 0.50f); de moment no te animacio stand
+            channel.setAnim("walk", 0.50f);
             channel.setLoopMode(LoopMode.DontLoop);
             channel.setSpeed(1f);
         }
