@@ -34,8 +34,8 @@ public class Zombie implements AnimEventListener {
 
     Zombie(SimpleApplication app, Vector3f position, Vector3f viewDirection, float speed) {
         this.app = app;
-        CylinderCollisionShape cilinder = new CylinderCollisionShape(new Vector3f(2f,0.11f,2f),1);
-        zombieControl = new CharacterControl(cilinder, 1f);
+        CylinderCollisionShape cilinder = new CylinderCollisionShape(new Vector3f(0.5f,1.5f,1.5f));
+        zombieControl = new CharacterControl(cilinder, 0.5f);
         //Afegit el nou model
         zombieShape = (Node) app.getAssetManager().loadModel("Models/zombie/zombie.mesh.j3o");
         zombieShape.scale(4f);
