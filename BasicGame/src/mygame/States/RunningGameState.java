@@ -83,12 +83,12 @@ public class RunningGameState extends AbstractAppState {
 
     public void loadMap() {
 
-        //sceneModel = assetManager.loadModel("Scenes/montextura.j3o");
-        //sceneModel.setLocalScale(2f);
-
-        assetManager.registerLocator("town.zip", ZipLocator.class);
-        sceneModel = assetManager.loadModel("main.scene");
+        sceneModel = assetManager.loadModel("Scenes/montextura.j3o");
         sceneModel.setLocalScale(2f);
+
+        //assetManager.registerLocator("town.zip", ZipLocator.class);
+        //sceneModel = assetManager.loadModel("main.scene");
+        //sceneModel.setLocalScale(2f);
 
         // We set up collision detection for the scene by creating a
         // compound collision shape and a static RigidBodyControl with mass zero.

@@ -36,7 +36,17 @@ public class ZombieManager {
 //            addZombieToScene(z);
 //        }
 
-        Zombie z = new Zombie(this.app, new Vector3f(60f, 5f, 0f), new Vector3f(1f, 0f, 1f), 0.003f);
+        Zombie z = new Zombie(this.app, new Vector3f(5f, 5f, 0f), new Vector3f(1f, 0f, 1f), 0.003f);
+        zombies.add(z);
+        addZombieToScene(z);
+        
+        
+        z = new Zombie(this.app, new Vector3f(15f, 5f, 10f), new Vector3f(1f, 0f, 1f), 0.003f);
+        zombies.add(z);
+        addZombieToScene(z);
+        
+        
+        z = new Zombie(this.app, new Vector3f(0f, 5f, 10f), new Vector3f(1f, 0f, 1f), 0.003f);
         zombies.add(z);
         addZombieToScene(z);
  
