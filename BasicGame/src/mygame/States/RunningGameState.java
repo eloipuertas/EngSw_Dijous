@@ -13,6 +13,7 @@ import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.bullet.util.CollisionShapeFactory;
+import com.jme3.collision.CollisionResults;
 import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.math.ColorRGBA;
@@ -20,7 +21,9 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import mygame.States.Scenario.DamageCollision;
 import mygame.States.Scenario.GUIPlayerMain;
+import mygame.States.Scenario.ObjectsInGame;
 import mygame.States.Scenario.Scenario;
 import mygame.model.character.CharacterMainJMonkey;
 import mygame.model.zombie.ZombieManager;
@@ -44,14 +47,14 @@ public class RunningGameState extends AbstractAppState {
     private BulletAppState bulletAppState;
     private ZombieManager zombieManager;
     CharacterMainJMonkey player;
+    private ObjectsInGame objetos;
+    private DamageCollision damageCollision;
 
-    public RunningGameState(SimpleApplication app) {
+    public RunningGameState(SimpleApplication app)  {
         this.rootNode = app.getRootNode();
         this.viewPort = app.getViewPort();
         this.guiNode = app.getGuiNode();
         this.assetManager = app.getAssetManager();
-
-
     }
 
     @Override
@@ -64,6 +67,10 @@ public class RunningGameState extends AbstractAppState {
 
         //Cargamos la GUI
         guiPlayer = new GUIPlayerMain(this.app);
+        //Cargamos los objetos
+        objetos = new ObjectsInGame(this.app);
+        //Cargamos el controlador de daño por colisiones
+        damageCollision = new DamageCollision(this.bulletAppState,guiPlayer);
         
         //Player
         player = new CharacterMainJMonkey();
@@ -77,20 +84,21 @@ public class RunningGameState extends AbstractAppState {
 
         setUpLight();
         loadMap();
-
+ 
     }
 
     public void loadMap() {
-
         sceneModel = assetManager.loadModel("Scenes/montextura.j3o");
         sceneModel.setLocalScale(2f);
 
         // We set up collision detection for the scene by creating a
         // compound collision shape and a static RigidBodyControl with mass zero.
+        
         CollisionShape sceneShape =
                 CollisionShapeFactory.createMeshShape((Node) sceneModel);
         landscape = new RigidBodyControl(sceneShape, 0);
         sceneModel.addControl(landscape);
+        sceneModel.setName("Escenario");  
         rootNode.attachChild(sceneModel);
         bulletAppState.getPhysicsSpace().add(landscape);
     }
@@ -115,6 +123,7 @@ public class RunningGameState extends AbstractAppState {
         this.isRunningGame = IsRunning;
     }
 
+    // @Emilio añadido update de objetos.
     public void updateRunningGame() {
         if (isRunningGame) {
             if (player != null) {
@@ -122,7 +131,15 @@ public class RunningGameState extends AbstractAppState {
                 if (zombieManager != null) {
                     zombieManager.update(player.getPlayerPosition());
                 }
+                //update objetos
+                if (objetos != null){
+                    objetos.update(guiPlayer);
+                }
+                if (zombieManager != null ){
+             
+                }
             }
+
         }
 
     }

@@ -42,6 +42,7 @@ public class ObjectsInGame extends AbstractAppState  {
       
     
     }
+    
    public void update(GUIPlayerMain gui){
        
        //comprobamos si alguno de los botiquines ha sido cogido

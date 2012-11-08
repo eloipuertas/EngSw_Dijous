@@ -34,10 +34,6 @@ public class DamageCollision extends RigidBodyControl implements PhysicsCollisio
         this.gui = guiP;
         this.bulletAppState = bulletAppSt;
         this.bulletAppState.getPhysicsSpace().addCollisionListener(this);
-       
-   
-       
-       
     }
 
     public void collision(PhysicsCollisionEvent event) {
