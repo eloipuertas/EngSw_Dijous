@@ -11,6 +11,7 @@ import com.jme3.animation.LoopMode;
 import com.jme3.app.SimpleApplication;
 import com.jme3.audio.AudioNode;
 import com.jme3.bullet.collision.shapes.CapsuleCollisionShape;
+import com.jme3.bullet.collision.shapes.CylinderCollisionShape;
 import com.jme3.bullet.control.CharacterControl;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
@@ -33,11 +34,11 @@ public class Zombie implements AnimEventListener {
 
     Zombie(SimpleApplication app, Vector3f position, Vector3f viewDirection, float speed) {
         this.app = app;
-        CapsuleCollisionShape capsule = new CapsuleCollisionShape(3f, 4f);
-        zombieControl = new CharacterControl(capsule, 0.01f);
+        CylinderCollisionShape cilinder = new CylinderCollisionShape(new Vector3f(2f,0.11f,2f),1);
+        zombieControl = new CharacterControl(cilinder, 1f);
         //Afegit el nou model
         zombieShape = (Node) app.getAssetManager().loadModel("Models/zombie/zombie.mesh.j3o");
-
+        zombieShape.scale(4f);
         zombieShape.addControl(zombieControl);
         zombieControl.setPhysicsLocation(position);
         zombieControl.setViewDirection(viewDirection);
