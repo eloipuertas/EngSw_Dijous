@@ -15,8 +15,12 @@ public interface Character {
     Position3D getPosition();
     int getNLives();
     double getEnergy();
+    Weapon getCurrentWeapon();
+    
     
     void setPosition(double x, double y, double z);
+    void setCurrentWeapon(int idWeapon);
+    
     
     // </editor-fold>
     

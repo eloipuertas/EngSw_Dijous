@@ -11,7 +11,6 @@ public class Main extends SimpleApplication {
     private MenuPrincipalState menuPrincipal;
     private RunningGameState runningGame;
     private boolean isRunning;
-    private SimpleApplication app;
     
     public static void main(String[] args) {
         Main app = new Main();
@@ -32,7 +31,7 @@ public class Main extends SimpleApplication {
         stateManager.attach(menuPrincipal);
   
     }
-    
+ 
   @Override
   public void simpleUpdate(float tpf) {
 
@@ -59,9 +58,10 @@ public class Main extends SimpleApplication {
           menuPrincipal.setIsRunningMenuPrincipal(true);
       }
       
+      runningGame.updateRunningGame();
       
-      runningGame.updateRunningGame();   
+     
     
   }
-        //rootNode.attachChild(audio_environment);
+    
 }

@@ -33,9 +33,9 @@ public class CharacterMain implements Character {
         this.position = new Position3D();
         this.nLives = 3;
         this.energy = 100.0;
-        this.weapons = new Weapon[1];
+        this.weapons = new Weapon[3];
         //weapons[1] = new Folder();
-        this.currentWeapon = weapons[1];
+        this.currentWeapon = weapons[1]; // default weapon
     }
     
     // </editor-fold>
@@ -56,8 +56,17 @@ public class CharacterMain implements Character {
         return this.energy;
     }
     
+    
+    public Weapon getCurrentWeapon () {
+        return this.currentWeapon;
+    }
+    
     public void setPosition(double x, double y, double z) {
         this.position.setPosition(x, y, z);
+    }
+    
+    public void setCurrentWeapon(int idWeapon) {
+        this.currentWeapon = this.weapons[idWeapon];
     }
     
     // </editor-fold>

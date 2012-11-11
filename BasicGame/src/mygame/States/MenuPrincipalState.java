@@ -9,9 +9,6 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
-import com.jme3.input.KeyInput;
-import com.jme3.input.controls.ActionListener;
-import com.jme3.input.controls.KeyTrigger;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.niftygui.NiftyJmeDisplay;
@@ -21,16 +18,12 @@ import com.jme3.scene.Spatial;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
  * @author Harpo
  */
-public class MenuPrincipalState extends AbstractAppState implements ScreenController,
-        ActionListener
-{
+public class MenuPrincipalState extends AbstractAppState implements ScreenController{
    
     private SimpleApplication app;  
     private ViewPort viewPort;
@@ -41,8 +34,6 @@ public class MenuPrincipalState extends AbstractAppState implements ScreenContro
     private Nifty nifty;
     private Screen screen;
     private boolean isRunningMenuPrincipal = true;
-    private boolean enPantalla = false;
-    private int contadorPausa = 2;
     
     public MenuPrincipalState(SimpleApplication app){
         this.rootNode     = app.getRootNode();
@@ -55,8 +46,7 @@ public class MenuPrincipalState extends AbstractAppState implements ScreenContro
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app); 
         this.app = (SimpleApplication)app;   
-        
-        setUpKeys();
+      
         //Fondo
         viewPort.setBackgroundColor(backgroundColor);
        
@@ -72,64 +62,33 @@ public class MenuPrincipalState extends AbstractAppState implements ScreenContro
         // attach the nifty display to the gui view port as a processor
         app.getGuiViewPort().addProcessor(niftyDisplay);
         this.app.getInputManager().setCursorVisible(true);
-       
+        
+        
+        
+        
+      
+        //Cargamos el escenario
+        /*Spatial escenario = this.app.getAssetManager().loadModel("Scenes/montextura.j3o" );
+        escenario.move(Vector3f.ZERO);
+        this.app.getRootNode().attachChild(escenario);
+*/
+
+ 
    } 
-    
-    // @Emilio nuevo.
-    public void setUpKeys() {
-        app.getInputManager().addMapping("pausa", new KeyTrigger(KeyInput.KEY_P));
-        app.getInputManager().addListener(this, "pausa");
-    }
-    
-    /*
-     * @Emilio cambiar funcion usando el booleanos isPressed en vez de ifs
-     * guarreras.
-     */
-    public void onAction(String name, boolean isPressed, float tpf) {
-        if (name.equals("pausa")){
-            if(!enPantalla){
-                if(contadorPausa!=0){
-                    enPantalla = true;
-                    pause();
-                    contadorPausa--;
-                }
-            }else{
-                if(contadorPausa==0){
-                    enPantalla = false;
-                    newGame();
-                    contadorPausa = 2;
-                }
-                contadorPausa--;
-            }
-        } 
-    }
     
     public void newGame(){
        nifty.gotoScreen("end");
        this.app.getInputManager().setCursorVisible(false);
        this.setIsRunningMenuPrincipal(false);
-    }
-    
-    /* @Emilio muestra menú pausa, pero no pausa el juego solo el movimiento
-    / del personaje
-    */
-    public void pause(){
-        nifty.gotoScreen("pausa");
-        this.app.getInputManager().setCursorVisible(true);
-        this.setIsRunningMenuPrincipal(false);
+     
+
     }
     
     public void quitMenu(){
         System.out.println(" -- Aplicación cerrada.");
         this.app.stop();
+
     }
-    
-    // @Emilio de momento esto no es necesario
-    /*public void ayuda(){
-        nifty.gotoScreen("ayuda");
-        this.app.getInputManager().setCursorVisible(false);
-        this.setIsRunningMenuPrincipal(false);
-    }*/
 
     public void bind(Nifty nifty, Screen screen) {
         this.nifty = nifty;
@@ -151,5 +110,4 @@ public class MenuPrincipalState extends AbstractAppState implements ScreenContro
     public void setIsRunningMenuPrincipal(boolean IsRunning){
         this.isRunningMenuPrincipal = IsRunning;
     }
-    
 }
