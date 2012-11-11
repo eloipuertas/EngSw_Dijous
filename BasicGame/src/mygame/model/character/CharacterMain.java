@@ -35,7 +35,7 @@ public class CharacterMain implements Character {
         this.energy = 100.0;
         this.weapons = new Weapon[3];
         //weapons[1] = new Folder();
-        this.currentWeapon = weapons[1]; // default weapon
+        this.currentWeapon = weapons[1];  // default weapon
     }
     
     // </editor-fold>
@@ -56,8 +56,7 @@ public class CharacterMain implements Character {
         return this.energy;
     }
     
-    
-    public Weapon getCurrentWeapon () {
+    public Weapon getCurrentWeapon() {
         return this.currentWeapon;
     }
     
@@ -66,9 +65,9 @@ public class CharacterMain implements Character {
     }
     
     public void setCurrentWeapon(int idWeapon) {
-        this.currentWeapon = this.weapons[idWeapon];
+        this.currentWeapon = weapons[idWeapon];
+        
     }
-    
     // </editor-fold>
 
     public void incrementEnergy(double quantity) {

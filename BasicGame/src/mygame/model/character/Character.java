@@ -17,10 +17,8 @@ public interface Character {
     double getEnergy();
     Weapon getCurrentWeapon();
     
-    
     void setPosition(double x, double y, double z);
-    void setCurrentWeapon(int idWeapon);
-    
+    void setCurrentWeapon (int idWeapon);
     
     // </editor-fold>
     

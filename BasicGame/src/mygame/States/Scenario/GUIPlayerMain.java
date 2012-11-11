@@ -72,4 +72,12 @@ public class GUIPlayerMain extends AbstractAppState implements ScreenController 
     public void updateGUI() {
     
     }
+    
+    //@Emilio nuevo
+    public void setSaludGUI(int vida){
+        guiPlayer.setSaludGUI(vida);
+    }
+    public int getSaludGUI(){
+        return guiPlayer.getSaludGUI();
+    }
 }
