@@ -176,59 +176,21 @@ public class CharacterMainJMonkey extends AbstractAppState
         } 
     }
     
-    if (binding.equals("Mute")) {               //@Emilio nuevo, para mutear
-            if(contadorMute != 0){
+    if (binding.equals("Paused")&&!value){               //@Emilio nuevo, para pausar
+        isPaused = !isPaused;
+    }
+        
+    if (binding.equals("Mute")&&value) {               //@Emilio nuevo, para mutear
                 reproducirAudio();
-                contadorMute--;
-            }else{
-                contadorMute = 1;
-            } 
-        } 
-    if (binding.equals("Paused")){               //@Emilio nuevo, para pausar
-        if(!isPaused){
-            if(contadorPause==2){
-                isPaused = true; 
-            }
-         }else{
-            if(contadorPause==0){
-                isPaused = false;
-                contadorPause = 4;
-            }
-          }  
-          contadorPause--;
-
-    
-        } else if (binding.equals("Run")) {
+        }else if (binding.equals("Run")) {
             run = value;
         }
     
-    
-    if (binding.equals("Mute")) {               //@Emilio nuevo, para mutear
-            if(contadorMute != 0){
-                reproducirAudio();
-                contadorMute--;
-            }else{
-                contadorMute = 1;
-            } 
-        } 
-    if (binding.equals("Paused")){               //@Emilio nuevo, para pausar
-        if(!isPaused){
-            if(contadorPause==2){
-                isPaused = true; 
-            }
-         }else{
-            if(contadorPause==0){
-                isPaused = false;
-                contadorPause = 4;
-            }
-          }  
-          contadorPause--;
-
-    }
     //else if (binding.equals("Jump")) {
       //player.jump();
     //}
-    if (left || right || up || down) audio_footstep.play();
+    //Añadimos el and con el booleano musica para saber si esta el juego muteado o no
+    if ((left || right || up || down)&&(musica)) audio_footstep.play();
     else audio_footstep.pause();
   }
  

@@ -38,7 +38,7 @@ public class DamageCollision extends RigidBodyControl implements PhysicsCollisio
 
     public void collision(PhysicsCollisionEvent event) {
         try{ 
-           System.out.println(event.getNodeA().getName()+ " " + event.getNodeB().getName());
+           //System.out.println(event.getNodeA().getName()+ " " + event.getNodeB().getName());
            
             if(event.getNodeA().getName().equals("Personaje") &&  event.getNodeB().getName().equals("Zombie")){
                 isCollision = true;

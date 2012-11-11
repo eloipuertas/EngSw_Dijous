@@ -42,7 +42,6 @@ public class MenuPrincipalState extends AbstractAppState implements ScreenContro
     private Screen screen;
     private boolean isRunningMenuPrincipal = true;
     private boolean enPantalla = false;
-    private int contadorPausa = 2;
     
     public MenuPrincipalState(SimpleApplication app){
         this.rootNode     = app.getRootNode();
@@ -87,19 +86,14 @@ public class MenuPrincipalState extends AbstractAppState implements ScreenContro
      */
     public void onAction(String name, boolean isPressed, float tpf) {
         if (name.equals("pausa")){
-            if(!enPantalla){
-                if(contadorPausa!=0){
+            if(!enPantalla && isPressed){
                     enPantalla = true;
                     pause();
-                    contadorPausa--;
-                }
             }else{
-                if(contadorPausa==0){
+                if(isPressed){
                     enPantalla = false;
                     newGame();
-                    contadorPausa = 2;
                 }
-                contadorPausa--;
             }
         } 
     }
@@ -115,7 +109,7 @@ public class MenuPrincipalState extends AbstractAppState implements ScreenContro
     */
     public void pause(){
         nifty.gotoScreen("pausa");
-        this.app.getInputManager().setCursorVisible(true);
+        //this.app.getInputManager().setCursorVisible(true);
         this.setIsRunningMenuPrincipal(false);
     }
     

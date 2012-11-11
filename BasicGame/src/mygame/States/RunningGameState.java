@@ -14,6 +14,9 @@ import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.bullet.util.CollisionShapeFactory;
 import com.jme3.collision.CollisionResults;
+import com.jme3.input.KeyInput;
+import com.jme3.input.controls.ActionListener;
+import com.jme3.input.controls.KeyTrigger;
 import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.math.ColorRGBA;
@@ -32,7 +35,8 @@ import mygame.model.zombie.ZombieManager;
  *
  * @author Harpo
  */
-public class RunningGameState extends AbstractAppState {
+public class RunningGameState extends AbstractAppState 
+                                    implements ActionListener{
 
     private SimpleApplication app;
     private ViewPort viewPort;
@@ -49,6 +53,7 @@ public class RunningGameState extends AbstractAppState {
     CharacterMainJMonkey player;
     private ObjectsInGame objetos;
     private DamageCollision damageCollision;
+    private int contadorPause = 2;
 
     public RunningGameState(SimpleApplication app)  {
         this.rootNode = app.getRootNode();
@@ -83,6 +88,7 @@ public class RunningGameState extends AbstractAppState {
         zombieManager = new ZombieManager(app, 3);
 
         setUpLight();
+        setUpKeys();
         loadMap();
  
     }
@@ -115,6 +121,17 @@ public class RunningGameState extends AbstractAppState {
         rootNode.addLight(dl);
     }
 
+    public void setUpKeys() {
+        app.getInputManager().addMapping("Paused", new KeyTrigger(KeyInput.KEY_P));
+        app.getInputManager().addListener(this, "Paused");
+    }
+    
+    public void onAction(String name, boolean isPressed, float tpf) {
+        if (name.equals("Paused")&& isPressed){               //@Emilio nuevo, para pausar
+            isRunningGame = !isRunningGame;   
+        }
+    }
+    
     public boolean getIsRunningGame() {
         return this.isRunningGame;
     }
