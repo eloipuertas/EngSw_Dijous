@@ -14,6 +14,7 @@ import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.collision.shapes.CapsuleCollisionShape;
 import com.jme3.bullet.control.CharacterControl;
 import com.jme3.input.KeyInput;
+import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
 
@@ -92,11 +93,11 @@ public class CharacterMainJMonkey extends AbstractAppState
     
     //MODIFICAR TEAM DEL PERSONAJE
     //modelo pj de prueba para las colisiones
-    Mesh mesh1 = new Box(0.5f, 0.5f, 0.5f);
-    geom1 = new Geometry("Personaje", mesh1);
-    geom1.addControl(player);
+    //Mesh mesh1 = new Box(0.5f, 0.5f, 0.5f);
+    //geom1 = new Geometry("Personaje", mesh1);
+    //geom1.addControl(player);
     
-    bulletAppState.getPhysicsSpace().add(geom1);
+    //bulletAppState.getPhysicsSpace().add(geom1);
   }
     
   //@Emilio inicia musica ambiente.
@@ -130,9 +131,7 @@ public class CharacterMainJMonkey extends AbstractAppState
     app.getInputManager().addMapping("Down", new KeyTrigger(KeyInput.KEY_S));
 
     app.getInputManager().addMapping("Run", new KeyTrigger(KeyInput.KEY_SPACE));
-    //app.getInputManager().addMapping("TurnLeft", new KeyTrigger(KeyInput.KEY_LEFT));
-    //app.getInputManager().addMapping("TurnRight", new KeyTrigger(KeyInput.KEY_RIGHT));
-    //app.getInputManager().addMapping("Jump", new KeyTrigger(KeyInput.KEY_SPACE));
+    app.getInputManager().addMapping("Attack", new KeyTrigger(MouseInput.BUTTON_LEFT));
 
     app.getInputManager().addMapping("Jump", new KeyTrigger(KeyInput.KEY_J));
     app.getInputManager().addMapping("Mute", new KeyTrigger(KeyInput.KEY_M));
@@ -144,9 +143,7 @@ public class CharacterMainJMonkey extends AbstractAppState
     app.getInputManager().addListener(this, "Down");
 
     app.getInputManager().addListener(this, "Run");
-    app.getInputManager().addListener(this, "TurnLeft");
-    app.getInputManager().addListener(this, "TurnRight");
-    //app.getInputManager().addListener(this, "Jump");
+    app.getInputManager().addListener(this, "Attack");
 
     app.getInputManager().addListener(this, "Jump");
     app.getInputManager().addListener(this, "Mute");
@@ -165,10 +162,6 @@ public class CharacterMainJMonkey extends AbstractAppState
             right = value;
         } else if (binding.equals("Up")) {
             up = value;
-        } else if (binding.equals("TurnLeft")) {
-	    turnLeft = value;
-	} else if (binding.equals("TurnRight")) {
-	    turnRight = value;
         } else if (binding.equals("Down")) {
             down = value;
         } else if (binding.equals("Jump")) {
@@ -244,23 +237,23 @@ public class CharacterMainJMonkey extends AbstractAppState
   public void personatgeUpdate() {
     Vector3f camDir = app.getCamera().getDirection().clone().multLocal(0.6f);
     Vector3f camLeft = app.getCamera().getLeft().clone().multLocal(0.4f);
+    Vector3f viewDirection = new Vector3f();
     walkDirection.set(0, 0, 0);
     if(run){
         if (left)  { walkDirection.addLocal(camLeft.mult(3)); }
         if (right) { walkDirection.addLocal(camLeft.negate().mult(3)); }
         if (up)    { walkDirection.addLocal(camDir.mult(3)); }
         if (down)  { walkDirection.addLocal(camDir.negate().mult(3)); }
-        if (turnLeft | turnRight)  { walkDirection.addLocal(camDir.mult(3)); }
     }else{
         if (left)  { walkDirection.addLocal(camLeft); }
         if (right) { walkDirection.addLocal(camLeft.negate()); }
         if (up)    { walkDirection.addLocal(camDir); }
         if (down)  { walkDirection.addLocal(camDir.negate()); }
-        if (turnLeft | turnRight)  { walkDirection.addLocal(camDir); }
     }   
-    
+    viewDirection.set(new Vector3f(camDir.getX(), 0, camDir.getZ()));
     //if (run)  { walkDirection.addLocal(camDir.mult(5)); }
     player.setWalkDirection(walkDirection);
+    player.setViewDirection(viewDirection);
     app.getCamera().setLocation(player.getPhysicsLocation());
   }
   
