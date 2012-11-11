@@ -37,11 +37,12 @@ public class Main extends SimpleApplication {
   public void simpleUpdate(float tpf) {
 
       //Menu Principal
-      if (menuPrincipal.getIsRunningMenuPrincipal() && !stateManager.hasState(menuPrincipal)){
+  /*    if (menuPrincipal.getIsRunningMenuPrincipal() && !stateManager.hasState(menuPrincipal)){
           stateManager.detach(runningGame);
           stateManager.attach(menuPrincipal);
-          
-      }else if(!menuPrincipal.getIsRunningMenuPrincipal() && stateManager.hasState(menuPrincipal)){
+     
+      }else   */  
+      if(!menuPrincipal.getIsRunningMenuPrincipal() && stateManager.hasState(menuPrincipal)){
           stateManager.detach(menuPrincipal);
           stateManager.attach(runningGame);
           runningGame.setIsRunningGame(true);
@@ -53,12 +54,12 @@ public class Main extends SimpleApplication {
           stateManager.detach(menuPrincipal);
           stateManager.attach(runningGame);
         
-      }else if(!runningGame.getIsRunningGame()  && stateManager.hasState(runningGame)){
+      }/*else if(!runningGame.getIsRunningGame()  && stateManager.hasState(runningGame)){
           stateManager.detach(runningGame);
           stateManager.attach(menuPrincipal);
           menuPrincipal.setIsRunningMenuPrincipal(true);
       }
-      
+      */
       
       runningGame.updateRunningGame();   
     
