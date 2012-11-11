@@ -74,7 +74,7 @@ public class RunningGameState extends AbstractAppState {
         
         //Player
         player = new CharacterMainJMonkey();
-        stateManager.attach(player);
+        //stateManager.attach(player);
         stateManager.attach(bulletAppState);
         player.setState(bulletAppState);
         player.initialize(stateManager, app);

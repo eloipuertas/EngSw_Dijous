@@ -68,9 +68,15 @@ public class CharacterMainJMonkey extends AbstractAppState
     @Override
     public void initialize(AppStateManager stateManager, Application applicooter){
         super.initialize(stateManager, applicooter);
-        this.app = (SimpleApplication)applicooter;
+        this.app = (SimpleApplication) applicooter;
+        this.assetManager  = app.getAssetManager();  
+        addCharacterToScene();
+        
+    }
+    
+    public void addCharacterToScene() {
 
-    setUpKeys();
+    setUpKeys();  // keys control
     CapsuleCollisionShape capsuleShape = new CapsuleCollisionShape(3f, 4f, 1);
     player = new CharacterControl(capsuleShape, 0.05f);
     player.setJumpSpeed(40);
@@ -79,25 +85,32 @@ public class CharacterMainJMonkey extends AbstractAppState
     player.setPhysicsLocation(new Vector3f(0, 10, 0));
 
     
-    Node playerShapes = (Node) app.getAssetManager().loadModel("Character/Cube.002.mesh.xml");
+    Node playerShapes = (Node) app.getAssetManager().loadModel("Models/Oto/Oto.mesh.xml");
     //Material playerMaterial = app.getAssetManager().loadMaterial("Character/Cube.002.j3m");
     playerShapes.addControl(player);
     
     bulletAppState.getPhysicsSpace().add(player);
     app.getRootNode().attachChild(playerShapes);
+    
     initAudio();
-
-    this.assetManager  = app.getAssetManager();  
     //@Emilio, inicia musica de fondo
     initAmbientAudio();
     
     //MODIFICAR TEAM DEL PERSONAJE
     //modelo pj de prueba para las colisiones
+<<<<<<< HEAD
     //Mesh mesh1 = new Box(0.5f, 0.5f, 0.5f);
     //geom1 = new Geometry("Personaje", mesh1);
     //geom1.addControl(player);
     
     //bulletAppState.getPhysicsSpace().add(geom1);
+=======
+   /* Mesh mesh1 = new Box(0.5f, 0.5f, 0.5f);
+    geom1 = new Geometry("Personaje", mesh1);
+    geom1.addControl(player);
+    
+    bulletAppState.getPhysicsSpace().add(geom1);*/
+>>>>>>> 590219f11325cd52784b670cd6b66dbffbb977d1
   }
     
   //@Emilio inicia musica ambiente.
@@ -131,8 +144,12 @@ public class CharacterMainJMonkey extends AbstractAppState
     app.getInputManager().addMapping("Down", new KeyTrigger(KeyInput.KEY_S));
 
     app.getInputManager().addMapping("Run", new KeyTrigger(KeyInput.KEY_SPACE));
+<<<<<<< HEAD
     app.getInputManager().addMapping("Attack", new KeyTrigger(MouseInput.BUTTON_LEFT));
 
+=======
+    
+>>>>>>> 590219f11325cd52784b670cd6b66dbffbb977d1
     app.getInputManager().addMapping("Jump", new KeyTrigger(KeyInput.KEY_J));
     app.getInputManager().addMapping("Mute", new KeyTrigger(KeyInput.KEY_M));
     app.getInputManager().addMapping("Paused", new KeyTrigger(KeyInput.KEY_P));
@@ -143,7 +160,12 @@ public class CharacterMainJMonkey extends AbstractAppState
     app.getInputManager().addListener(this, "Down");
 
     app.getInputManager().addListener(this, "Run");
+<<<<<<< HEAD
     app.getInputManager().addListener(this, "Attack");
+=======
+    app.getInputManager().addListener(this, "TurnLeft");
+    app.getInputManager().addListener(this, "TurnRight");
+>>>>>>> 590219f11325cd52784b670cd6b66dbffbb977d1
 
     app.getInputManager().addListener(this, "Jump");
     app.getInputManager().addListener(this, "Mute");
@@ -166,7 +188,8 @@ public class CharacterMainJMonkey extends AbstractAppState
             down = value;
         } else if (binding.equals("Jump")) {
             player.jump();
-        } 
+        } else if (binding.equals("Run")) {
+            run = value;  }
     }
     
     if (binding.equals("Mute")) {               //@Emilio nuevo, para mutear
@@ -189,38 +212,8 @@ public class CharacterMainJMonkey extends AbstractAppState
             }
           }  
           contadorPause--;
-
-    
-        } else if (binding.equals("Run")) {
-            run = value;
         }
     
-    
-    if (binding.equals("Mute")) {               //@Emilio nuevo, para mutear
-            if(contadorMute != 0){
-                reproducirAudio();
-                contadorMute--;
-            }else{
-                contadorMute = 1;
-            } 
-        } 
-    if (binding.equals("Paused")){               //@Emilio nuevo, para pausar
-        if(!isPaused){
-            if(contadorPause==2){
-                isPaused = true; 
-            }
-         }else{
-            if(contadorPause==0){
-                isPaused = false;
-                contadorPause = 4;
-            }
-          }  
-          contadorPause--;
-
-    }
-    //else if (binding.equals("Jump")) {
-      //player.jump();
-    //}
     if (left || right || up || down) audio_footstep.play();
     else audio_footstep.pause();
   }
