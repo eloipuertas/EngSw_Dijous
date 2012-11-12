@@ -7,10 +7,13 @@
     </layer>
     <layer id="foreground" backgroundColor="#0000" childLayout="center" >
       <panel id="panelInfo" height="15%" width="100%" valign="bottom" align="center"  childLayout="Horizontal"
-             backgroundColor="#00f8">  
+             backgroundColor="#f600">  
         <panel id="panelMunicion" height="100%" width="33.33%" valign="center" childLayout="center" 
-             backgroundColor="#44f8">  
-            
+             backgroundColor="#f600">  
+             
+            <image filename="Interface/RunningGame/interfacUB.png" 
+                valign="center" align="center" height="120%" width="100%" >
+             </image>
                 <effect>
                   <onStartScreen name="move" mode="in" direction="top" length="300" startDelay="0" inherit="true"/>
                   <onEndScreen name="move" mode="out" direction="bottom" length="300" startDelay="0" inherit="true"/>
@@ -20,8 +23,10 @@
         </panel>
 
         <panel id="panelVidas" height="100%" width="33.33%" valign="center" childLayout="center"
-             backgroundColor="#88f8">  
-            
+             backgroundColor="#f600">  
+             <image filename="Interface/RunningGame/interfacUB.png" 
+                valign="center" align="center" height="120%" width="100%" >
+             </image>
                 <effect>
                   <onStartScreen name="move" mode="in" direction="top" length="300" startDelay="0" inherit="true"/>
                   <onEndScreen name="move" mode="out" direction="bottom" length="300" startDelay="0" inherit="true"/>
@@ -31,8 +36,10 @@
             
         </panel>
         <panel id="panelSalud" height="100%" width="33.33%" valign="center" childLayout="center"
-             backgroundColor="#88f8">  
-            
+             backgroundColor="#f600">  
+            <image filename="Interface/RunningGame/interfacUB.png" 
+                valign="center" align="center" height="120%" width="100%" >
+             </image>
                 <effect>
                   <onStartScreen name="move" mode="in" direction="top" length="300" startDelay="0" inherit="true"/>
                   <onEndScreen name="move" mode="out" direction="bottom" length="300" startDelay="0" inherit="true"/>
