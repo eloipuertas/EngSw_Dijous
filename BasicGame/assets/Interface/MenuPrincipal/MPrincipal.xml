@@ -3,13 +3,16 @@
  
   <screen id="start" controller="mygame.States.MenuPrincipalState" >
     <layer id="background" backgroundColor="#0000">
-      <!-- ... -->
+        
     </layer>
     <layer id="foreground" backgroundColor="#0000" childLayout="center">
       <panel id="panelBotones" height="25%" width="50%" align="center"  childLayout="vertical"
-             backgroundColor="#00f8">  
+             backgroundColor="#0000">  
         <panel id="panelBotonNuevoJuego" height="50%" width="100%" valign="center" childLayout="center" 
-             backgroundColor="#44f8">  
+             backgroundColor="#0000">
+              <image filename="Interface/MenuPrincipal/botonJugar.png" 
+                valign="center" align="center" height="120%" width="100%" >
+            </image>
               <interact onClick="newGame()"/>
                 <effect>
                   <onStartScreen name="move" mode="in" direction="top" length="300" startDelay="0" inherit="true"/>
@@ -19,7 +22,10 @@
             <text id="text" font="aurulent-sans-16.fnt" color="#000f" text="Nuevo Juego" align="center" valign="center" />
         </panel>
         <panel id="panelBotonSalir" height="50%" width="100%" valign="center" childLayout="center"
-             backgroundColor="#88f8">  
+             backgroundColor="#0000"> 
+             <image filename="Interface/MenuPrincipal/botonSalir.png" 
+                valign="center" align="center" height="120%" width="100%" >
+            </image> 
               <interact onClick="quitMenu()"/>
                 <effect>
                   <onStartScreen name="move" mode="in" direction="top" length="300" startDelay="0" inherit="true"/>
