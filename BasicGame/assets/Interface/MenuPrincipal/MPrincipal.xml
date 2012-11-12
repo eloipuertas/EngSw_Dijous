@@ -47,8 +47,8 @@
     </layer>
     <layer id="foreground" backgroundColor="#0000" childLayout="center">
         <panel id="panelBotonPausado" height="50%" width="100%" valign="center" childLayout="center" 
-             backgroundColor="#44f8"> 
-            <image filename="Interface/MenuPrincipal/PausedImg.png" 
+             backgroundColor="#f600"> 
+            <image filename="Interface/MenuPrincipal/interfacUBPause.png" 
                 valign="center" align="center" height="120%" width="100%" >
             </image> 
               <interact onClick=""/>
