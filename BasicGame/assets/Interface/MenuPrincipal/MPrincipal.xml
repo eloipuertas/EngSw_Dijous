@@ -2,8 +2,8 @@
 <nifty>
  
   <screen id="start" controller="mygame.States.MenuPrincipalState" >
-    <layer id="foreground" backgroundColor="#f600" childLayout="center">
-        <image filename="Interface/MenuPrincipal/FondoJuego.jpg"></image>
+    <layer id="foreground" backgroundColor="#f600" align="center" childLayout="center">
+        <image filename="Interface/MenuPrincipal/FondoJuego.jpg" width="100%" height="100%"></image>
     </layer>
       <!--" Definimos el color del background"-->   
     <layer id="foreground" backgroundColor="#0000" childLayout="center">
