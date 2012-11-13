@@ -22,29 +22,35 @@ import com.jme3.scene.Spatial;
  * @author Harpo
  */
 public class Scenario {
-
+	
     private final Node rootNode;
     private final ViewPort viewPort;
     private final AssetManager assetManager;
     private final ColorRGBA backgroundColor = ColorRGBA.Blue;
-
+    Spatial escenario;
+    
     public Scenario(SimpleApplication app) {
         this.rootNode = app.getRootNode();
         this.viewPort = app.getViewPort();
         this.assetManager = app.getAssetManager();
-
+		
         //Ponemos el fondo en color azul
         viewPort.setBackgroundColor(backgroundColor);
-
+		
         //Cargamos el escenario
-        Spatial escenario = this.assetManager.loadModel("Scenes/montextura.j3o");
+        escenario = this.assetManager.loadModel("Scenes/montextura.j3o");
         escenario.move(Vector3f.ZERO);
         rootNode.attachChild(escenario);
-
+		
         CollisionShape sceneShape =
-                CollisionShapeFactory.createMeshShape((Node) escenario);
+		CollisionShapeFactory.createMeshShape((Node) escenario);
         RigidBodyControl landscape = new RigidBodyControl(sceneShape, 0);
         app.getStateManager().getState(BulletAppState.class).getPhysicsSpace().add(landscape);
-
+		
     }
+    
+    public Spatial getEscenari(){
+        return this.escenario;
+    }
+	
 }
