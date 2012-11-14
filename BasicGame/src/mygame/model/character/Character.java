@@ -4,6 +4,10 @@
  */
 package mygame.model.character;
 
+import com.jme3.math.Vector3f;
+import mygame.model.weapon.Gun;
+import mygame.model.weapon.WeaponInterface;
+
 /**
  *
  * @author rociotovar
@@ -12,13 +16,13 @@ public interface Character {
     
     // <editor-fold desc="Getters and Setters">
     
-    Position3D getPosition();
+    Vector3f getPlayerPosition();
     int getNLives();
     double getEnergy();
-    Weapon getCurrentWeapon();
+    WeaponInterface getCurrentWeapon();
     
-    void setPosition(double x, double y, double z);
-    void setCurrentWeapon (int idWeapon);
+    void setCurrentWeapon (WeaponInterface weapon);
+    void addWeapon(WeaponInterface weapon);
     
     // </editor-fold>
     

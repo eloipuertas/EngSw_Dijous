@@ -128,13 +128,16 @@ public class RunningGameState extends AbstractAppState {
         if (isRunningGame) {
             if (player != null) {
                 player.personatgeUpdate();
+                
                 if (zombieManager != null) {
                     zombieManager.update(player.getPlayerPosition());
                 }
+                
                 //update objetos
                 if (objetos != null){
-                    objetos.update(guiPlayer);
+                    objetos.update(guiPlayer, player);
                 }
+                
                 if (zombieManager != null ){
 					
                 }
