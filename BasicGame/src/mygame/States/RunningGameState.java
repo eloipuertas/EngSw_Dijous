@@ -142,22 +142,27 @@ public class RunningGameState extends AbstractAppState
 
     // @Emilio añadido update de objetos.
     public void updateRunningGame() {
-        if (isRunningGame) {
-            if (player != null) {
-                player.personatgeUpdate();
-                if (zombieManager != null) {
-                    zombieManager.update(player.getPlayerPosition());
-                }
-                //update objetos
-                if (objetos != null){
-                    objetos.update(guiPlayer);
-                }
-                if (zombieManager != null ){
-             
-                }
-            }
+        
+        //Eliminado la condicion if(isRunningGame)
+   
+        if (player != null) {
+            player.personatgeUpdate();
+            // Añadido pause personaje
+            if (player.isIsPaused()){isRunningGame = false;}
+             else{isRunningGame=true;}
 
+            // Update objetos
+            if (objetos != null){
+                objetos.update(guiPlayer);
+            }
+            if (zombieManager != null ){
+                // Añadido pause zombie
+                zombieManager.setPaused(!isRunningGame);
+                zombieManager.update(player.getPlayerPosition());
+            }
         }
+
+    
 
     }
 }
