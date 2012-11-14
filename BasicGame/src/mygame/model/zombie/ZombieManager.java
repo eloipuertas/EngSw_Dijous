@@ -17,10 +17,14 @@ import java.util.ArrayList;
  */
 public class ZombieManager {
 
+  
     private BulletAppState bulletAppState;
     private Node rootNode = new Node("gameRoot");
     private SimpleApplication app;
     private ArrayList<Zombie> zombies = new ArrayList<Zombie>();
+    private boolean paused;
+
+
 
     public ZombieManager(Application app, int numberZombies) {
         /**
@@ -73,8 +77,20 @@ public class ZombieManager {
     }
 
     public void update(Vector3f playerPos) {
+        System.out.println("paused: " + paused);
         for (Zombie z : zombies) {
             z.update(playerPos);
+        }
+    }
+    
+    public boolean isPaused() {
+        return paused;
+    }
+    public void setPaused(boolean paused) {
+        this.paused = paused;
+        
+        for (Zombie z : zombies) {
+            z.setPaused(this.paused);
         }
     }
 }

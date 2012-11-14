@@ -59,6 +59,8 @@ public class CharacterMainJMonkey extends AbstractAppState
   private int contadorMute = 1;
   private int contadorPause = 2;
   boolean isPaused;
+
+
   AudioNode audio_environment;
     private Geometry geom1;
 
@@ -248,5 +250,7 @@ public class CharacterMainJMonkey extends AbstractAppState
         musica = true;
      }  
   }
-
+    public boolean isIsPaused() {
+        return isPaused;
+    }
 }

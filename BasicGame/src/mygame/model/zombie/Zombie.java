@@ -35,6 +35,9 @@ public class Zombie implements AnimEventListener {
     private AnimControl control;
     private final int distFollow = 50;
     private final int angleFollow = 160;
+    //MODIFICACION PARA EL GRUPO DE LOS ZOMBIES
+    private boolean paused  ;
+
 
     Zombie(SimpleApplication app, Vector3f position, Vector3f viewDirection, float speed) {
         this.app = app;
@@ -88,9 +91,8 @@ public class Zombie implements AnimEventListener {
         float dist = playerPos.distance(zombiePos);
         float angle = zombieControl.getViewDirection().normalize().angleBetween(playerPos.subtract(zombiePos).normalize());
 
-        //System.out.print(zombieControl.getViewDirection()+" ");
-
-        if (dist < distFollow && angle < (angleFollow * Math.PI / 360)) {
+     
+        if (dist < distFollow && angle < (angleFollow * Math.PI / 360) && !paused  ) {
             audio_zombie.setVolume(1 / dist);
             audio_zombie.play();
 
@@ -106,6 +108,7 @@ public class Zombie implements AnimEventListener {
                 channel.setLoopMode(LoopMode.Loop);
             }
         } else {
+            
             audio_zombie.stop();
             zombieControl.setWalkDirection(new Vector3f(0, 0, 0));
             //channel.setAnim("stand"); de moment no te animacio stand
@@ -125,4 +128,14 @@ public class Zombie implements AnimEventListener {
     public void onAnimChange(AnimControl control, AnimChannel channel, String animName) {
         // unused
     }
+    
+    
+    public void setPaused(boolean paused) {
+        this.paused = paused;
+    }
+
+    public boolean isPaused() {
+        return paused;
+    }
+
 }
