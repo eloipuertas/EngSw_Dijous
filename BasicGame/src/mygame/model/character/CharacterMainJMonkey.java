@@ -4,11 +4,7 @@ import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
-
-import com.jme3.asset.plugins.ZipLocator;
-
 import com.jme3.asset.AssetManager;
-
 import com.jme3.audio.AudioNode;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.collision.shapes.CapsuleCollisionShape;
@@ -16,18 +12,12 @@ import com.jme3.bullet.control.CharacterControl;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
-
-import com.jme3.light.AmbientLight;
-import com.jme3.light.DirectionalLight;
-import com.jme3.material.Material;
-import com.jme3.math.ColorRGBA;
-
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Mesh;
+import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Box;
-import com.jme3.scene.Node;
  
 /**
  * Example 9 - How to make walls and floors solid.
@@ -209,20 +199,34 @@ public class CharacterMainJMonkey extends AbstractAppState
     Vector3f camDir = app.getCamera().getDirection().clone().multLocal(0.6f);
     Vector3f camLeft = app.getCamera().getLeft().clone().multLocal(0.4f);
     walkDirection.set(0, 0, 0);
-    if(run){
-        if (left)  { walkDirection.addLocal(camLeft.mult(3)); }
-        if (right) { walkDirection.addLocal(camLeft.negate().mult(3)); }
-        if (up)    { walkDirection.addLocal(camDir.mult(3)); }
-        if (down)  { walkDirection.addLocal(camDir.negate().mult(3)); }
-        if (turnLeft | turnRight)  { walkDirection.addLocal(camDir.mult(3)); }
+    /*  @David C. -- Añadido Condicional isPaused y 
+     *  bloqueo de cámara cuando está en pause
+     */
+    this.app.getFlyByCamera().setEnabled(!isPaused);
+    if(!this.isPaused){
+        if(run){
+            if (left)  { walkDirection.addLocal(camLeft.mult(3)); }
+            if (right) { walkDirection.addLocal(camLeft.negate().mult(3)); }
+            if (up)    { walkDirection.addLocal(camDir.mult(3)); }
+            if (down)  { walkDirection.addLocal(camDir.negate().mult(3)); }
+            if (turnLeft | turnRight)  { walkDirection.addLocal(camDir.mult(3)); }
+        }else{
+            if (left)  { walkDirection.addLocal(camLeft); }
+            if (right) { walkDirection.addLocal(camLeft.negate()); }
+            if (up)    { walkDirection.addLocal(camDir); }
+            if (down)  { walkDirection.addLocal(camDir.negate()); }
+            if (turnLeft | turnRight)  { walkDirection.addLocal(camDir); }
+        }   
     }else{
-        if (left)  { walkDirection.addLocal(camLeft); }
-        if (right) { walkDirection.addLocal(camLeft.negate()); }
-        if (up)    { walkDirection.addLocal(camDir); }
-        if (down)  { walkDirection.addLocal(camDir.negate()); }
-        if (turnLeft | turnRight)  { walkDirection.addLocal(camDir); }
-    }   
-    
+        // @David C. -- Bloqueo de las direcciones cuando está en pause
+        left = false;
+        right = false;
+        up = false;
+        down = false;
+        turnLeft = false;
+        turnRight = false;
+        run = false;
+    }
     //if (run)  { walkDirection.addLocal(camDir.mult(5)); }
     player.setWalkDirection(walkDirection);
     app.getCamera().setLocation(player.getPhysicsLocation());
@@ -250,7 +254,8 @@ public class CharacterMainJMonkey extends AbstractAppState
         musica = true;
      }  
   }
-    public boolean isIsPaused() {
-        return isPaused;
-    }
+  // @David C. -- Añadido getters del parámetro isPaused
+  public boolean isPaused() {
+    return isPaused;
+  }
 }

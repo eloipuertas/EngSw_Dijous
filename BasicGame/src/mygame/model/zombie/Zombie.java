@@ -91,7 +91,7 @@ public class Zombie implements AnimEventListener {
         float dist = playerPos.distance(zombiePos);
         float angle = zombieControl.getViewDirection().normalize().angleBetween(playerPos.subtract(zombiePos).normalize());
 
-     
+        // @David C. -- Añadido condición del parámetro pause
         if (dist < distFollow && angle < (angleFollow * Math.PI / 360) && !paused  ) {
             audio_zombie.setVolume(1 / dist);
             audio_zombie.play();
@@ -129,13 +129,13 @@ public class Zombie implements AnimEventListener {
         // unused
     }
     
-    
+    // @David C. -- Añadido getters & setters del parámetro paused
     public void setPaused(boolean paused) {
         this.paused = paused;
     }
 
     public boolean isPaused() {
-        return paused;
+        return this.paused;
     }
 
 }

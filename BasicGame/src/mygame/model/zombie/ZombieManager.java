@@ -77,18 +77,18 @@ public class ZombieManager {
     }
 
     public void update(Vector3f playerPos) {
-        System.out.println("paused: " + paused);
         for (Zombie z : zombies) {
             z.update(playerPos);
         }
     }
     
+    // @David C. -- Añadido getters & setters del parámetro paused
     public boolean isPaused() {
         return paused;
     }
+    
     public void setPaused(boolean paused) {
         this.paused = paused;
-        
         for (Zombie z : zombies) {
             z.setPaused(this.paused);
         }

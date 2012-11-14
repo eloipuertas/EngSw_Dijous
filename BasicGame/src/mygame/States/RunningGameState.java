@@ -33,7 +33,7 @@ import mygame.model.zombie.ZombieManager;
 
 /**
  *
- * @author Harpo
+ * @author David C.
  */
 public class RunningGameState extends AbstractAppState 
                                     implements ActionListener{
@@ -143,20 +143,21 @@ public class RunningGameState extends AbstractAppState
     // @Emilio añadido update de objetos.
     public void updateRunningGame() {
         
-        //Eliminado la condicion if(isRunningGame)
+        //@David C. -- Eliminada la condicion if(isRunningGame)
    
         if (player != null) {
             player.personatgeUpdate();
-            // Añadido pause personaje
-            if (player.isIsPaused()){isRunningGame = false;}
-             else{isRunningGame=true;}
+            
+            // @David C. -- Añadido pause player
+            if (player.isPaused()){isRunningGame = false;}
+            else{isRunningGame=true;}
 
             // Update objetos
             if (objetos != null){
                 objetos.update(guiPlayer);
             }
             if (zombieManager != null ){
-                // Añadido pause zombie
+                // @David C. -- Añadido pause zombie
                 zombieManager.setPaused(!isRunningGame);
                 zombieManager.update(player.getPlayerPosition());
             }

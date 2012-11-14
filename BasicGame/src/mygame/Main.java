@@ -44,6 +44,8 @@ public class Main extends SimpleApplication {
           stateManager.attach(menuPrincipal);
      
       }else   */  
+      
+      // @David C. -- Modificación de la condición
       if(!menuPrincipal.getIsRunningMenuPrincipal() && stateManager.hasState(menuPrincipal)){
           stateManager.detach(menuPrincipal);
           stateManager.attach(runningGame);
