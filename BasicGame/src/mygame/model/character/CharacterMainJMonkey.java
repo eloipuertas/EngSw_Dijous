@@ -86,7 +86,7 @@ public class CharacterMainJMonkey extends AbstractAppState
 			player.setGravity(100);
 			player.setPhysicsLocation(new Vector3f(0, 10, 0));
 			
-			playerShape = (Node) app.getAssetManager().loadModel("Character/Cube.002.mesh.xml");
+			playerShape = (Node) app.getAssetManager().loadModel("Models/Elephant/Elephant.mesh.xml");
 			//Material playerMaterial = app.getAssetManager().loadMaterial("Character/Cube.002.j3m");
 			playerShape.addControl(player);
 			
@@ -255,24 +255,21 @@ public class CharacterMainJMonkey extends AbstractAppState
 		public void personatgeUpdate() {
 			Vector3f camDir = app.getCamera().getDirection().clone().multLocal(0.6f);
 			Vector3f camLeft = app.getCamera().getLeft().clone().multLocal(0.4f);
-			walkDirection.set(0, 0, 0);
-			if(run){
-				if (left)  { walkDirection.addLocal(camLeft.mult(3)); }
-				if (right) { walkDirection.addLocal(camLeft.negate().mult(3)); }
-				if (up)    { walkDirection.addLocal(camDir.mult(3)); }
-				if (down)  { walkDirection.addLocal(camDir.negate().mult(3)); }
-				if (turnLeft | turnRight)  { walkDirection.addLocal(camDir.mult(3)); }
-			}else{
-				if (left)  { walkDirection.addLocal(camLeft); }
-				if (right) { walkDirection.addLocal(camLeft.negate()); }
-				if (up)    { walkDirection.addLocal(camDir); }
-				if (down)  { walkDirection.addLocal(camDir.negate()); }
-				if (turnLeft | turnRight)  { walkDirection.addLocal(camDir); }
-			}   
+			Vector3f viewDirection = new Vector3f();
+                        walkDirection.set(0, 0, 0);
+                        
+			if (left)  { walkDirection.addLocal(camLeft); }
+			if (right) { walkDirection.addLocal(camLeft.negate()); }
+			if (up)    { walkDirection.addLocal(camDir); }
+			if (down)  { walkDirection.addLocal(camDir.negate()); } 
+			if (run)  { walkDirection.addLocal(camDir.mult(3)); }
+                        
+                        viewDirection.set(new Vector3f(camDir.getX(), 0, camDir.getZ()));
 			
-			//if (run)  { walkDirection.addLocal(camDir.mult(5)); }
-			player.setWalkDirection(walkDirection);
-			app.getCamera().setLocation(player.getPhysicsLocation());
+                        player.setWalkDirection(walkDirection);
+                        player.setViewDirection(viewDirection.negate());
+			
+                        app.getCamera().setLocation(player.getPhysicsLocation());
 		}
 		
 		public Vector3f getPlayerPosition(){
@@ -299,57 +296,57 @@ public class CharacterMainJMonkey extends AbstractAppState
 		}
 		
 		private ActionListener accioDisparar = new ActionListener() {
-		public void onAction(String name, boolean keyPressed, float tpf) {
-		if (name.equals("Shoot") && !keyPressed) {
-		CollisionResults resultat = new CollisionResults();
-		Ray raig = new Ray(app.getCamera().getLocation(), app.getCamera().getDirection());
-		shootables.collideWith(raig, resultat);
-		System.out.println("----- Collisions? " + resultat.size() + "-----");
-		for (int i = 0; i < resultat.size(); i++) {
-			// For each hit, we know distance, impact point, name of geometry.
-			float dist = resultat.getCollision(i).getDistance();
-			Vector3f pt = resultat.getCollision(i).getContactPoint();
-			String hit = resultat.getCollision(i).getGeometry().getName();
-			System.out.println("* Collision #" + i);
-			System.out.println("  You shot " + hit + " at " + pt + ", " + dist + " wu away.");
-		}
-		if (resultat.size() > 0) {
-			// The closest collision point is what was truly hit:
-			CollisionResult closest = resultat.getClosestCollision();
-			// Let's interact - we mark the hit with a red dot.
-			marcaVermella.setLocalTranslation(closest.getContactPoint());
-			app.getRootNode().attachChild(marcaVermella);
-		} else {
-			// No hits? Then remove the red mark.
-			app.getRootNode().detachChild(marcaVermella);
-		}              
-	}          
-}
-};
+                    public void onAction(String name, boolean keyPressed, float tpf) {
+                        if (name.equals("Shoot") && !keyPressed) {
+                            CollisionResults resultat = new CollisionResults();
+                            Ray raig = new Ray(app.getCamera().getLocation(), app.getCamera().getDirection());
+                            shootables.collideWith(raig, resultat);
+                            System.out.println("----- Collisions? " + resultat.size() + "-----");
+                            for (int i = 0; i < resultat.size(); i++) {
+                                // For each hit, we know distance, impact point, name of geometry.
+                                float dist = resultat.getCollision(i).getDistance();
+                                Vector3f pt = resultat.getCollision(i).getContactPoint();
+                                String hit = resultat.getCollision(i).getGeometry().getName();
+                                System.out.println("* Collision #" + i);
+                                System.out.println("  You shot " + hit + " at " + pt + ", " + dist + " wu away.");
+                            }
+                            if (resultat.size() > 0) {
+                                // The closest collision point is what was truly hit:
+                                CollisionResult closest = resultat.getClosestCollision();
+                                // Let's interact - we mark the hit with a red dot.
+                                marcaVermella.setLocalTranslation(closest.getContactPoint());
+                                app.getRootNode().attachChild(marcaVermella);
+                            } else {
+                                // No hits? Then remove the red mark.
+                                app.getRootNode().detachChild(marcaVermella);
+                            }              
+                        }          
+                    }
+                };
 
-protected void inicialitzarMarca() {
-Sphere sphere = new Sphere(30, 30, 0.2f);
-marcaVermella = new Geometry("BOOM!", sphere);
-Material marcaVermella_mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-marcaVermella_mat.setColor("Color", ColorRGBA.Red);
-marcaVermella.setMaterial(marcaVermella_mat);
-}
+    protected void inicialitzarMarca() {
+        Sphere sphere = new Sphere(30, 30, 0.2f);
+        marcaVermella = new Geometry("BOOM!", sphere);
+        Material marcaVermella_mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        marcaVermella_mat.setColor("Color", ColorRGBA.Red);
+        marcaVermella.setMaterial(marcaVermella_mat);
+    }
 
-protected void initMirilla() {
-app.getGuiNode().detachAllChildren();
-guiFont = loadGuiFont();
-guiFont = assetManager.loadFont("Interface/Fonts/Default.fnt");
-BitmapText ch = new BitmapText(guiFont, false);
-ch.setSize(guiFont.getCharSet().getRenderedSize() * 2);
-ch.setText("+"); // crosshairs
-AppSettings settings = new AppSettings(true);
-ch.setLocalTranslation( // center
-settings.getWidth() / 2 - guiFont.getCharSet().getRenderedSize() / 3 * 2,
-settings.getHeight() / 2 + ch.getLineHeight() / 2, 0);
-app.getGuiNode().attachChild(ch);
-}
+    protected void initMirilla() {
+        app.getGuiNode().detachAllChildren();
+        guiFont = loadGuiFont();
+        guiFont = assetManager.loadFont("Interface/Fonts/Default.fnt");
+        BitmapText ch = new BitmapText(guiFont, false);
+        ch.setSize(guiFont.getCharSet().getRenderedSize() * 2);
+        ch.setText("+"); // crosshairs
+        AppSettings settings = new AppSettings(true);
+        ch.setLocalTranslation( // center
+        settings.getWidth() / 2 - guiFont.getCharSet().getRenderedSize() / 3 * 2,
+        settings.getHeight() / 2 + ch.getLineHeight() / 2, 0);
+        app.getGuiNode().attachChild(ch);
+    }
 
-protected BitmapFont loadGuiFont() {
-return assetManager.loadFont("Interface/Fonts/Default.fnt");
-}
+    protected BitmapFont loadGuiFont() {
+        return assetManager.loadFont("Interface/Fonts/Default.fnt");
+    }
 }
