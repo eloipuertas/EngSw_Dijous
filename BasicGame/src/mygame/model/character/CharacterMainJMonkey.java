@@ -92,11 +92,11 @@ public class CharacterMainJMonkey extends AbstractAppState
                 player.setFallSpeed(100);
                 player.setGravity(100);
 
-                playerShape = (Node) app.getAssetManager().loadModel("Models/Elephant/Elephant.mesh.xml");
+                playerShape = (Node) app.getAssetManager().loadModel("Character/porra.j3o");
                 //Material playerMaterial = app.getAssetManager().loadMaterial("Character/Cube.002.j3m");
                 playerShape.addControl(player);
                 
-                player.setPhysicsLocation(new Vector3f(0, 0, -30));
+                player.setPhysicsLocation(new Vector3f(0, 5, 0));
 
                 bulletAppState.getPhysicsSpace().add(player);
                 app.getRootNode().attachChild(playerShape);
@@ -163,9 +163,6 @@ public class CharacterMainJMonkey extends AbstractAppState
                 app.getInputManager().addListener(this, "Up");
                 app.getInputManager().addListener(this, "Down");
                 app.getInputManager().addListener(this, "Run");
-                app.getInputManager().addListener(this, "TurnLeft");
-                app.getInputManager().addListener(this, "TurnRight");
-                //app.getInputManager().addListener(this, "Jump");
 
                 app.getInputManager().addListener(this, "Jump");
                 app.getInputManager().addListener(this, "Mute");
@@ -184,10 +181,8 @@ public class CharacterMainJMonkey extends AbstractAppState
                                 right = value;
                         } else if (binding.equals("Up")) {
                                 up = value;
-                        } else if (binding.equals("TurnLeft")) {
-                                turnLeft = value;
-                        } else if (binding.equals("TurnRight")) {
-                                turnRight = value;
+                        } else if (binding.equals("Run")) {
+                                run = value;
                         } else if (binding.equals("Down")) {
                                 down = value;
                         } else if (binding.equals("Jump")) {
@@ -215,34 +210,6 @@ public class CharacterMainJMonkey extends AbstractAppState
                                 }
                         }  
                         contadorPause--;
-
-
-                } else if (binding.equals("Run")) {
-                        run = value;
-                }
-
-
-                if (binding.equals("Mute")) {               //@Emilio nuevo, para mutear
-                        if(contadorMute != 0){
-                                reproducirAudio();
-                                contadorMute--;
-                        }else{
-                                contadorMute = 1;
-                        } 
-                } 
-                if (binding.equals("Paused")){               //@Emilio nuevo, para pausar
-                        if(!isPaused){
-                                if(contadorPause==2){
-                                        isPaused = true; 
-                                }
-                        }else{
-                                if(contadorPause==0){
-                                        isPaused = false;
-                                        contadorPause = 4;
-                                }
-                        }  
-                        contadorPause--;
-
                 }
                 //else if (binding.equals("Jump")) {
                 //player.jump();
