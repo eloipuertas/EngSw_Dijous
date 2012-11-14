@@ -10,7 +10,6 @@
              backgroundColor="#f600">  
         <panel id="panelMunicion" height="100%" width="33.33%" valign="center" childLayout="center" 
              backgroundColor="#f600">  
-             
             <image filename="Interface/RunningGame/interfacUB.png" 
                 valign="center" align="center" height="120%" width="100%" >
              </image>
