@@ -18,7 +18,14 @@ import com.jme3.bullet.util.CollisionShapeFactory;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.audio.AudioNode;
+import com.jme3.bullet.collision.shapes.CompoundCollisionShape;
 import com.jme3.bullet.collision.shapes.CylinderCollisionShape;
+import com.jme3.bullet.control.GhostControl;
+import com.jme3.scene.Geometry;
+import com.jme3.scene.Mesh;
+import com.jme3.scene.Spatial;
+import com.jme3.scene.shape.Box;
+import com.jme3.scene.shape.Cylinder;
 
 /**
  *
@@ -35,21 +42,31 @@ public class Zombie implements AnimEventListener {
     private AnimControl control;
     private final int distFollow = 50;
     private final int angleFollow = 160;
-
+    private RigidBodyControl colisions;
+    private Node node1;
     Zombie(SimpleApplication app, Vector3f position, Vector3f viewDirection, float speed) {
         this.app = app;
-        CylinderCollisionShape cilinder = new CylinderCollisionShape(new Vector3f(0.5f,1.5f,1.5f));
-        zombieControl = new CharacterControl(cilinder, 0.5f);
-        //Afegit el nou model
+        CapsuleCollisionShape cilinder = new CapsuleCollisionShape(1.5f,2f, 1);
+        zombieControl = new CharacterControl(cilinder, 0.1f);
         zombieShape = (Node) app.getAssetManager().loadModel("Models/zombie/zombie.mesh.j3o");
-        zombieShape.scale(4f);
-        zombieShape.addControl(zombieControl);
+        node1=new Node();
+        node1.attachChild(zombieShape);
+        zombieShape.move(0f, -2.5f, 0f);
+        node1.addControl(zombieControl);
         
+        zombieShape.scale(3f);
+        colisions=new RigidBodyControl(1f);
+        node1.addControl(colisions);
+        CompoundCollisionShape ccs=new CompoundCollisionShape();
+        ccs.addChildShape(cilinder, new Vector3f(0f,4.2f,0f));
+        colisions.setCollisionShape(cilinder);
+        colisions.setAngularDamping(0);
+        colisions.setFriction(0);
+        colisions.setKinematic(true);
         //MODIFICACION PARA EL GRUPO DE LOS ZOMBIES
         zombieShape.setName("Zombie");
-        
-        
         zombieControl.setPhysicsLocation(position);
+        
 
         this.speed = speed;
         initAudio(); // initializes audio
@@ -59,9 +76,12 @@ public class Zombie implements AnimEventListener {
     CharacterControl getControl() {
         return zombieControl;
     }
+    RigidBodyControl getColision(){
+        return colisions;
+    }
 
     Node getNode() {
-        return zombieShape;
+        return node1;
     }
 
     private void initAudio() {
