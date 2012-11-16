@@ -55,8 +55,8 @@ public class CharacterMainJMonkey extends AbstractAppState
         //private RigidBodyControl landscape;
         private WeaponInterface currentWeapon;
         private List<WeaponInterface> weapons;
-        private CharacterControl player;
-        private Node playerShape;
+        private CharacterControl playerControl;
+        private Node playerModelPorra;
         private AssetManager assetManager;
         private Vector3f walkDirection = new Vector3f();
         private boolean left = false, right = false, up = false, down = false, run = false, turnLeft = false, turnRight = false;
@@ -73,7 +73,7 @@ public class CharacterMainJMonkey extends AbstractAppState
         Geometry marcaVermella;
         Scenario escenari;
         protected BitmapFont guiFont;
-
+        private Node pivot;
 
         @Override
         public void initialize(AppStateManager stateManager, Application applicooter){
@@ -87,19 +87,22 @@ public class CharacterMainJMonkey extends AbstractAppState
                 inicialitzarMarca();
                 initMirilla();
                 CapsuleCollisionShape capsuleShape = new CapsuleCollisionShape(3f, 4f, 1);
-                player = new CharacterControl(capsuleShape, 0.05f);
-                player.setJumpSpeed(40);
-                player.setFallSpeed(100);
-                player.setGravity(100);
-
-                playerShape = (Node) app.getAssetManager().loadModel("Character/porra.j3o");
-                //Material playerMaterial = app.getAssetManager().loadMaterial("Character/Cube.002.j3m");
-                playerShape.addControl(player);
+                playerControl = new CharacterControl(capsuleShape, 0.05f);
+                playerControl.setJumpSpeed(40);
+                playerControl.setFallSpeed(100);
+                playerControl.setGravity(100);
                 
-                player.setPhysicsLocation(new Vector3f(0, 5, 0));
-
-                bulletAppState.getPhysicsSpace().add(player);
-                app.getRootNode().attachChild(playerShape);
+                pivot = new Node();
+                playerModelPorra = (Node) app.getAssetManager().loadModel("Character/porra.j3o");
+                //Material playerMaterial = app.getAssetManager().loadMaterial("Character/Cube.002.j3m");
+                pivot.attachChild(playerModelPorra);
+                //playerModelPorra.addControl(playerControl);
+                pivot.addControl(playerControl);
+                playerModelPorra.move(0f,-4f,0f);
+                
+                playerControl.setPhysicsLocation(new Vector3f(0, 5, 0));
+                bulletAppState.getPhysicsSpace().add(playerControl);
+                app.getRootNode().attachChild(pivot);
 
                 shootables = new Node ("Shootables");
                 app.getRootNode().attachChild(shootables);
@@ -114,7 +117,7 @@ public class CharacterMainJMonkey extends AbstractAppState
                 //modelo pj de prueba para las colisiones
                 /*Mesh mesh1 = new Box(0.5f, 0.5f, 0.5f);
                  geom1 = new Geometry("Personaje", mesh1);
-                 geom1.addControl(player);
+                 geom1.addControl(playerControl);
 
                  bulletAppState.getPhysicsSpace().add(geom1);*/
         }
@@ -186,7 +189,7 @@ public class CharacterMainJMonkey extends AbstractAppState
                         } else if (binding.equals("Down")) {
                                 down = value;
                         } else if (binding.equals("Jump")) {
-                                player.jump();
+                                playerControl.jump();
                         } 
                 }
 
@@ -220,10 +223,10 @@ public class CharacterMainJMonkey extends AbstractAppState
 		
     /**
      * This is the main event loop--walking happens here.
-     * We check in which direction the player is walking by interpreting
+     * We check in which direction the playerControl is walking by interpreting
      * the camera direction forward (camDir) and to the side (camLeft).
-     * The setWalkDirection() command is what lets a physics-controlled player walk.
-     * We also make sure here that the camera moves with player.
+     * The setWalkDirection() command is what lets a physics-controlled playerControl walk.
+     * We also make sure here that the camera moves with playerControl.
      */
 
 
@@ -241,14 +244,14 @@ public class CharacterMainJMonkey extends AbstractAppState
 
             viewDirection.set(new Vector3f(camDir.getX(), 0, camDir.getZ()));
 
-            player.setWalkDirection(walkDirection);
-            player.setViewDirection(viewDirection.negate());
+            playerControl.setWalkDirection(walkDirection);
+            playerControl.setViewDirection(viewDirection.negate());
 
-            app.getCamera().setLocation(player.getPhysicsLocation());
+            app.getCamera().setLocation(playerControl.getPhysicsLocation());
     }
 		
     public Vector3f getPlayerPosition(){
-            return player.getPhysicsLocation();
+            return playerControl.getPhysicsLocation();
     }
     
     public void addWeapon(WeaponInterface weapon) {
