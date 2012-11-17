@@ -9,7 +9,10 @@ import com.jme3.math.Vector3f;
 /**
  *
  * @author rociotovar
+ * @test and comments ernest
  */
+
+// WEAPON interface methods
 public interface WeaponInterface {
     
     String getId();
