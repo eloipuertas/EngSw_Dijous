@@ -74,7 +74,10 @@ public class MenuPrincipalState extends AbstractAppState implements ScreenContro
         // attach the nifty display to the gui view port as a processor
         app.getGuiViewPort().addProcessor(niftyDisplay);
         this.app.getInputManager().setCursorVisible(true);
-        initAudio();
+        
+        // STEFAN!! tengo error de java memory
+        //initAudio();
+        //--
      
 
        
@@ -105,8 +108,11 @@ public class MenuPrincipalState extends AbstractAppState implements ScreenContro
     }
     
     public void newGame(){
-       audio_theme.pause(); // Pausa la cancion para entrar en el juego
-       audio_click.playInstance();// Suena el click
+        
+        // STEFAN!! tengo error de java memory
+       //audio_theme.pause(); // Pausa la cancion para entrar en el juego
+       //audio_click.playInstance();// Suena el click
+        //--
        nifty.gotoScreen("end");
        this.app.getInputManager().setCursorVisible(false);
        this.setIsRunningMenuPrincipal(false);

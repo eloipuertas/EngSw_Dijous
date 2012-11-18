@@ -22,7 +22,6 @@ public class ZombieManager implements ZombieManagerInterface{
     private Node rootNode = new Node("gameRoot");
     private SimpleApplication app;
 /*<<<<<<< HEAD
-    private ArrayList<Zombie> zombies = new ArrayList<Zombie>();
     private boolean paused;
 
 
@@ -30,7 +29,6 @@ public class ZombieManager implements ZombieManagerInterface{
     private ArrayList<ZombieInterface> zombies = new ArrayList<ZombieInterface>();
     private int[] groups = new int[]{0x00000002,0x00000004,0x00000008,0x00000010,0x00000020,0x00000040,0x00000080,0x00000100,0x00000200,0x00000400,0x00000800};
     private int colisionGroupCounter=0;
-//>>>>>>> origin/TEAM-F_2
 
     public ZombieManager(Application app) {
         /**
@@ -110,6 +108,7 @@ public class ZombieManager implements ZombieManagerInterface{
     public void update() {
         for (ZombieInterface z : zombies) {
             z.update(new Vector3f(0, 0, 0)); //Here goes player position
+
         }
     }
     /*
@@ -124,8 +123,8 @@ public class ZombieManager implements ZombieManagerInterface{
         this.paused = paused;
         for (Zombie z : zombies) {
             z.setPaused(this.paused);
+
         }
-=======
 /**/
 
     public ArrayList<ZombieInterface> getZombies() {

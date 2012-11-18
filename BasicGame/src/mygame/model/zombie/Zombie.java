@@ -168,5 +168,4 @@ public class Zombie implements AnimEventListener, ZombieInterface {
     public void doDamage(int damage, boolean distance) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-
 }

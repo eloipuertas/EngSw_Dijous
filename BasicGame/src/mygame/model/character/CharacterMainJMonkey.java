@@ -80,7 +80,10 @@ public class CharacterMainJMonkey extends AbstractAppState
 
     this.assetManager  = app.getAssetManager();  
     //@Emilio, inicia musica de fondo
-    initAmbientAudio();
+    
+    // STEFAN!! tengo error de java memory
+    //initAmbientAudio();
+    //--
     
     //MODIFICAR TEAM DEL PERSONAJE
     //modelo pj de prueba para las colisiones

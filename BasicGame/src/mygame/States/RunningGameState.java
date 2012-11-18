@@ -9,6 +9,7 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
+import com.jme3.asset.plugins.ZipLocator;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.RigidBodyControl;
@@ -95,6 +96,7 @@ public class RunningGameState extends AbstractAppState
     }
 
     public void loadMap() {
+        
         sceneModel = assetManager.loadModel("Scenes/montextura.j3o");
         sceneModel.setLocalScale(2f);
 
@@ -157,7 +159,7 @@ public class RunningGameState extends AbstractAppState
             if (objetos != null){
                 objetos.update(guiPlayer);
             }
-            if (zombieManager != null && isRunningGame){
+            if (zombieManager != null && !isRunningGame){
                 // @David C. -- Añadido pause zombie -> Stefan D. añadido en el if
                 //zombieManager.setPaused(!isRunningGame);
                 zombieManager.update();
