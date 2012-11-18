@@ -9,29 +9,19 @@ import com.jme3.animation.AnimControl;
 import com.jme3.animation.AnimEventListener;
 import com.jme3.animation.LoopMode;
 import com.jme3.app.SimpleApplication;
-import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.collision.shapes.CapsuleCollisionShape;
-import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.CharacterControl;
 import com.jme3.bullet.control.RigidBodyControl;
-import com.jme3.bullet.util.CollisionShapeFactory;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.audio.AudioNode;
 import com.jme3.bullet.collision.shapes.CompoundCollisionShape;
-import com.jme3.bullet.collision.shapes.CylinderCollisionShape;
-import com.jme3.bullet.control.GhostControl;
-import com.jme3.scene.Geometry;
-import com.jme3.scene.Mesh;
-import com.jme3.scene.Spatial;
-import com.jme3.scene.shape.Box;
-import com.jme3.scene.shape.Cylinder;
 
 /**
  *
  * @author Floyd
  */
-public class Zombie implements AnimEventListener {
+public class Zombie implements AnimEventListener, ZombieInterface {
 
     private SimpleApplication app;
     private CharacterControl zombieControl;
@@ -44,6 +34,9 @@ public class Zombie implements AnimEventListener {
     private final int angleFollow = 160;
     private RigidBodyControl colisions;
     private Node node1;
+    
+    private CompoundCollisionShape ccs;
+    
     Zombie(SimpleApplication app, Vector3f position, Vector3f viewDirection, float speed) {
         this.app = app;
         CapsuleCollisionShape cilinder = new CapsuleCollisionShape(1.5f,2f, 1);
@@ -57,7 +50,7 @@ public class Zombie implements AnimEventListener {
         zombieShape.scale(3f);
         colisions=new RigidBodyControl(1f);
         node1.addControl(colisions);
-        CompoundCollisionShape ccs=new CompoundCollisionShape();
+        ccs=new CompoundCollisionShape();
         ccs.addChildShape(cilinder, new Vector3f(0f,4.2f,0f));
         colisions.setCollisionShape(cilinder);
         colisions.setAngularDamping(0);
@@ -73,10 +66,10 @@ public class Zombie implements AnimEventListener {
         initAnimation();
     }
 
-    CharacterControl getControl() {
+    public CharacterControl getControl() {
         return zombieControl;
     }
-    RigidBodyControl getColision(){
+    public RigidBodyControl getColision(){
         return colisions;
     }
 
@@ -144,5 +137,13 @@ public class Zombie implements AnimEventListener {
 
     public void onAnimChange(AnimControl control, AnimChannel channel, String animName) {
         // unused
+    }
+
+    public CompoundCollisionShape getShapeForCollision() {
+        return ccs;
+    }
+
+    public void doDamage(int damage, boolean distance) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

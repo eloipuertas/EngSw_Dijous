@@ -15,16 +15,16 @@ import java.util.ArrayList;
  *
  * @author user
  */
-public class ZombieManager {
+public class ZombieManager implements ZombieManagerInterface{
 
     private BulletAppState bulletAppState;
     private Node rootNode = new Node("gameRoot");
     private SimpleApplication app;
-    private ArrayList<Zombie> zombies = new ArrayList<Zombie>();
+    private ArrayList<ZombieInterface> zombies = new ArrayList<ZombieInterface>();
     private int[] groups = new int[]{0x00000002,0x00000004,0x00000008,0x00000010,0x00000020,0x00000040,0x00000080,0x00000100,0x00000200,0x00000400,0x00000800};
     private int colisionGroupCounter=0;
 
-    public ZombieManager(Application app, int numberZombies) {
+    public ZombieManager(Application app) {
         /**
          * Set up Physics
          */
@@ -87,7 +87,7 @@ public class ZombieManager {
     
     private void setZombiColission(){
         int i=0;
-        for(Zombie z:zombies){
+        for(ZombieInterface z:zombies){
             i=0;
             while(i<colisionGroupCounter){                
                 if(z.getColision().getCollisionGroup()!=groups[i]){
@@ -99,9 +99,13 @@ public class ZombieManager {
         }
     }
 
-    public void update(Vector3f playerPos) {
-        for (Zombie z : zombies) {
-            z.update(playerPos);
+    public void update() {
+        for (ZombieInterface z : zombies) {
+            z.update(new Vector3f(0, 0, 0)); //Here goes player position
         }
+    }
+
+    public ArrayList<ZombieInterface> getZombies() {
+        return zombies;
     }
 }

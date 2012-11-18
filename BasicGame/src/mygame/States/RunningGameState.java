@@ -27,6 +27,7 @@ import mygame.States.Scenario.ObjectsInGame;
 import mygame.States.Scenario.Scenario;
 import mygame.model.character.CharacterMainJMonkey;
 import mygame.model.zombie.ZombieManager;
+import mygame.model.zombie.ZombieManagerInterface;
 
 /**
  *
@@ -45,7 +46,7 @@ public class RunningGameState extends AbstractAppState {
     private Spatial sceneModel;
     private RigidBodyControl landscape;
     private BulletAppState bulletAppState;
-    private ZombieManager zombieManager;
+    private ZombieManagerInterface zombieManager;
     CharacterMainJMonkey player;
     private ObjectsInGame objetos;
     private DamageCollision damageCollision;
@@ -80,7 +81,7 @@ public class RunningGameState extends AbstractAppState {
         player.initialize(stateManager, app);
         
         //Zombies
-        zombieManager = new ZombieManager(app, 3);
+        zombieManager = new ZombieManager(app);
 
         setUpLight();
         loadMap();
@@ -129,7 +130,7 @@ public class RunningGameState extends AbstractAppState {
             if (player != null) {
                 player.personatgeUpdate();
                 if (zombieManager != null) {
-                    zombieManager.update(player.getPlayerPosition());
+                    zombieManager.update();
                 }
                 //update objetos
                 if (objetos != null){
