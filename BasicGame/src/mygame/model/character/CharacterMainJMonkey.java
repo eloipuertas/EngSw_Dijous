@@ -61,7 +61,7 @@ import mygame.model.character.CharacterMainInterface;
     Getters and setters for Character's attributes */
 
 
-public class CharacterMainJMonkey extends AbstractAppState
+public class CharacterMainJMonkey
 	implements ActionListener, CharacterMainInterface {
 		
         private BulletAppState bulletAppState;
@@ -88,7 +88,6 @@ public class CharacterMainJMonkey extends AbstractAppState
         protected BitmapFont guiFont;  // fonts
         private Node pivot; // secundary node in order to avoid that character flies.
 
-        @Override
         
         /** Initialize method.
          * Main method called in RunningGameState. It initializes all character's variables.
@@ -96,8 +95,12 @@ public class CharacterMainJMonkey extends AbstractAppState
          * sets up music nodes and other calls other functional methods. 
          * arguments: StateManager and JMonkey Application */
         
-        public void initialize(AppStateManager stateManager, Application applicooter){
-                super.initialize(stateManager, applicooter);
+        //Stefan: cambio initalize por el constructor!
+        public CharacterMainJMonkey(AppStateManager stateManager, Application applicooter){
+                //super.initialize(stateManager, applicooter);
+                //Stefan: en ves de el set lo conseguimos de app
+                bulletAppState = applicooter.getStateManager().getState(BulletAppState.class);
+                
                 this.app = (SimpleApplication)applicooter;
                 this.assetManager  = app.getAssetManager();  
                 this.escenari = new Scenario(app);  // creating scenario
@@ -160,11 +163,13 @@ public class CharacterMainJMonkey extends AbstractAppState
 
         }
 
-        /** State setter. Argument: BulletAppState */
+        /** State setter. Argument: BulletAppState 
+         * 
+         * Stefan: se puede conseguir de app!!
         public void setState(BulletAppState state){
                 bulletAppState=state;
         }
-
+*/
         
         /** Method which assign keys with character actions through listeners. */
         public void setUpKeys() {
@@ -423,6 +428,11 @@ public class CharacterMainJMonkey extends AbstractAppState
 
     /** Method which increment or decrements our lives */
     public void incrementNLives(int quantity) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    // TODO for zombies: decrement health!!
+    public void doDamage(int value) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }

@@ -21,10 +21,12 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import mygame.Main;
 import mygame.States.Scenario.DamageCollision;
 import mygame.States.Scenario.GUIPlayerMain;
 import mygame.States.Scenario.ObjectsInGame;
 import mygame.States.Scenario.Scenario;
+import mygame.model.character.CharacterMainInterface;
 import mygame.model.character.CharacterMainJMonkey;
 import mygame.model.zombie.ZombieManager;
 
@@ -46,7 +48,7 @@ public class RunningGameState extends AbstractAppState {
     private RigidBodyControl landscape;
     private BulletAppState bulletAppState;
     private ZombieManager zombieManager;
-    CharacterMainJMonkey player;
+    private CharacterMainInterface playerManager;
     private ObjectsInGame objetos;
     private DamageCollision damageCollision;
 	
@@ -62,6 +64,7 @@ public class RunningGameState extends AbstractAppState {
         super.initialize(stateManager, app);
         this.app = (SimpleApplication) app;
         bulletAppState = app.getStateManager().getState(BulletAppState.class);
+        stateManager.attach(bulletAppState);
         //Cargamos el escenario
         //scenario = new Scenario(this.app);
 		
@@ -73,11 +76,12 @@ public class RunningGameState extends AbstractAppState {
         damageCollision = new DamageCollision(this.bulletAppState,guiPlayer);
         
         //Player
-        player = new CharacterMainJMonkey();
+        playerManager = new CharacterMainJMonkey(stateManager, app);
+        ((Main)app).setPlayerManager(playerManager);
+        
         //stateManager.attach(player);
-        stateManager.attach(bulletAppState);
-        player.setState(bulletAppState);
-        player.initialize(stateManager, app);
+        //playerManager.setState(bulletAppState);
+        //playerManager.initialize(stateManager, app);
         
         //Zombies
         zombieManager = new ZombieManager(app, 3);
@@ -126,16 +130,16 @@ public class RunningGameState extends AbstractAppState {
     // @Emilio añadido update de objetos.
     public void updateRunningGame() {
         if (isRunningGame) {
-            if (player != null) {
-                player.personatgeUpdate();
+            if (playerManager != null) {
+                playerManager.personatgeUpdate();
                 
                 if (zombieManager != null) {
-                    zombieManager.update(player.getPlayerPosition());
+                    //zombieManager.update(playerManager.getPlayerPosition());
                 }
                 
                 //update objetos
                 if (objetos != null){
-                    objetos.update(guiPlayer, player);
+                    objetos.update(guiPlayer, playerManager);
                 }
                 
                 if (zombieManager != null ){

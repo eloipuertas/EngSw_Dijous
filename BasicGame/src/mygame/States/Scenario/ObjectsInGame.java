@@ -13,6 +13,7 @@ import com.jme3.scene.Spatial;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import mygame.model.character.CharacterMainInterface;
 import mygame.model.character.CharacterMainJMonkey;
 import mygame.model.weapon.Gun;
 import mygame.model.weapon.WeaponInterface;
@@ -48,7 +49,7 @@ public class ObjectsInGame extends AbstractAppState  {
         weaponsList.get(0).addWeaponeToScenario();
     }
     
-   public void update(GUIPlayerMain gui, CharacterMainJMonkey player){
+   public void update(GUIPlayerMain gui, CharacterMainInterface player){
        
        //comprobamos si alguno de los botiquines ha sido cogido
        for(Iterator iterador = ObjetosVida.listIterator();iterador.hasNext();){

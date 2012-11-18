@@ -4,6 +4,7 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
 import mygame.States.MenuPrincipalState;
 import mygame.States.RunningGameState;
+import mygame.model.character.CharacterMainInterface;
 
 
 public class Main extends SimpleApplication {
@@ -12,6 +13,17 @@ public class Main extends SimpleApplication {
     private RunningGameState runningGame;
     private boolean isRunning;
     private SimpleApplication app;
+    
+    // Stefan D.: Interfaces for comunication between map, player and zombies
+    private CharacterMainInterface playerManager;
+
+    public CharacterMainInterface getPlayerManager() {
+        return playerManager;
+    }
+
+    public void setPlayerManager(CharacterMainInterface playerManager) {
+        this.playerManager = playerManager;
+    }
     
     public static void main(String[] args) {
         Main app = new Main();

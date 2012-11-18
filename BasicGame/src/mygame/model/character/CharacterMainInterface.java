@@ -18,7 +18,7 @@ import com.jme3.bullet.BulletAppState;
  */
 
 public interface CharacterMainInterface {
-    
+ /*   
     // Public methods of our CharacterMainJMonkey Class
     void initialize(AppStateManager stateManager, Application applicooter);
     void setState(BulletAppState state);
@@ -35,4 +35,18 @@ public interface CharacterMainInterface {
     void setCurrentWeapon(WeaponInterface weapon);
     void incrementEnergy(double quantity);
     void incrementNLives(int quantity);
+ /**/
+    
+    // Stefan: Estos ya se usaban
+    public void personatgeUpdate();
+    public Vector3f getPlayerPosition();
+    public void addWeapon(WeaponInterface weapon);
+    
+    // Stefan: Nuevos para zombies
+    /**
+     * Stefan D.
+     * Zombie does damage to main player
+     * @param value how much?
+     */
+    public void doDamage(int value);
 }
