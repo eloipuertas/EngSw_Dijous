@@ -9,22 +9,19 @@ import com.jme3.animation.AnimControl;
 import com.jme3.animation.AnimEventListener;
 import com.jme3.animation.LoopMode;
 import com.jme3.app.SimpleApplication;
-import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.collision.shapes.CapsuleCollisionShape;
-import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.CharacterControl;
 import com.jme3.bullet.control.RigidBodyControl;
-import com.jme3.bullet.util.CollisionShapeFactory;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.audio.AudioNode;
-import com.jme3.bullet.collision.shapes.CylinderCollisionShape;
+import com.jme3.bullet.collision.shapes.CompoundCollisionShape;
 
 /**
  *
  * @author Floyd
  */
-public class Zombie implements AnimEventListener {
+public class Zombie implements AnimEventListener, ZombieInterface {
 
     private SimpleApplication app;
     private CharacterControl zombieControl;
@@ -35,36 +32,57 @@ public class Zombie implements AnimEventListener {
     private AnimControl control;
     private final int distFollow = 50;
     private final int angleFollow = 160;
+    /*
+<<<<<<< HEAD
     //MODIFICACION PARA EL GRUPO DE LOS ZOMBIES
     private boolean paused  ;
 
 
+=======
+/**/
+    private RigidBodyControl colisions;
+    private Node node1;
+    
+    private CompoundCollisionShape ccs;
+    
     Zombie(SimpleApplication app, Vector3f position, Vector3f viewDirection, float speed) {
         this.app = app;
-        CylinderCollisionShape cilinder = new CylinderCollisionShape(new Vector3f(0.5f,1.5f,1.5f));
-        zombieControl = new CharacterControl(cilinder, 0.5f);
-        //Afegit el nou model
+        CapsuleCollisionShape cilinder = new CapsuleCollisionShape(1.5f,2f, 1);
+        zombieControl = new CharacterControl(cilinder, 0.1f);
         zombieShape = (Node) app.getAssetManager().loadModel("Models/zombie/zombie.mesh.j3o");
-        zombieShape.scale(4f);
-        zombieShape.addControl(zombieControl);
+        node1=new Node();
+        node1.attachChild(zombieShape);
+        zombieShape.move(0f, -2.5f, 0f);
+        node1.addControl(zombieControl);
         
+        zombieShape.scale(3f);
+        colisions=new RigidBodyControl(1f);
+        node1.addControl(colisions);
+        ccs=new CompoundCollisionShape();
+        ccs.addChildShape(cilinder, new Vector3f(0f,4.2f,0f));
+        colisions.setCollisionShape(cilinder);
+        colisions.setAngularDamping(0);
+        colisions.setFriction(0);
+        colisions.setKinematic(true);
         //MODIFICACION PARA EL GRUPO DE LOS ZOMBIES
         zombieShape.setName("Zombie");
-        
-        
         zombieControl.setPhysicsLocation(position);
+        
 
         this.speed = speed;
         initAudio(); // initializes audio
         initAnimation();
     }
 
-    CharacterControl getControl() {
+    public CharacterControl getControl() {
         return zombieControl;
+    }
+    public RigidBodyControl getColision(){
+        return colisions;
     }
 
     Node getNode() {
-        return zombieShape;
+        return node1;
     }
 
     private void initAudio() {
@@ -92,7 +110,7 @@ public class Zombie implements AnimEventListener {
         float angle = zombieControl.getViewDirection().normalize().angleBetween(playerPos.subtract(zombiePos).normalize());
 
         // @David C. -- Añadido condición del parámetro pause
-        if (dist < distFollow && angle < (angleFollow * Math.PI / 360) && !paused  ) {
+        if (dist < distFollow && angle < (angleFollow * Math.PI / 360) /*&& !paused/**/  ) {
             audio_zombie.setVolume(1 / dist);
             audio_zombie.play();
 
@@ -128,6 +146,8 @@ public class Zombie implements AnimEventListener {
     public void onAnimChange(AnimControl control, AnimChannel channel, String animName) {
         // unused
     }
+    /*
+<<<<<<< HEAD
     
     // @David C. -- Añadido getters & setters del parámetro paused
     public void setPaused(boolean paused) {
@@ -136,6 +156,17 @@ public class Zombie implements AnimEventListener {
 
     public boolean isPaused() {
         return this.paused;
+    }
+
+=======
+/**/
+
+    public CompoundCollisionShape getShapeForCollision() {
+        return ccs;
+    }
+
+    public void doDamage(int damage, boolean distance) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
 }

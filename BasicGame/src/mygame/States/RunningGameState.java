@@ -30,6 +30,7 @@ import mygame.States.Scenario.ObjectsInGame;
 import mygame.States.Scenario.Scenario;
 import mygame.model.character.CharacterMainJMonkey;
 import mygame.model.zombie.ZombieManager;
+import mygame.model.zombie.ZombieManagerInterface;
 
 /**
  *
@@ -49,7 +50,7 @@ public class RunningGameState extends AbstractAppState
     private Spatial sceneModel;
     private RigidBodyControl landscape;
     private BulletAppState bulletAppState;
-    private ZombieManager zombieManager;
+    private ZombieManagerInterface zombieManager;
     CharacterMainJMonkey player;
     private ObjectsInGame objetos;
     private DamageCollision damageCollision;
@@ -85,7 +86,7 @@ public class RunningGameState extends AbstractAppState
         player.initialize(stateManager, app);
         
         //Zombies
-        zombieManager = new ZombieManager(app, 3);
+        zombieManager = new ZombieManager(app);
 
         setUpLight();
         setUpKeys();
@@ -156,10 +157,10 @@ public class RunningGameState extends AbstractAppState
             if (objetos != null){
                 objetos.update(guiPlayer);
             }
-            if (zombieManager != null ){
-                // @David C. -- Añadido pause zombie
-                zombieManager.setPaused(!isRunningGame);
-                zombieManager.update(player.getPlayerPosition());
+            if (zombieManager != null && isRunningGame){
+                // @David C. -- Añadido pause zombie -> Stefan D. añadido en el if
+                //zombieManager.setPaused(!isRunningGame);
+                zombieManager.update();
             }
         }
 

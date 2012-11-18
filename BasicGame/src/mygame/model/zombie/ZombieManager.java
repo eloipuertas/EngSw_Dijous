@@ -15,25 +15,31 @@ import java.util.ArrayList;
  *
  * @author user
  */
-public class ZombieManager {
+public class ZombieManager implements ZombieManagerInterface{
 
   
     private BulletAppState bulletAppState;
     private Node rootNode = new Node("gameRoot");
     private SimpleApplication app;
+/*<<<<<<< HEAD
     private ArrayList<Zombie> zombies = new ArrayList<Zombie>();
     private boolean paused;
 
 
+=======/**/
+    private ArrayList<ZombieInterface> zombies = new ArrayList<ZombieInterface>();
+    private int[] groups = new int[]{0x00000002,0x00000004,0x00000008,0x00000010,0x00000020,0x00000040,0x00000080,0x00000100,0x00000200,0x00000400,0x00000800};
+    private int colisionGroupCounter=0;
+//>>>>>>> origin/TEAM-F_2
 
-    public ZombieManager(Application app, int numberZombies) {
+    public ZombieManager(Application app) {
         /**
          * Set up Physics
          */
         this.app = (SimpleApplication) app;
         bulletAppState = this.app.getStateManager().getState(BulletAppState.class);
         rootNode = this.app.getRootNode();
-
+        bulletAppState.getPhysicsSpace().enableDebug(app.getAssetManager());
 //        for (int i = 0; i < numberZombies; i++) {
 //            Zombie z = new Zombie(this.app, 10f * i, 5f, -4f * i, 0.003f * (i + 1));
 //            zombies.add(z);
@@ -53,7 +59,7 @@ public class ZombieManager {
         z = new Zombie(this.app, new Vector3f(0f, 5f, 10f), new Vector3f(1f, 0f, 1f), 0.003f);
         zombies.add(z);
         addZombieToScene(z);
- 
+        setZombiColission();
 //        z = new Zombie(this.app, new Vector3f(40f, 5f, 40f), 0.006f);
 //        zombies.add(z);
 //        addZombieToScene(z);
@@ -72,15 +78,42 @@ public class ZombieManager {
     }
 
     private void addZombieToScene(Zombie z) {
+        z.getControl().setCollisionGroup(groups[colisionGroupCounter]);
+        z.getControl().removeCollideWithGroup(groups[colisionGroupCounter]);
+        z.getControl().addCollideWithGroup(0x00000001);
+        z.getColision().setCollisionGroup(groups[colisionGroupCounter]);
+        z.getColision().removeCollideWithGroup(groups[colisionGroupCounter]);
+        z.getColision().addCollideWithGroup(0x00000001);
+        colisionGroupCounter+=1;
         bulletAppState.getPhysicsSpace().add(z.getControl());
+        bulletAppState.getPhysicsSpace().add(z.getColision());
+        
+        
+        //bulletAppState.getPhysicsSpace().add(z.getNode().getChild("Zombie"));
         rootNode.attachChild(z.getNode());
     }
-
-    public void update(Vector3f playerPos) {
-        for (Zombie z : zombies) {
-            z.update(playerPos);
+    
+    private void setZombiColission(){
+        int i=0;
+        for(ZombieInterface z:zombies){
+            i=0;
+            while(i<colisionGroupCounter){                
+                if(z.getColision().getCollisionGroup()!=groups[i]){
+                    System.out.println("!!!!"+z.getColision().getCollisionGroup()+" "+groups[i]);
+                    z.getColision().addCollideWithGroup(groups[i]);
+                }
+                i+=1;
+            }
         }
     }
+
+    public void update() {
+        for (ZombieInterface z : zombies) {
+            z.update(new Vector3f(0, 0, 0)); //Here goes player position
+        }
+    }
+    /*
+<<<<<<< HEAD
     
     // @David C. -- Añadido getters & setters del parámetro paused
     public boolean isPaused() {
@@ -92,5 +125,11 @@ public class ZombieManager {
         for (Zombie z : zombies) {
             z.setPaused(this.paused);
         }
+=======
+/**/
+
+    public ArrayList<ZombieInterface> getZombies() {
+        return zombies;
+
     }
 }
