@@ -11,7 +11,6 @@ public interface ZombieManagerInterface {
     /**
      * Stefan D. Grup F:
      * Called every tick to update zombies position/animations/actions
-     * IMO pause is not necessary since you just can stop calling update!!
      */
     public void update();
     
@@ -23,5 +22,7 @@ public interface ZombieManagerInterface {
      * to the parent zombie, that extends to the classic, Petia, Oriol...
      */
     public ArrayList<ZombieInterface> getZombies();
+
+    public void setPaused(boolean b);
     
 }

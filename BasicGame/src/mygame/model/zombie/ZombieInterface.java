@@ -43,5 +43,7 @@ public interface ZombieInterface {
      * @param distance for mele weapons false, for long range weapons true
      */
     public void doDamage(int damage, boolean distance);
+
+    public void setPaused(boolean paused);
     
 }

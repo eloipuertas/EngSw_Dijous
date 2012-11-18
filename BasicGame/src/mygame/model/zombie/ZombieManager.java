@@ -10,6 +10,7 @@ import com.jme3.bullet.BulletAppState;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import java.util.ArrayList;
+import mygame.Controller;
 
 /**
  *
@@ -21,11 +22,8 @@ public class ZombieManager implements ZombieManagerInterface{
     private BulletAppState bulletAppState;
     private Node rootNode = new Node("gameRoot");
     private SimpleApplication app;
-/*<<<<<<< HEAD
     private boolean paused;
 
-
-=======/**/
     private ArrayList<ZombieInterface> zombies = new ArrayList<ZombieInterface>();
     private int[] groups = new int[]{0x00000002,0x00000004,0x00000008,0x00000010,0x00000020,0x00000040,0x00000080,0x00000100,0x00000200,0x00000400,0x00000800};
     private int colisionGroupCounter=0;
@@ -107,12 +105,10 @@ public class ZombieManager implements ZombieManagerInterface{
 
     public void update() {
         for (ZombieInterface z : zombies) {
-            z.update(new Vector3f(0, 0, 0)); //Here goes player position
+            z.update(((Controller)app).getPlayerManager().getPlayerPosition()); //Here goes player position
 
         }
     }
-    /*
-<<<<<<< HEAD
     
     // @David C. -- Añadido getters & setters del parámetro paused
     public boolean isPaused() {
@@ -121,11 +117,11 @@ public class ZombieManager implements ZombieManagerInterface{
     
     public void setPaused(boolean paused) {
         this.paused = paused;
-        for (Zombie z : zombies) {
+        for (ZombieInterface z : zombies) {
             z.setPaused(this.paused);
 
         }
-/**/
+    }
 
     public ArrayList<ZombieInterface> getZombies() {
         return zombies;

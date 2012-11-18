@@ -25,10 +25,12 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import mygame.Controller;
 import mygame.States.Scenario.DamageCollision;
 import mygame.States.Scenario.GUIPlayerMain;
 import mygame.States.Scenario.ObjectsInGame;
 import mygame.States.Scenario.Scenario;
+import mygame.model.character.CharacterMainInterface;
 import mygame.model.character.CharacterMainJMonkey;
 import mygame.model.zombie.ZombieManager;
 import mygame.model.zombie.ZombieManagerInterface;
@@ -52,11 +54,11 @@ public class RunningGameState extends AbstractAppState
     private RigidBodyControl landscape;
     private BulletAppState bulletAppState;
     private ZombieManagerInterface zombieManager;
-    CharacterMainJMonkey player;
+    private CharacterMainInterface playerManager;
     private ObjectsInGame objetos;
     private DamageCollision damageCollision;
     private int contadorPause = 2;
-
+    
     public RunningGameState(SimpleApplication app)  {
         this.rootNode = app.getRootNode();
         this.viewPort = app.getViewPort();
@@ -69,9 +71,10 @@ public class RunningGameState extends AbstractAppState
         super.initialize(stateManager, app);
         this.app = (SimpleApplication) app;
         bulletAppState = app.getStateManager().getState(BulletAppState.class);
+        bulletAppState = app.getStateManager().getState(BulletAppState.class);
         //Cargamos el escenario
         //scenario = new Scenario(this.app);
-
+        
         //Cargamos la GUI
         guiPlayer = new GUIPlayerMain(this.app);
         //Cargamos los objetos
@@ -80,14 +83,16 @@ public class RunningGameState extends AbstractAppState
         damageCollision = new DamageCollision(this.bulletAppState,guiPlayer);
         
         //Player
-        player = new CharacterMainJMonkey();
-        stateManager.attach(player);
-        stateManager.attach(bulletAppState);
-        player.setState(bulletAppState);
-        player.initialize(stateManager, app);
+        playerManager = new CharacterMainJMonkey(stateManager, app);
+        ((Controller)app).setPlayerManager(playerManager);
+        
+        //stateManager.attach(player);
+        //playerManager.setState(bulletAppState);
+        //playerManager.initialize(stateManager, app);
         
         //Zombies
         zombieManager = new ZombieManager(app);
+        ((Controller)app).setZombieManager(zombieManager);
 
         setUpLight();
         setUpKeys();
@@ -99,25 +104,26 @@ public class RunningGameState extends AbstractAppState
         
         sceneModel = assetManager.loadModel("Scenes/montextura.j3o");
         sceneModel.setLocalScale(2f);
-
+        
         // We set up collision detection for the scene by creating a
         // compound collision shape and a static RigidBodyControl with mass zero.
         
         CollisionShape sceneShape =
                 CollisionShapeFactory.createMeshShape((Node) sceneModel);
+
         landscape = new RigidBodyControl(sceneShape, 0);
         sceneModel.addControl(landscape);
         sceneModel.setName("Escenario");  
         rootNode.attachChild(sceneModel);
         bulletAppState.getPhysicsSpace().add(landscape);
     }
-
+    
     private void setUpLight() {
         // We add light so we see the scene
         AmbientLight al = new AmbientLight();
         al.setColor(ColorRGBA.White.mult(1.3f));
         rootNode.addLight(al);
-
+        
         DirectionalLight dl = new DirectionalLight();
         dl.setColor(ColorRGBA.White);
         dl.setDirection(new Vector3f(2.8f, -2.8f, -2.8f).normalizeLocal());
@@ -141,6 +147,9 @@ public class RunningGameState extends AbstractAppState
 
     public void setIsRunningGame(boolean IsRunning) {
         this.isRunningGame = IsRunning;
+        if (zombieManager != null){
+            zombieManager.setPaused(IsRunning);
+            }
     }
 
     // @Emilio añadido update de objetos.
@@ -148,25 +157,65 @@ public class RunningGameState extends AbstractAppState
         
         //@David C. -- Eliminada la condicion if(isRunningGame)
    
-        if (player != null) {
-            player.personatgeUpdate();
+        if (playerManager != null) {
+            playerManager.personatgeUpdate();
             
             // @David C. -- Añadido pause player
-            if (player.isPaused()){isRunningGame = false;}
-            else{isRunningGame=true;}
+            /*
+            if (playerManager.isPaused()){
+                isRunningGame = false;
+            }else{
+                isRunningGame=true;
+            }/**/
+            //Stefan: aun asi seria mucho mejor que se llamara una funcion de aqui en ves de actualizarlo cada frame!!!! ->> DONE!
+            //isRunningGame = !playerManager.isPaused();
 
             // Update objetos
             if (objetos != null){
-                objetos.update(guiPlayer);
+                objetos.update(guiPlayer, playerManager);
             }
-            if (zombieManager != null && !isRunningGame){
-                // @David C. -- Añadido pause zombie -> Stefan D. añadido en el if
+            if (zombieManager != null){
+                // @David C. -- Añadido pause zombie
                 //zombieManager.setPaused(!isRunningGame);
                 zombieManager.update();
             }
         }
 
     
-
+/*
+=======
+	
+    public boolean getIsRunningGame() {
+        return this.isRunningGame;
+    }
+	
+    public void setIsRunningGame(boolean IsRunning) {
+        this.isRunningGame = IsRunning;
+    }
+	
+    // @Emilio añadido update de objetos.
+    public void updateRunningGame() {
+        if (isRunningGame) {
+            if (playerManager != null) {
+                playerManager.personatgeUpdate();
+                
+                if (zombieManager != null) {
+                    //zombieManager.update(playerManager.getPlayerPosition());
+                }
+                
+                //update objetos
+                if (objetos != null){
+                    objetos.update(guiPlayer, playerManager);
+                }
+                
+                if (zombieManager != null ){
+					
+                }
+            }
+			
+        }
+		
+>>>>>>> origin/TEAM-G_2
+/**/
     }
 }

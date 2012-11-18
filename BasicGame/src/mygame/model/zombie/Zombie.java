@@ -32,14 +32,10 @@ public class Zombie implements AnimEventListener, ZombieInterface {
     private AnimControl control;
     private final int distFollow = 50;
     private final int angleFollow = 160;
-    /*
-<<<<<<< HEAD
+    
     //MODIFICACION PARA EL GRUPO DE LOS ZOMBIES
     private boolean paused  ;
-
-
-=======
-/**/
+    
     private RigidBodyControl colisions;
     private Node node1;
     
@@ -97,6 +93,9 @@ public class Zombie implements AnimEventListener, ZombieInterface {
         control = zombieShape.getControl(AnimControl.class);
         channel = control.createChannel();
         channel.setAnim("walk");
+        channel.setSpeed(0f);
+        channel.setLoopMode(LoopMode.Loop);
+        
         //channel.setAnim("stand"); de moment no te animacio stand
     }
 
@@ -110,7 +109,7 @@ public class Zombie implements AnimEventListener, ZombieInterface {
         float angle = zombieControl.getViewDirection().normalize().angleBetween(playerPos.subtract(zombiePos).normalize());
 
         // @David C. -- Añadido condición del parámetro pause
-        if (dist < distFollow && angle < (angleFollow * Math.PI / 360) /*&& !paused/**/  ) {
+        if (dist < distFollow && angle < (angleFollow * Math.PI / 360) && !paused  ) {
             audio_zombie.setVolume(1 / dist);
             audio_zombie.play();
 
@@ -121,21 +120,23 @@ public class Zombie implements AnimEventListener, ZombieInterface {
             zombieControl.setViewDirection(viewDirection);
 
             //Animation
-            if (!channel.getAnimationName().equals("walk")) {
-                channel.setAnim("walk", 0.50f);
-                channel.setLoopMode(LoopMode.Loop);
-            }
+            //if (!channel.getAnimationName().equals("walk")) {
+            channel.setSpeed(1f);
+            //}
         } else {
             
             audio_zombie.stop();
             zombieControl.setWalkDirection(new Vector3f(0, 0, 0));
+            channel.setSpeed(0f);
+            //channel.setAnim(null);
             //channel.setAnim("stand"); de moment no te animacio stand
-            channel.setAnim("walk");
+            //channel.setAnim("walk");
         }
     }
 
     public void onAnimCycleDone(AnimControl control, AnimChannel channel, String animName) {
         if (animName.equals("walk")) {
+            System.out.println("looop");
             //channel.setAnim("stand", 0.50f); de moment no te animacio stand
             channel.setAnim("walk", 0.50f);
             channel.setLoopMode(LoopMode.DontLoop);
@@ -146,8 +147,6 @@ public class Zombie implements AnimEventListener, ZombieInterface {
     public void onAnimChange(AnimControl control, AnimChannel channel, String animName) {
         // unused
     }
-    /*
-<<<<<<< HEAD
     
     // @David C. -- Añadido getters & setters del parámetro paused
     public void setPaused(boolean paused) {
@@ -158,8 +157,6 @@ public class Zombie implements AnimEventListener, ZombieInterface {
         return this.paused;
     }
 
-=======
-/**/
 
     public CompoundCollisionShape getShapeForCollision() {
         return ccs;
