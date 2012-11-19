@@ -9,6 +9,7 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
+import com.jme3.audio.AudioNode;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
@@ -42,13 +43,14 @@ public class MenuPrincipalState extends AbstractAppState implements ScreenContro
     private Screen screen;
     private boolean isRunningMenuPrincipal = true;
     private boolean enPantalla = false;
-    private int contadorPausa = 2;
+    private AudioNode audio_theme;
+    private AudioNode audio_click;
     
     public MenuPrincipalState(SimpleApplication app){
         this.rootNode     = app.getRootNode();
         this.viewPort      = app.getViewPort();
         this.guiNode       = app.getGuiNode();
-        this.assetManager  = app.getAssetManager();  
+        this.assetManager  = app.getAssetManager(); 
     }
     
     @Override
@@ -72,6 +74,12 @@ public class MenuPrincipalState extends AbstractAppState implements ScreenContro
         // attach the nifty display to the gui view port as a processor
         app.getGuiViewPort().addProcessor(niftyDisplay);
         this.app.getInputManager().setCursorVisible(true);
+        
+        // STEFAN!! tengo error de java memory
+        //initAudio();
+        //--
+     
+
        
    } 
     
@@ -87,24 +95,24 @@ public class MenuPrincipalState extends AbstractAppState implements ScreenContro
      */
     public void onAction(String name, boolean isPressed, float tpf) {
         if (name.equals("pausa")){
-            if(!enPantalla){
-                if(contadorPausa!=0){
+            if(!enPantalla && isPressed){
                     enPantalla = true;
                     pause();
-                    contadorPausa--;
-                }
             }else{
-                if(contadorPausa==0){
+                if(isPressed){
                     enPantalla = false;
                     newGame();
-                    contadorPausa = 2;
                 }
-                contadorPausa--;
             }
         } 
     }
     
     public void newGame(){
+        
+        // STEFAN!! tengo error de java memory
+       //audio_theme.pause(); // Pausa la cancion para entrar en el juego
+       //audio_click.playInstance();// Suena el click
+        //--
        nifty.gotoScreen("end");
        this.app.getInputManager().setCursorVisible(false);
        this.setIsRunningMenuPrincipal(false);
@@ -115,12 +123,15 @@ public class MenuPrincipalState extends AbstractAppState implements ScreenContro
     */
     public void pause(){
         nifty.gotoScreen("pausa");
-        this.app.getInputManager().setCursorVisible(true);
+        //this.app.getInputManager().setCursorVisible(true);
         this.setIsRunningMenuPrincipal(false);
     }
     
-    public void quitMenu(){
+    public void quitMenu() throws InterruptedException{
+        audio_theme.pause(); // Para la cancion de fondo
+        audio_click.playInstance(); // Suena el click
         System.out.println(" -- Aplicación cerrada.");
+        Thread.currentThread().sleep(1000); // Sleep de un segundo que da tiempo al sonido para que se reproduzca
         this.app.stop();
     }
     
@@ -151,5 +162,26 @@ public class MenuPrincipalState extends AbstractAppState implements ScreenContro
     public void setIsRunningMenuPrincipal(boolean IsRunning){
         this.isRunningMenuPrincipal = IsRunning;
     }
+    
+    
+    private void initAudio(){
+        
+        /* Sonido para el click */
+        audio_click = new AudioNode(assetManager, "Sounds/Effects/button-click.wav",false);
+        audio_click.setLooping(true);
+        this.rootNode.attachChild(audio_click);
+        
+        /* Sonido de fondo */
+        audio_theme = new AudioNode(assetManager, "Sounds/Environment/Dark_music_Vampirical.ogg",false);
+        audio_theme.setLooping(true);
+        audio_theme.setVolume(0.3f);    
+        this.rootNode.attachChild(audio_theme);
+        
+        audio_theme.play(); // Empieza a reproducir la cancion
+        
+        
+  
+   }
+    
     
 }
