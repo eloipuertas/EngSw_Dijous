@@ -26,9 +26,9 @@ public class GUIPlayer{
           
         this.screen = screen1;
                
-        this.setVidasGUI(3);
-        this.setMunicionGUI(1220);
-        this.setSaludGUI(100);
+        setVidasGUI(3);
+        setMunicionGUI(1220);
+        setSaludGUI(100);
      
     }
 

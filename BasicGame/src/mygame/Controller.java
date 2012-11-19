@@ -4,6 +4,7 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
 import mygame.States.MenuPrincipalState;
 import mygame.States.RunningGameState;
+import mygame.States.Scenario.ScenarioInterface;
 import mygame.model.zombie.ZombieManagerInterface;
 import mygame.model.character.CharacterMainInterface;
 
@@ -19,7 +20,16 @@ public class Controller extends SimpleApplication {
     // Stefan D.: Interfaces for comunication between map, player and zombies
     private ZombieManagerInterface zombieManager;
     private CharacterMainInterface playerManager;
+    private ScenarioInterface scenarioManager;
 
+    public ScenarioInterface getScenarioManager() {
+        return scenarioManager;
+    }
+    
+    public void setScenarioManager(ScenarioInterface scenarioManager) {
+        this.scenarioManager = scenarioManager;
+    }
+            
     public ZombieManagerInterface getZombieManager() {
         return zombieManager;
     }

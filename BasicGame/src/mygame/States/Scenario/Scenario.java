@@ -27,30 +27,37 @@ public class Scenario {
     private final ViewPort viewPort;
     private final AssetManager assetManager;
     private final ColorRGBA backgroundColor = ColorRGBA.Blue;
-    Spatial escenario;
+    private Spatial sceneModel;
+    private RigidBodyControl landscape;
+    private SimpleApplication app;
     
     public Scenario(SimpleApplication app) {
         this.rootNode = app.getRootNode();
         this.viewPort = app.getViewPort();
         this.assetManager = app.getAssetManager();
-
+        this.app = app;
         //Ponemos el fondo en color azul
         viewPort.setBackgroundColor(backgroundColor);
 
         //Cargamos el escenario
-        escenario = this.assetManager.loadModel("Scenes/montextura.j3o");
-        escenario.move(Vector3f.ZERO);
-        rootNode.attachChild(escenario);
-
+        sceneModel = assetManager.loadModel("Scenes/montextura.j3o");
+        sceneModel.setLocalScale(2f);
+        
+        // We set up collision detection for the scene by creating a
+        // compound collision shape and a static RigidBodyControl with mass zero.
+        
         CollisionShape sceneShape =
-		CollisionShapeFactory.createMeshShape((Node) escenario);
-        RigidBodyControl landscape = new RigidBodyControl(sceneShape, 0);
-        app.getStateManager().getState(BulletAppState.class).getPhysicsSpace().add(landscape);
+                CollisionShapeFactory.createMeshShape((Node) sceneModel);
 
+        landscape = new RigidBodyControl(sceneShape, 0);
+        sceneModel.addControl(landscape);
+        sceneModel.setName("Escenario");  
+        rootNode.attachChild(sceneModel);
+        this.app.getStateManager().getState(BulletAppState.class).getPhysicsSpace().add(landscape);
     }
     
     public Spatial getEscenari(){
-        return this.escenario;
+        return this.sceneModel;
     }
 
 }

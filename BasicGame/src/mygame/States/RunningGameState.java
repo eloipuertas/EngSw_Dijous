@@ -30,6 +30,8 @@ import mygame.States.Scenario.DamageCollision;
 import mygame.States.Scenario.GUIPlayerMain;
 import mygame.States.Scenario.ObjectsInGame;
 import mygame.States.Scenario.Scenario;
+import mygame.States.Scenario.ScenarioInterface;
+import mygame.States.Scenario.ScenarioManager;
 import mygame.model.character.CharacterMainInterface;
 import mygame.model.character.CharacterMainJMonkey;
 import mygame.model.zombie.ZombieManager;
@@ -55,6 +57,7 @@ public class RunningGameState extends AbstractAppState
     private BulletAppState bulletAppState;
     private ZombieManagerInterface zombieManager;
     private CharacterMainInterface playerManager;
+    private ScenarioInterface scenarioManager;
     private ObjectsInGame objetos;
     private DamageCollision damageCollision;
     private int contadorPause = 2;
@@ -72,16 +75,12 @@ public class RunningGameState extends AbstractAppState
         this.app = (SimpleApplication) app;
         bulletAppState = app.getStateManager().getState(BulletAppState.class);
         bulletAppState = app.getStateManager().getState(BulletAppState.class);
-        //Cargamos el escenario
-        //scenario = new Scenario(this.app);
+      
+        //Scenario
+        scenarioManager = new ScenarioManager(this.app);
+        ((Controller)app).setScenarioManager(this.scenarioManager);
         
-        //Cargamos la GUI
-        guiPlayer = new GUIPlayerMain(this.app);
-        //Cargamos los objetos
-        objetos = new ObjectsInGame(this.app);
-        //Cargamos el controlador de daño por colisiones
-        damageCollision = new DamageCollision(this.bulletAppState,guiPlayer);
-        
+              
         //Player
         playerManager = new CharacterMainJMonkey(stateManager, app);
         ((Controller)app).setPlayerManager(playerManager);
@@ -96,10 +95,10 @@ public class RunningGameState extends AbstractAppState
 
         setUpLight();
         setUpKeys();
-        loadMap();
+ //       loadMap();
  
     }
-
+/*
     public void loadMap() {
         
         sceneModel = assetManager.loadModel("Scenes/montextura.j3o");
@@ -117,6 +116,7 @@ public class RunningGameState extends AbstractAppState
         rootNode.attachChild(sceneModel);
         bulletAppState.getPhysicsSpace().add(landscape);
     }
+    * */
     
     private void setUpLight() {
         // We add light so we see the scene
@@ -169,11 +169,10 @@ public class RunningGameState extends AbstractAppState
             }/**/
             //Stefan: aun asi seria mucho mejor que se llamara una funcion de aqui en ves de actualizarlo cada frame!!!! ->> DONE!
             //isRunningGame = !playerManager.isPaused();
-
-            // Update objetos
-            if (objetos != null){
-                objetos.update(guiPlayer, playerManager);
-            }
+          
+             
+            if (scenarioManager != null){scenarioManager.update();}
+            
             if (zombieManager != null){
                 // @David C. -- Añadido pause zombie
                 //zombieManager.setPaused(!isRunningGame);
