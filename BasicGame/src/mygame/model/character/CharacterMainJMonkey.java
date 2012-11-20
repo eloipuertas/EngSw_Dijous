@@ -144,8 +144,8 @@ public class CharacterMainJMonkey
 
         // initialize environment audio
         
-        // STEFAN!! tengo error de java memory
-        //initAmbientAudio();
+        // it works !
+        initAmbientAudio();
         //--
 
     }
@@ -303,6 +303,16 @@ After:       /**/
          */
         this.app.getFlyByCamera().setEnabled(!isPaused);
         if (!this.isPaused) {
+            //@Ernest --  Setting limits in up/down camera movement
+             if(app.getCamera().getUp().y < -0.1) // axis more than -0.1
+             {
+              // look at this direction  
+                app.getCamera().lookAtDirection( new Vector3f(0,app.getCamera().getDirection().y,0),new Vector3f(app.getCamera().getUp().x,-0.1f, app.getCamera().getUp().z));
+            }
+            camDir.setY(0); // set y as 0 
+            camDir = camDir.normalize().multLocal(0.2f); 
+
+
             // Setting camera according to action
             if (left) {
                 walkDirection.addLocal(camLeft);
@@ -316,8 +326,12 @@ After:       /**/
             if (down) {
                 walkDirection.addLocal(camDir.negate());
             }
-            if (run) {
-                walkDirection.mult(3);
+                
+            if(run){ // Running action  @Ernest --someone delete it before, and character didn't run
+                if (left)  { walkDirection.addLocal(camLeft.mult(3)); }
+                if (right) { walkDirection.addLocal(camLeft.negate().mult(3)); }
+                if (up)    { walkDirection.addLocal(camDir.mult(3)); }
+                if (down)  { walkDirection.addLocal(camDir.negate().mult(3)); }
             }
         } else {
             // @David C. -- Bloqueo de las direcciones cuando está en pause
