@@ -41,8 +41,7 @@ import mygame.model.zombie.ZombieManagerInterface;
  *
  * @author David C.
  */
-public class RunningGameState extends AbstractAppState 
-                                    implements ActionListener{
+public class RunningGameState extends AbstractAppState {
 
     private SimpleApplication app;
     private ViewPort viewPort;
@@ -74,13 +73,11 @@ public class RunningGameState extends AbstractAppState
         super.initialize(stateManager, app);
         this.app = (SimpleApplication) app;
         bulletAppState = app.getStateManager().getState(BulletAppState.class);
-        bulletAppState = app.getStateManager().getState(BulletAppState.class);
       
         //Scenario
         scenarioManager = new ScenarioManager(this.app);
-        ((Controller)app).setScenarioManager(this.scenarioManager);
-        
-              
+        ((Controller)app).setScenarioManager(scenarioManager);
+             
         //Player
         playerManager = new CharacterMainJMonkey(stateManager, app);
         ((Controller)app).setPlayerManager(playerManager);
@@ -93,43 +90,17 @@ public class RunningGameState extends AbstractAppState
         zombieManager = new ZombieManager(app);
         ((Controller)app).setZombieManager(zombieManager);
 
-        setUpLight();
-        setUpKeys();
- //       loadMap();
+        // @David C. -- La iluminación la cargamos en el ScenarioManager
+        //setUpLight();
+        // @David C. -- Eliminado el keylistener de la clase RunningGameState
+        // setUpKeys();
+        // @David C. -- El mapa se carga dentro del ScenarioManager en vez de aquí
+        // loadMap();
  
     }
-/*
-    public void loadMap() {
-        
-        sceneModel = assetManager.loadModel("Scenes/montextura.j3o");
-        sceneModel.setLocalScale(2f);
-        
-        // We set up collision detection for the scene by creating a
-        // compound collision shape and a static RigidBodyControl with mass zero.
-        
-        CollisionShape sceneShape =
-                CollisionShapeFactory.createMeshShape((Node) sceneModel);
-
-        landscape = new RigidBodyControl(sceneShape, 0);
-        sceneModel.addControl(landscape);
-        sceneModel.setName("Escenario");  
-        rootNode.attachChild(sceneModel);
-        bulletAppState.getPhysicsSpace().add(landscape);
-    }
-    * */
     
-    private void setUpLight() {
-        // We add light so we see the scene
-        AmbientLight al = new AmbientLight();
-        al.setColor(ColorRGBA.White.mult(1.3f));
-        rootNode.addLight(al);
-        
-        DirectionalLight dl = new DirectionalLight();
-        dl.setColor(ColorRGBA.White);
-        dl.setDirection(new Vector3f(2.8f, -2.8f, -2.8f).normalizeLocal());
-        rootNode.addLight(dl);
-    }
 
+/*
     public void setUpKeys() {
         app.getInputManager().addMapping("Paused", new KeyTrigger(KeyInput.KEY_P));
         app.getInputManager().addListener(this, "Paused");
@@ -140,7 +111,7 @@ public class RunningGameState extends AbstractAppState
             isRunningGame = !isRunningGame;   
         }
     }
-    
+    */
     public boolean getIsRunningGame() {
         return this.isRunningGame;
     }
@@ -152,30 +123,18 @@ public class RunningGameState extends AbstractAppState
             }
     }
 
-    // @Emilio añadido update de objetos.
     public void updateRunningGame() {
         
-        //@David C. -- Eliminada la condicion if(isRunningGame)
-   
+        
         if (playerManager != null) {
             playerManager.personatgeUpdate();
             
-            // @David C. -- Añadido pause player
-            /*
-            if (playerManager.isPaused()){
-                isRunningGame = false;
-            }else{
-                isRunningGame=true;
-            }/**/
-            //Stefan: aun asi seria mucho mejor que se llamara una funcion de aqui en ves de actualizarlo cada frame!!!! ->> DONE!
-            //isRunningGame = !playerManager.isPaused();
-          
-             
-            if (scenarioManager != null){scenarioManager.update();}
+            // @David C -- Update del ScenarioManager
+            if (scenarioManager != null){
+                scenarioManager.update();
+            }
             
             if (zombieManager != null){
-                // @David C. -- Añadido pause zombie
-                //zombieManager.setPaused(!isRunningGame);
                 zombieManager.update();
             }
         }
