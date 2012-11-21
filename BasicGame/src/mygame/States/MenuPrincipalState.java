@@ -9,21 +9,17 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
-import com.jme3.audio.AudioNode;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.math.ColorRGBA;
-import com.jme3.math.Vector3f;
 import com.jme3.niftygui.NiftyJmeDisplay;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
-import com.jme3.scene.Spatial;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import mygame.sound.SoundManager;
 
 /**
  *
@@ -43,8 +39,7 @@ public class MenuPrincipalState extends AbstractAppState implements ScreenContro
     private Screen screen;
     private boolean isRunningMenuPrincipal = true;
     private boolean enPantalla = false;
-    private AudioNode audio_theme;
-    private AudioNode audio_click;
+
     
     public MenuPrincipalState(SimpleApplication app){
         this.rootNode     = app.getRootNode();
@@ -74,6 +69,8 @@ public class MenuPrincipalState extends AbstractAppState implements ScreenContro
         // attach the nifty display to the gui view port as a processor
         app.getGuiViewPort().addProcessor(niftyDisplay);
         this.app.getInputManager().setCursorVisible(true);
+        
+        SoundManager.gothicTunePlay(rootNode); // Play Ghotic Tune
         
         // STEFAN!! tengo error de java memory
         //initAudio();
@@ -113,6 +110,9 @@ public class MenuPrincipalState extends AbstractAppState implements ScreenContro
        //audio_theme.pause(); // Pausa la cancion para entrar en el juego
        //audio_click.playInstance();// Suena el click
         //--
+        
+       SoundManager.gothicTunePause(rootNode); // Pause Ghotic Tune
+       SoundManager.clickPlayInstance(rootNode); // Play click
        nifty.gotoScreen("end");
        this.app.getInputManager().setCursorVisible(false);
        this.setIsRunningMenuPrincipal(false);
@@ -128,8 +128,8 @@ public class MenuPrincipalState extends AbstractAppState implements ScreenContro
     }
     
     public void quitMenu() throws InterruptedException{
-        audio_theme.pause(); // Para la cancion de fondo
-        audio_click.playInstance(); // Suena el click
+        SoundManager.gothicTunePause(rootNode); // Pause Ghotic Tune
+        SoundManager.clickPlayInstance(rootNode); // Play click
         System.out.println(" -- Aplicación cerrada.");
         Thread.currentThread().sleep(1000); // Sleep de un segundo que da tiempo al sonido para que se reproduzca
         this.app.stop();
@@ -164,24 +164,7 @@ public class MenuPrincipalState extends AbstractAppState implements ScreenContro
     }
     
     
-    private void initAudio(){
-        
-        /* Sonido para el click */
-        audio_click = new AudioNode(assetManager, "Sounds/Effects/button-click.wav",false);
-        audio_click.setLooping(true);
-        this.rootNode.attachChild(audio_click);
-        
-        /* Sonido de fondo */
-        audio_theme = new AudioNode(assetManager, "Sounds/Environment/Dark_music_Vampirical.ogg",false);
-        audio_theme.setLooping(true);
-        audio_theme.setVolume(0.3f);    
-        this.rootNode.attachChild(audio_theme);
-        
-        audio_theme.play(); // Empieza a reproducir la cancion
-        
-        
-  
-   }
+
     
     
 }

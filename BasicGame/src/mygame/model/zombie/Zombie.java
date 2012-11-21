@@ -16,6 +16,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.audio.AudioNode;
 import com.jme3.bullet.collision.shapes.CompoundCollisionShape;
+import mygame.sound.SoundManager;
 
 /**
  *
@@ -26,7 +27,6 @@ public class Zombie implements AnimEventListener, ZombieInterface {
     private SimpleApplication app;
     private CharacterControl zombieControl;
     private Node zombieShape;
-    private AudioNode audio_zombie;
     private float speed;
     private AnimChannel channel;
     private AnimControl control;
@@ -66,7 +66,6 @@ public class Zombie implements AnimEventListener, ZombieInterface {
         
 
         this.speed = speed;
-        initAudio(); // initializes audio
         initAnimation();
     }
 
@@ -81,12 +80,6 @@ public class Zombie implements AnimEventListener, ZombieInterface {
         return node1;
     }
 
-    private void initAudio() {
-        audio_zombie = new AudioNode(app.getAssetManager(), "Sounds/Effects/Zombies1.wav", false);
-        audio_zombie.setLooping(true);
-        app.getRootNode().attachChild(audio_zombie);
-
-    }
 
     private void initAnimation() {
 
@@ -110,9 +103,16 @@ public class Zombie implements AnimEventListener, ZombieInterface {
 
         // @David C. -- Añadido condición del parámetro pause
         if (dist < distFollow && angle < (angleFollow * Math.PI / 360) && !paused  ) {
-            audio_zombie.setVolume(1 / dist);
-            audio_zombie.play();
-
+            
+         
+            /* @Isa 
+             * Si el juego NO esta mutado o pausado ejecutar la siguiente linea
+            SoundManager.zombieSoundSetVolume(app.getRootNode(), 1 / dist);          
+             */
+            
+            
+            SoundManager.zombieSoundPlay(app.getRootNode()); // Reproduce el sonido de los zombies
+            
             walkDirection.set(new Vector3f((playerPos.x - zombiePos.x) * speed, 0, (playerPos.z - zombiePos.z) * speed));
             viewDirection.set(new Vector3f((playerPos.x - zombiePos.x) * speed, 0, (playerPos.z - zombiePos.z) * speed));
 
@@ -125,7 +125,7 @@ public class Zombie implements AnimEventListener, ZombieInterface {
             //}
         } else {
             
-            audio_zombie.stop();
+            //audio_zombie.stop();
             zombieControl.setWalkDirection(new Vector3f(0, 0, 0));
             channel.setSpeed(0f);
             //channel.setAnim(null);

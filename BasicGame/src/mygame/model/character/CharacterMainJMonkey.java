@@ -44,6 +44,7 @@ import mygame.States.Scenario.Scenario;
 import mygame.model.weapon.Gun;
 import mygame.model.weapon.WeaponInterface;
 import mygame.model.character.CharacterMainInterface;
+import mygame.sound.SoundManager;
 
 /**
  * Example 9 - How to make walls and floors solid. This collision code uses
@@ -72,16 +73,16 @@ public class CharacterMainJMonkey
     private Node playerModelPorra;
     private AssetManager assetManager;
     private Vector3f walkDirection = new Vector3f();
-    private boolean left = false, right = false, up = false, down = false, run = false; // booleans for listeners
+    private boolean left = false, right = false, up = false, down = false, run = false, mute = false; // booleans for listeners
     private SimpleApplication app;
-    private AudioNode audio_footstep; // footsteps audio node
-    boolean musica = false; // booleans for states
+    //boolean musica = false; // booleans for states
     boolean primeraVez = true;
-    private int contadorMute = 1;
-    private int contadorPause = 2;
+    //private int contadorMute = 1;
+    //private int contadorPause = 2;
     boolean isPaused;
+    boolean isMuted = false; // Booleano que controla si es luego esta silenciado
     AudioNode audio_environment;  // environment audio node
-    private Geometry geom1;
+    //private Geometry geom1;
     Node shootables;
     Geometry marcaVermella;  // red mark for shoot
     Scenario escenari;  // scenario object
@@ -138,35 +139,11 @@ public class CharacterMainJMonkey
         shootables.attachChild(escenari.getEscenari());
 
         isPaused = false;
-        
-        // initialize footsteps audio
-        initAudio();
-
-        // initialize environment audio
-        
-        // it works !
-        initAmbientAudio();
-        //--
+  
 
     }
 
-    /**
-     * Method which initalizes environment audio
-     */
-    private void initAmbientAudio() {
-        if (primeraVez) {                             //
-            //isPaused = false;  // set it isn't paused ->>>>  Stefan: mezclando audio y pause??
 
-            // Creating and loading audio node and features
-            audio_environment = new AudioNode(assetManager, "Sounds/Environment/Dark_music_Vampirical.ogg", false);
-            audio_environment.setLooping(true);
-            audio_environment.setVolume(0.3f);
-            reproducirAudio();  // play audio
-            primeraVez = false;
-        } else {
-        }
-
-    }
 
     /**
      * State setter. Argument: BulletAppState
@@ -230,7 +207,9 @@ public class CharacterMainJMonkey
             } else if (binding.equals("Down")) {
                 down = value;
             } else if (binding.equals("Jump")) {
-                playerControl.jump();
+                playerControl.jump(); 
+            } else if (binding.equals("Mute")) {
+                mute = value;
             }
         }
 
@@ -272,16 +251,19 @@ After:       /**/
             ((Controller)app).setIsRunning(isPaused);
         }
 
-        if (binding.equals("Mute") && value) {               //@Emilio nuevo, para mutear
-            reproducirAudio();
-        } else if (binding.equals("Run")) {
-            run = value;
+        // Controla si se ha pulsado "M" y si el juego esta mutado
+        if (mute && !isMuted) {               
+            SoundManager.muteAllSounds(app.getRootNode());
+            isMuted = !isMuted;
+        } else if(mute && isMuted) {               
+            SoundManager.unMuteAllSounds(app.getRootNode());
+            isMuted = !isMuted;
         }
-        //Añadimos el and con el booleano musica para saber si esta el juego muteado o no
-        if ((left || right || up || down) && (musica)) {
-            audio_footstep.play();
+        // Si esta pulsada "W","A","S" o "D" suenan pasos
+        if ((left || right || up || down)) {
+            SoundManager.footStepsPlay(app.getRootNode());
         } else {
-            audio_footstep.pause();
+            SoundManager.footStepsPause(app.getRootNode());
         }
     }
 
@@ -380,29 +362,7 @@ After:       /**/
         return currentWeapon;
     }
 
-    /**
-     * Method which initalizes our footsteps audio
-     */
-    private void initAudio() {
-        // Creating audio node and setting its features.
-        audio_footstep = new AudioNode(app.getAssetManager(), "Sounds/Effects/footsteps.wav", false);
-        audio_footstep.setLooping(true);
-        audio_footstep.setVolume(5.0f);
-        app.getRootNode().attachChild(audio_footstep);
-    }
 
-    /**
-     * Method which initalizes our environment audio
-     */
-    private void reproducirAudio() {
-        if (musica) { // if enviroment audio is active
-            audio_environment.pause(); // pause it
-            musica = false;
-        } else { // otherwise, play it
-            audio_environment.play();
-            musica = true;
-        }
-    }
     /**
      * Shoot Listener Method and listener which performs shooting action in
      * scenario whithin peephole and red mark. It also and shows collision
