@@ -161,10 +161,11 @@ public class CharacterMainJMonkey
         app.getInputManager().addMapping("Right", new KeyTrigger(KeyInput.KEY_D));
         app.getInputManager().addMapping("Up", new KeyTrigger(KeyInput.KEY_W));
         app.getInputManager().addMapping("Down", new KeyTrigger(KeyInput.KEY_S));
-        app.getInputManager().addMapping("Run", new KeyTrigger(KeyInput.KEY_SPACE));
-
-        // Same as jump, mute and pause actions
-        app.getInputManager().addMapping("Jump", new KeyTrigger(KeyInput.KEY_J));
+        
+        //MIllor saltar amb l'espai i poder correr amb el shift
+        app.getInputManager().addMapping("Run", new KeyTrigger(KeyInput.KEY_LSHIFT));
+        app.getInputManager().addMapping("Jump", new KeyTrigger(KeyInput.KEY_SPACE));
+        
         app.getInputManager().addMapping("Mute", new KeyTrigger(KeyInput.KEY_M));
         app.getInputManager().addMapping("Paused", new KeyTrigger(KeyInput.KEY_P));
 
