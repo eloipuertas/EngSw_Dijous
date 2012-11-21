@@ -16,10 +16,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.audio.AudioNode;
 import com.jme3.bullet.collision.shapes.CompoundCollisionShape;
-<<<<<<< HEAD
 import mygame.sound.SoundManager;
-=======
->>>>>>> TEAM-G
 
 /**
  *
@@ -106,7 +103,6 @@ public class Zombie implements AnimEventListener, ZombieInterface {
 
         // @David C. -- Añadido condición del parámetro pause
         if (dist < distFollow && angle < (angleFollow * Math.PI / 360) && !paused  ) {
-<<<<<<< HEAD
             
          
             /* @Isa 
@@ -117,11 +113,6 @@ public class Zombie implements AnimEventListener, ZombieInterface {
             
             SoundManager.zombieSoundPlay(app.getRootNode()); // Reproduce el sonido de los zombies
             
-=======
-            audio_zombie.setVolume(1 / dist);
-            audio_zombie.play();
-
->>>>>>> TEAM-G
             walkDirection.set(new Vector3f((playerPos.x - zombiePos.x) * speed, 0, (playerPos.z - zombiePos.z) * speed));
             viewDirection.set(new Vector3f((playerPos.x - zombiePos.x) * speed, 0, (playerPos.z - zombiePos.z) * speed));
 
@@ -134,11 +125,7 @@ public class Zombie implements AnimEventListener, ZombieInterface {
             //}
         } else {
             
-<<<<<<< HEAD
             //audio_zombie.stop();
-=======
-            audio_zombie.stop();
->>>>>>> TEAM-G
             zombieControl.setWalkDirection(new Vector3f(0, 0, 0));
             channel.setSpeed(0f);
             //channel.setAnim(null);

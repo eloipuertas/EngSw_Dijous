@@ -56,16 +56,12 @@ public class Scenario {
         sceneModel.setName("Escenario");  
         rootNode.attachChild(sceneModel);
         this.app.getStateManager().getState(BulletAppState.class).getPhysicsSpace().add(landscape);
-<<<<<<< HEAD
         
         setUpLight();
-=======
->>>>>>> TEAM-G
     }
     
     public Spatial getEscenari(){
         return this.sceneModel;
-<<<<<<< HEAD
     }
     
     private void setUpLight() {
@@ -78,7 +74,5 @@ public class Scenario {
         dl.setColor(ColorRGBA.White);
         dl.setDirection(new Vector3f(2.8f, -2.8f, -2.8f).normalizeLocal());
         rootNode.addLight(dl);
-=======
->>>>>>> TEAM-G
     }
 }
