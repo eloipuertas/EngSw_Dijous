@@ -11,6 +11,10 @@ import com.jme3.math.Vector3f;
 import java.util.ArrayList;
 import java.util.List;
 import mygame.model.character.CharacterMainInterface;
+<<<<<<< HEAD
+=======
+import mygame.model.character.CharacterMainJMonkey;
+>>>>>>> TEAM-G
 import mygame.model.weapon.Gun;
 import mygame.model.weapon.WeaponInterface;
 

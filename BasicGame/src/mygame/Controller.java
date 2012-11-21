@@ -2,13 +2,19 @@ package mygame;
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
+<<<<<<< HEAD
 import com.jme3.util.BufferUtils;
+=======
+>>>>>>> TEAM-G
 import mygame.States.MenuPrincipalState;
 import mygame.States.RunningGameState;
 import mygame.States.Scenario.ScenarioInterface;
 import mygame.model.zombie.ZombieManagerInterface;
 import mygame.model.character.CharacterMainInterface;
+<<<<<<< HEAD
 import mygame.sound.SoundManager;
+=======
+>>>>>>> TEAM-G
 
 
 public class Controller extends SimpleApplication {
@@ -76,10 +82,15 @@ public class Controller extends SimpleApplication {
         //Mostramos el Menu Principal
         stateManager.attach(menuPrincipal);
         
+<<<<<<< HEAD
         //Inicializamos todos los sonidos
         SoundManager.initAudio(this);
         
           
+=======
+       
+  
+>>>>>>> TEAM-G
     }
     
   @Override

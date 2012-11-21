@@ -50,7 +50,11 @@ public class Porra implements WeaponInterface {
         weaponControl.setPhysicsLocation(position);
     }
     
+<<<<<<< HEAD
     // Setters and getters for Porra's attributes: id, name, munition and position
+=======
+    // Setters and getters for Gun's attributes: id, name, munition and position
+>>>>>>> TEAM-G
     public String getId() {
         return id;
     }
@@ -59,7 +63,11 @@ public class Porra implements WeaponInterface {
         return name;
     }
     
+<<<<<<< HEAD
     public int getMunition() { 
+=======
+    public int getMunition() {
+>>>>>>> TEAM-G
         return 0;
     }
     
