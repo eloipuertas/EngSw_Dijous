@@ -95,8 +95,9 @@ public class Zombie implements AnimEventListener {
 
         control = zombieShape.getControl(AnimControl.class);
         channel = control.createChannel();
-        channel.setAnim("walk");
-        //channel.setAnim("stand"); de moment no te animacio stand
+        //channel.setAnim("walk");
+        channel.setAnim("stand"); 
+        channel.setLoopMode(LoopMode.Loop);
     }
 
     public void update(Vector3f playerPos) {
@@ -129,16 +130,17 @@ public class Zombie implements AnimEventListener {
             audio_zombie.stop();
             zombieControl.setWalkDirection(new Vector3f(0, 0, 0));
             //channel.setAnim("stand"); de moment no te animacio stand
-            channel.setAnim("walk");
+            channel.setAnim("stand");
+            channel.setLoopMode(LoopMode.Loop);
         }
     }
 
     public void onAnimCycleDone(AnimControl control, AnimChannel channel, String animName) {
         if (animName.equals("walk")) {
-            //channel.setAnim("stand", 0.50f); de moment no te animacio stand
-            channel.setAnim("walk", 0.50f);
-            channel.setLoopMode(LoopMode.DontLoop);
-            channel.setSpeed(1f);
+            channel.setAnim("stand", 0.50f); 
+            //channel.setAnim("walk", 0.50f);
+            channel.setLoopMode(LoopMode.Loop);
+            //channel.setSpeed(1f);
         }
     }
 
