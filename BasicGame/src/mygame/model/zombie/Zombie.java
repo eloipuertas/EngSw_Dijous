@@ -9,41 +9,46 @@ import com.jme3.animation.AnimControl;
 import com.jme3.animation.AnimEventListener;
 import com.jme3.animation.LoopMode;
 import com.jme3.app.SimpleApplication;
-import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.collision.shapes.CapsuleCollisionShape;
-import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.CharacterControl;
 import com.jme3.bullet.control.RigidBodyControl;
-import com.jme3.bullet.util.CollisionShapeFactory;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.audio.AudioNode;
+import com.jme3.bullet.BulletAppState;
+import com.jme3.bullet.collision.shapes.BoxCollisionShape;
 import com.jme3.bullet.collision.shapes.CompoundCollisionShape;
-import com.jme3.bullet.collision.shapes.CylinderCollisionShape;
 import com.jme3.bullet.control.GhostControl;
-import com.jme3.scene.Geometry;
-import com.jme3.scene.Mesh;
-import com.jme3.scene.Spatial;
-import com.jme3.scene.shape.Box;
-import com.jme3.scene.shape.Cylinder;
+import mygame.sound.SoundManager;
 
 /**
  *
  * @author Floyd
  */
-public class Zombie implements AnimEventListener {
+public class Zombie implements AnimEventListener, ZombieInterface {
 
     private SimpleApplication app;
     private CharacterControl zombieControl;
     private Node zombieShape;
-    private AudioNode audio_zombie;
     private float speed;
+    private float hitpoints;
+    private float damage;
+    private float cooldown;
     private AnimChannel channel;
     private AnimControl control;
     private final int distFollow = 50;
     private final int angleFollow = 160;
+    private final int distAttack = 7;
+    private int state=0;
+    
+    //MODIFICACION PARA EL GRUPO DE LOS ZOMBIES
+    private boolean paused  ;
+    
     private RigidBodyControl colisions;
     private Node node1;
+    
+    private CompoundCollisionShape ccs;
+    
     Zombie(SimpleApplication app, Vector3f position, Vector3f viewDirection, float speed) {
         this.app = app;
         CapsuleCollisionShape cilinder = new CapsuleCollisionShape(1.5f,2f, 1);
@@ -57,7 +62,7 @@ public class Zombie implements AnimEventListener {
         zombieShape.scale(3f);
         colisions=new RigidBodyControl(1f);
         node1.addControl(colisions);
-        CompoundCollisionShape ccs=new CompoundCollisionShape();
+        ccs=new CompoundCollisionShape();
         ccs.addChildShape(cilinder, new Vector3f(0f,4.2f,0f));
         colisions.setCollisionShape(cilinder);
         colisions.setAngularDamping(0);
@@ -67,16 +72,17 @@ public class Zombie implements AnimEventListener {
         zombieShape.setName("Zombie");
         zombieControl.setPhysicsLocation(position);
         
-
+        
         this.speed = speed;
-        initAudio(); // initializes audio
+        this.hitpoints = 100;
+        this.damage =20;
         initAnimation();
     }
 
-    CharacterControl getControl() {
+    public CharacterControl getControl() {
         return zombieControl;
     }
-    RigidBodyControl getColision(){
+    public RigidBodyControl getColision(){
         return colisions;
     }
 
@@ -84,20 +90,17 @@ public class Zombie implements AnimEventListener {
         return node1;
     }
 
-    private void initAudio() {
-        audio_zombie = new AudioNode(app.getAssetManager(), "Sounds/Effects/Zombies1.wav", false);
-        audio_zombie.setLooping(true);
-        app.getRootNode().attachChild(audio_zombie);
-
-    }
 
     private void initAnimation() {
 
         control = zombieShape.getControl(AnimControl.class);
+        control.addListener(this);
         channel = control.createChannel();
-        //channel.setAnim("walk");
-        channel.setAnim("stand"); 
+        channel.setAnim("stand");
+        channel.setSpeed(1f);
         channel.setLoopMode(LoopMode.Loop);
+        
+        //channel.setAnim("stand"); de moment no te animacio stand
     }
 
     public void update(Vector3f playerPos) {
@@ -109,42 +112,141 @@ public class Zombie implements AnimEventListener {
         float dist = playerPos.distance(zombiePos);
         float angle = zombieControl.getViewDirection().normalize().angleBetween(playerPos.subtract(zombiePos).normalize());
 
-        //System.out.print(zombieControl.getViewDirection()+" ");
-
-        if (dist < distFollow && angle < (angleFollow * Math.PI / 360)) {
-            audio_zombie.setVolume(1 / dist);
-            audio_zombie.play();
-
+        // @David C. -- Añadido condición del parámetro pause
+        if(state==3){
+            //dead
+        }
+        else if(dist < distAttack && angle < (angleFollow * Math.PI / 360) && !paused ){
+            if(state!=2){
+                channel.setAnim("attack", 0.50f);
+                channel.setLoopMode(LoopMode.DontLoop);
+                System.out.println("attack");
+            }
+            state=2;//attack
+            zombieControl.setWalkDirection(new Vector3f(0, 0, 0));
+            channel.setSpeed(1f);
+        }
+        else if (dist < distFollow && angle < (angleFollow * Math.PI / 360) && !paused  && state!=2) {
+            state=1;//move
+            /* @Isa 
+             * Si el juego NO esta mutado o pausado ejecutar la siguiente linea
+            SoundManager.zombieSoundSetVolume(app.getRootNode(), 1 / dist);          
+             */
+            
+            
+            SoundManager.zombieSoundPlay(app.getRootNode()); // Reproduce el sonido de los zombies
+            
             walkDirection.set(new Vector3f((playerPos.x - zombiePos.x) * speed, 0, (playerPos.z - zombiePos.z) * speed));
             viewDirection.set(new Vector3f((playerPos.x - zombiePos.x) * speed, 0, (playerPos.z - zombiePos.z) * speed));
 
             zombieControl.setWalkDirection(walkDirection);
             zombieControl.setViewDirection(viewDirection);
-
+            channel.setSpeed(1f);
             //Animation
-            if (!channel.getAnimationName().equals("walk")) {
-                channel.setAnim("walk", 0.50f);
-                channel.setLoopMode(LoopMode.Loop);
-            }
+            //if (!channel.getAnimationName().equals("walk")) {
+            //}
         } else {
-            audio_zombie.stop();
-            zombieControl.setWalkDirection(new Vector3f(0, 0, 0));
+            if(!paused){
+                state=0;//stand
+                //audio_zombie.stop();
+                zombieControl.setWalkDirection(new Vector3f(0, 0, 0));
+            }else{
+                channel.setSpeed(0f);
+            }
+            //channel.setAnim(null);
             //channel.setAnim("stand"); de moment no te animacio stand
-            channel.setAnim("stand");
-            channel.setLoopMode(LoopMode.Loop);
+            //channel.setAnim("walk");
         }
     }
 
     public void onAnimCycleDone(AnimControl control, AnimChannel channel, String animName) {
-        if (animName.equals("walk")) {
-            channel.setAnim("stand", 0.50f); 
-            //channel.setAnim("walk", 0.50f);
-            channel.setLoopMode(LoopMode.Loop);
-            //channel.setSpeed(1f);
+        if (animName.equals("walk")&&state==1) {
+            System.out.println("looop");
+            //channel.setAnim("stand", 0.50f); de moment no te animacio stand
+            channel.setAnim("walk", 0.50f);
+            channel.setLoopMode(LoopMode.DontLoop);
+            channel.setSpeed(1f);
+        }
+        else if (animName.equals("walk")&&state==0) {
+            System.out.println("looop");
+            //channel.setAnim("stand", 0.50f); de moment no te animacio stand
+            channel.setAnim("stand", 0.50f);
+            channel.setLoopMode(LoopMode.DontLoop);
+            channel.setSpeed(1f);
+        }
+        else if (animName.equals("stand")&&state==0) {
+            System.out.println("looop");
+            //channel.setAnim("stand", 0.50f); de moment no te animacio stand
+            channel.setAnim("stand", 0.50f);
+            channel.setLoopMode(LoopMode.DontLoop);
+            channel.setSpeed(0f);
+        }
+        else if (animName.equals("stand")&&state==1) {
+            System.out.println("looop");
+            //channel.setAnim("stand", 0.50f); de moment no te animacio stand
+            channel.setAnim("walk", 0.50f);
+            channel.setLoopMode(LoopMode.DontLoop);
+            channel.setSpeed(1f);
+        }
+        else if (animName.equals("attack")) {
+            System.out.println("looop");
+            //channel.setAnim("stand", 0.50f); de moment no te animacio stand
+            channel.setAnim("walk", 0.50f);
+            channel.setLoopMode(LoopMode.DontLoop);
+            channel.setSpeed(1f);
+            state=0;
+        }else if (animName.equals("attack")) {
+            System.out.println("looop");
+            //channel.setAnim("stand", 0.50f); de moment no te animacio stand
+            channel.setAnim("walk", 0.50f);
+            channel.setLoopMode(LoopMode.DontLoop);
+            channel.setSpeed(1f);
+            state=0;
+        }else if (animName.equals("death")) {
+            node1.detachChild(zombieShape);
+            app.getRootNode().attachChild(zombieShape);
+            zombieShape.setLocalTranslation(colisions.getPhysicsLocation());
+            zombieShape.move(0f, -2.5f, 0f);
+            node1.removeControl(colisions);
+            node1.removeControl(zombieControl);
+            this.app.getStateManager().getState(BulletAppState.class).getPhysicsSpace().remove(colisions);
+            this.app.getStateManager().getState(BulletAppState.class).getPhysicsSpace().remove(zombieControl);
         }
     }
 
     public void onAnimChange(AnimControl control, AnimChannel channel, String animName) {
         // unused
+    }
+    
+    // @David C. -- Añadido getters & setters del parámetro paused
+    public void setPaused(boolean paused) {
+        this.paused = paused;
+    }
+
+    public boolean isPaused() {
+        return this.paused;
+    }
+
+
+    public CompoundCollisionShape getShapeForCollision() {
+        return ccs;
+    }
+
+    public void doDamage(int damage, boolean distance) {
+        hitpoints=hitpoints-damage;
+        if(hitpoints<=0){
+            killZombie();
+        }
+        //throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
+    public void killZombie(){
+        state=3;
+        //zombieControl.setFallSpeed(1000000f);    
+        channel.setAnim("death");
+        channel.setSpeed(0.4f);
+        System.out.print("La animacio dura"+channel.getAnimMaxTime());
+        channel.setLoopMode(LoopMode.DontLoop);
+        //throw new UnsupportedOperationException("Not supported yet.");
     }
 }

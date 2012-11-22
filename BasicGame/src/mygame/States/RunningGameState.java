@@ -9,11 +9,15 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
+import com.jme3.asset.plugins.ZipLocator;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.bullet.util.CollisionShapeFactory;
 import com.jme3.collision.CollisionResults;
+import com.jme3.input.KeyInput;
+import com.jme3.input.controls.ActionListener;
+import com.jme3.input.controls.KeyTrigger;
 import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.math.ColorRGBA;
@@ -21,16 +25,21 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import mygame.Controller;
 import mygame.States.Scenario.DamageCollision;
 import mygame.States.Scenario.GUIPlayerMain;
 import mygame.States.Scenario.ObjectsInGame;
 import mygame.States.Scenario.Scenario;
+import mygame.States.Scenario.ScenarioInterface;
+import mygame.States.Scenario.ScenarioManager;
+import mygame.model.character.CharacterMainInterface;
 import mygame.model.character.CharacterMainJMonkey;
 import mygame.model.zombie.ZombieManager;
+import mygame.model.zombie.ZombieManagerInterface;
 
 /**
  *
- * @author Harpo
+ * @author David C.
  */
 public class RunningGameState extends AbstractAppState {
 
@@ -45,11 +54,13 @@ public class RunningGameState extends AbstractAppState {
     private Spatial sceneModel;
     private RigidBodyControl landscape;
     private BulletAppState bulletAppState;
-    private ZombieManager zombieManager;
-    CharacterMainJMonkey player;
+    private ZombieManagerInterface zombieManager;
+    private CharacterMainInterface playerManager;
+    private ScenarioInterface scenarioManager;
     private ObjectsInGame objetos;
     private DamageCollision damageCollision;
-
+    private int contadorPause = 2;
+    
     public RunningGameState(SimpleApplication app)  {
         this.rootNode = app.getRootNode();
         this.viewPort = app.getViewPort();
@@ -62,85 +73,107 @@ public class RunningGameState extends AbstractAppState {
         super.initialize(stateManager, app);
         this.app = (SimpleApplication) app;
         bulletAppState = app.getStateManager().getState(BulletAppState.class);
-        //Cargamos el escenario
-        //scenario = new Scenario(this.app);
-
-        //Cargamos la GUI
-        guiPlayer = new GUIPlayerMain(this.app);
-        //Cargamos los objetos
-        objetos = new ObjectsInGame(this.app);
-        //Cargamos el controlador de daño por colisiones
-        damageCollision = new DamageCollision(this.bulletAppState,guiPlayer);
-        
+      
+        //Scenario
+        scenarioManager = new ScenarioManager(this.app);
+        ((Controller)app).setScenarioManager(scenarioManager);
+             
         //Player
-        player = new CharacterMainJMonkey();
-        stateManager.attach(player);
-        stateManager.attach(bulletAppState);
-        player.setState(bulletAppState);
-        player.initialize(stateManager, app);
+        playerManager = new CharacterMainJMonkey(stateManager, app);
+        ((Controller)app).setPlayerManager(playerManager);
+        
+        //stateManager.attach(player);
+        //playerManager.setState(bulletAppState);
+        //playerManager.initialize(stateManager, app);
         
         //Zombies
-        zombieManager = new ZombieManager(app, 3);
+        zombieManager = new ZombieManager(app);
+        ((Controller)app).setZombieManager(zombieManager);
 
-        setUpLight();
-        loadMap();
+        // @David C. -- La iluminación la cargamos en el ScenarioManager
+        //setUpLight();
+        // @David C. -- Eliminado el keylistener de la clase RunningGameState
+        // setUpKeys();
+        // @David C. -- El mapa se carga dentro del ScenarioManager en vez de aquí
+        // loadMap();
  
     }
+    
 
-    public void loadMap() {
-        sceneModel = assetManager.loadModel("Scenes/montextura.j3o");
-        sceneModel.setLocalScale(2f);
-
-        // We set up collision detection for the scene by creating a
-        // compound collision shape and a static RigidBodyControl with mass zero.
-        
-        CollisionShape sceneShape =
-                CollisionShapeFactory.createMeshShape((Node) sceneModel);
-        landscape = new RigidBodyControl(sceneShape, 0);
-        sceneModel.addControl(landscape);
-        sceneModel.setName("Escenario");  
-        rootNode.attachChild(sceneModel);
-        bulletAppState.getPhysicsSpace().add(landscape);
+/*
+    public void setUpKeys() {
+        app.getInputManager().addMapping("Paused", new KeyTrigger(KeyInput.KEY_P));
+        app.getInputManager().addListener(this, "Paused");
     }
-
-    private void setUpLight() {
-        // We add light so we see the scene
-        AmbientLight al = new AmbientLight();
-        al.setColor(ColorRGBA.White.mult(1.3f));
-        rootNode.addLight(al);
-
-        DirectionalLight dl = new DirectionalLight();
-        dl.setColor(ColorRGBA.White);
-        dl.setDirection(new Vector3f(2.8f, -2.8f, -2.8f).normalizeLocal());
-        rootNode.addLight(dl);
+    
+    public void onAction(String name, boolean isPressed, float tpf) {
+        if (name.equals("Paused")&& isPressed){               //@Emilio nuevo, para pausar
+            isRunningGame = !isRunningGame;   
+        }
     }
-
+    */
     public boolean getIsRunningGame() {
         return this.isRunningGame;
     }
 
     public void setIsRunningGame(boolean IsRunning) {
         this.isRunningGame = IsRunning;
+        if (zombieManager != null){
+            zombieManager.setPaused(IsRunning);
+            }
     }
 
+    public void updateRunningGame() {
+        
+        
+        if (playerManager != null) {
+            playerManager.personatgeUpdate();
+            
+            // @David C -- Update del ScenarioManager
+            if (scenarioManager != null){
+                scenarioManager.update();
+            }
+            
+            if (zombieManager != null){
+                zombieManager.update();
+            }
+        }
+
+    
+/*
+=======
+	
+    public boolean getIsRunningGame() {
+        return this.isRunningGame;
+    }
+	
+    public void setIsRunningGame(boolean IsRunning) {
+        this.isRunningGame = IsRunning;
+    }
+	
     // @Emilio añadido update de objetos.
     public void updateRunningGame() {
         if (isRunningGame) {
-            if (player != null) {
-                player.personatgeUpdate();
+            if (playerManager != null) {
+                playerManager.personatgeUpdate();
+                
                 if (zombieManager != null) {
-                    zombieManager.update(player.getPlayerPosition());
+                    //zombieManager.update(playerManager.getPlayerPosition());
                 }
+                
                 //update objetos
                 if (objetos != null){
-                    objetos.update(guiPlayer);
+                    objetos.update(guiPlayer, playerManager);
                 }
+                
                 if (zombieManager != null ){
-             
+					
                 }
             }
-
+			
         }
-
+		
+>>>>>>> origin/TEAM-G_2
+/**/
     }
 }
