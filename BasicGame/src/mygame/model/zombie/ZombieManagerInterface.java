@@ -24,5 +24,7 @@ public interface ZombieManagerInterface {
     public ArrayList<ZombieInterface> getZombies();
 
     public void setPaused(boolean b);
+
+    public void deleteZombie(Zombie aThis);
     
 }

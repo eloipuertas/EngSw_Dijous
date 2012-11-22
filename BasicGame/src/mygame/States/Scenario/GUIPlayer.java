@@ -36,7 +36,7 @@ public class GUIPlayer{
      public void setVidasGUI(int vida){
        
        this.elementoNifty = this.screen.findElementByName("vidas");
-       this.elementoNifty.getRenderer(TextRenderer.class).setText("Vidas : "+vida); 
+       //this.elementoNifty.getRenderer(TextRenderer.class).setText("Vidas : "+vida); 
        this.vidas = vida;
     }
  
@@ -47,7 +47,7 @@ public class GUIPlayer{
     public void setSaludGUI(int saludNueva){
        
        this.elementoNifty = this.screen.findElementByName("salud");
-       this.elementoNifty.getRenderer(TextRenderer.class).setText("Salud : "+saludNueva+"%"); 
+       this.elementoNifty.getRenderer(TextRenderer.class).setText("         "+saludNueva); 
        this.salud = saludNueva;
     }
  
@@ -58,7 +58,7 @@ public class GUIPlayer{
     public void setMunicionGUI(int municionNueva){
       
       this.elementoNifty = this.screen.findElementByName("municion");
-       this.elementoNifty.getRenderer(TextRenderer.class).setText("Munición : "+municionNueva+" balas"); 
+       this.elementoNifty.getRenderer(TextRenderer.class).setText("           "+municionNueva+" balas"); 
        this.municion = municionNueva;
     }
     

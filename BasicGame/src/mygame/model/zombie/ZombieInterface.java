@@ -18,7 +18,7 @@ public interface ZombieInterface {
      * Stefan D. Grup F: For zombie manager
      * @param vector3f 
      */
-    public void update(Vector3f vector3f);
+    public void update();
     
     /**
      * Stefan D. Grup F: For zombie manager
