@@ -7,7 +7,12 @@ package mygame.model.character;
 /**
  *
  * @author rociotovar
+ * @test and comments ernest
  */
+
+// Position class implementation. Needed in order to create 
+// 3 points position (x,y,z)
+
 public class Position3D {
     
     // <editor-fold desc="Attributes">
@@ -21,12 +26,13 @@ public class Position3D {
     
     // <editor-fold desc="Constructors">
     
-    Position3D () {
+    Position3D () {  // default constructor initializes all to 0
         this.x = 0.0;
         this.y = 0.0;
         this.z = 0.0;
     }
     
+    // assign arguments
     Position3D (double x, double y, double z) {
         this.x = x;
         this.y = y;
@@ -38,6 +44,7 @@ public class Position3D {
     
     // <editor-fold desc="Setters and Getters">     
     
+    // Getters and setters for position's attributes
     public void setPosition (double x, double y, double z) {
         this.x = x;
         this.y = y;

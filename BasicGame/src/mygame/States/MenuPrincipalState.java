@@ -13,16 +13,13 @@ import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.math.ColorRGBA;
-import com.jme3.math.Vector3f;
 import com.jme3.niftygui.NiftyJmeDisplay;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
-import com.jme3.scene.Spatial;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import mygame.sound.SoundManager;
 
 /**
  *
@@ -42,13 +39,13 @@ public class MenuPrincipalState extends AbstractAppState implements ScreenContro
     private Screen screen;
     private boolean isRunningMenuPrincipal = true;
     private boolean enPantalla = false;
-    private int contadorPausa = 2;
+
     
     public MenuPrincipalState(SimpleApplication app){
         this.rootNode     = app.getRootNode();
         this.viewPort      = app.getViewPort();
         this.guiNode       = app.getGuiNode();
-        this.assetManager  = app.getAssetManager();  
+        this.assetManager  = app.getAssetManager(); 
     }
     
     @Override
@@ -72,6 +69,14 @@ public class MenuPrincipalState extends AbstractAppState implements ScreenContro
         // attach the nifty display to the gui view port as a processor
         app.getGuiViewPort().addProcessor(niftyDisplay);
         this.app.getInputManager().setCursorVisible(true);
+        
+        SoundManager.gothicTunePlay(rootNode); // Play Ghotic Tune
+        
+        // STEFAN!! tengo error de java memory
+        //initAudio();
+        //--
+     
+
        
    } 
     
@@ -87,24 +92,27 @@ public class MenuPrincipalState extends AbstractAppState implements ScreenContro
      */
     public void onAction(String name, boolean isPressed, float tpf) {
         if (name.equals("pausa")){
-            if(!enPantalla){
-                if(contadorPausa!=0){
+            if(!enPantalla && isPressed){
                     enPantalla = true;
                     pause();
-                    contadorPausa--;
-                }
             }else{
-                if(contadorPausa==0){
+                if(isPressed){
                     enPantalla = false;
                     newGame();
-                    contadorPausa = 2;
                 }
-                contadorPausa--;
             }
         } 
     }
     
     public void newGame(){
+        
+        // STEFAN!! tengo error de java memory
+       //audio_theme.pause(); // Pausa la cancion para entrar en el juego
+       //audio_click.playInstance();// Suena el click
+        //--
+        
+       SoundManager.gothicTunePause(rootNode); // Pause Ghotic Tune
+       SoundManager.clickPlayInstance(rootNode); // Play click
        nifty.gotoScreen("end");
        this.app.getInputManager().setCursorVisible(false);
        this.setIsRunningMenuPrincipal(false);
@@ -115,12 +123,15 @@ public class MenuPrincipalState extends AbstractAppState implements ScreenContro
     */
     public void pause(){
         nifty.gotoScreen("pausa");
-        this.app.getInputManager().setCursorVisible(true);
+        //this.app.getInputManager().setCursorVisible(true);
         this.setIsRunningMenuPrincipal(false);
     }
     
-    public void quitMenu(){
+    public void quitMenu() throws InterruptedException{
+        SoundManager.gothicTunePause(rootNode); // Pause Ghotic Tune
+        SoundManager.clickPlayInstance(rootNode); // Play click
         System.out.println(" -- Aplicación cerrada.");
+        Thread.currentThread().sleep(1000); // Sleep de un segundo que da tiempo al sonido para que se reproduzca
         this.app.stop();
     }
     
@@ -151,5 +162,9 @@ public class MenuPrincipalState extends AbstractAppState implements ScreenContro
     public void setIsRunningMenuPrincipal(boolean IsRunning){
         this.isRunningMenuPrincipal = IsRunning;
     }
+    
+    
+
+    
     
 }

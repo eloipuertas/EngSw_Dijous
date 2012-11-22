@@ -8,16 +8,10 @@
  */
 package mygame.States.Scenario;
 
-import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
-import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.RigidBodyControl;
-import com.jme3.bullet.util.CollisionShapeFactory;
-import com.jme3.math.Vector3f;
-import com.jme3.scene.Node;
-import java.util.Random;
 
 /**
  *
@@ -38,7 +32,7 @@ public class DamageCollision extends RigidBodyControl implements PhysicsCollisio
 
     public void collision(PhysicsCollisionEvent event) {
         try{ 
-           System.out.println(event.getNodeA().getName()+ " " + event.getNodeB().getName());
+           //System.out.println(event.getNodeA().getName()+ " " + event.getNodeB().getName());
            
             if(event.getNodeA().getName().equals("Personaje") &&  event.getNodeB().getName().equals("Zombie")){
                 isCollision = true;
