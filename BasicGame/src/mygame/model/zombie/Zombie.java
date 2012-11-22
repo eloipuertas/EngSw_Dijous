@@ -26,7 +26,7 @@ import mygame.sound.SoundManager;
  */
 public class Zombie implements AnimEventListener, ZombieInterface {
 
-    private static final int DISTFOLLOW = 14;//50;
+    private static final int DISTFOLLOW = 50;
     private static final int ANGLEFOLLOW = 160;
     private static final int DISTATTACK = 7;
     private static final int DAMAGEDONE = 20;
@@ -42,13 +42,14 @@ public class Zombie implements AnimEventListener, ZombieInterface {
     private RigidBodyControl colisions;
     private Node node1;
     private CompoundCollisionShape ccs;
-    
     //for random movement
     boolean randMoveSet = false;
     Random rand = new Random();
     int timeLeft;
     Vector3f moveDirection;
-    
+    float xIncrement;
+    float zIncrement;
+
     Zombie(SimpleApplication app, Vector3f position, Vector3f viewDirection, float speed) {
         this.app = app;
         CapsuleCollisionShape cilinder = new CapsuleCollisionShape(1.5f, 2f, 1);
@@ -72,6 +73,7 @@ public class Zombie implements AnimEventListener, ZombieInterface {
         zombieShape.setName("Zombie");
         zombieControl.setPhysicsLocation(position);
         zombieControl.setViewDirection(viewDirection);
+        moveDirection = viewDirection;
 
 
         this.speed = speed;
@@ -122,6 +124,7 @@ public class Zombie implements AnimEventListener, ZombieInterface {
     }
 
     private void moveZombie() {
+        SoundManager.zombieSoundPlay(app.getRootNode()); // Reproduce el sonido de los zombies
         Vector3f zombiePos = zombieControl.getPhysicsLocation();
         Vector3f playerPos = ((Controller) app).getPlayerManager().getPlayerPosition();
 
@@ -132,7 +135,7 @@ public class Zombie implements AnimEventListener, ZombieInterface {
             // follow player
             if (dist < DISTATTACK) { //near the player, attack and stop
                 if (state != 2) {
-                    ((Controller) app).getPlayerManager().doDamage(DAMAGEDONE); //do damage once every animation!!!
+                    //((Controller) app).getPlayerManager().doDamage(DAMAGEDONE); //do damage once every animation!!!
                     channel.setAnim("attack", 0.50f);
                     channel.setLoopMode(LoopMode.DontLoop);
                     System.out.println("attack");
@@ -140,13 +143,12 @@ public class Zombie implements AnimEventListener, ZombieInterface {
                 state = 2;//attack
                 zombieControl.setWalkDirection(new Vector3f(0, 0, 0));
                 channel.setSpeed(1f);
-            } else if (state != 2){
+            } else if (state != 2) {
                 state = 1;
-                SoundManager.zombieSoundPlay(app.getRootNode()); // Reproduce el sonido de los zombies
                 // Si el juego NO esta mutado o pausado ejecutar la siguiente linea
                 //SoundManager.zombieSoundSetVolume(app.getRootNode(), 1 / dist);
 
-                Vector3f walkDirection = new Vector3f((playerPos.x - zombiePos.x) , 0, (playerPos.z - zombiePos.z) );
+                Vector3f walkDirection = new Vector3f((playerPos.x - zombiePos.x), 0, (playerPos.z - zombiePos.z));
 
                 zombieControl.setWalkDirection(walkDirection.normalize().mult(speed));
                 zombieControl.setViewDirection(walkDirection);
@@ -155,52 +157,56 @@ public class Zombie implements AnimEventListener, ZombieInterface {
         } else {
             //random movement
             state = 1;//move
-            moveDirection = zombieControl.getViewDirection();
-            
-            if (!randMoveSet){
+
+            if (!randMoveSet) {
+                System.out.println("set random move " + moveDirection);
                 rand = new Random();
-                timeLeft = rand.nextInt(1000) + 2000;
-                
-                //changing the move direction
-                moveDirection.add(1, 0, 1);
-                
+                timeLeft = rand.nextInt(400) + 100;
+
+                xIncrement = (rand.nextFloat() - 0.5f) / 600;
+                zIncrement = (rand.nextFloat() - 0.5f) / 600;
+
                 randMoveSet = true;
-            }else{
+            } else {
                 timeLeft--;
-                if (timeLeft <= 0){
+                if (timeLeft <= 0) {
                     randMoveSet = false;
                 }
             }
-            
-         
-            zombieControl.setWalkDirection(moveDirection.normalize().mult(speed));
+
+            //changing the move direction
+            moveDirection = moveDirection.add(xIncrement, 0f, zIncrement);
+            moveDirection = moveDirection.normalize().mult(speed);
+
+            zombieControl.setWalkDirection(moveDirection);
+            zombieControl.setViewDirection(moveDirection);
             //zombieControl.setWalkDirection(new Vector3f(0, 0, 0));
         }
 
-/*
-        if (dist < DISTATTACK && angle < (ANGLEFOLLOW * Math.PI / 360)) { //follow!!
-            if (state != 2) {
-                channel.setAnim("attack", 0.50f);
-                channel.setLoopMode(LoopMode.DontLoop);
-                System.out.println("attack");
-            }
-            state = 2;//attack
-            zombieControl.setWalkDirection(new Vector3f(0, 0, 0));
-            channel.setSpeed(1f);
+        /*
+         if (dist < DISTATTACK && angle < (ANGLEFOLLOW * Math.PI / 360)) { //follow!!
+         if (state != 2) {
+         channel.setAnim("attack", 0.50f);
+         channel.setLoopMode(LoopMode.DontLoop);
+         System.out.println("attack");
+         }
+         state = 2;//attack
+         zombieControl.setWalkDirection(new Vector3f(0, 0, 0));
+         channel.setSpeed(1f);
 
-        } else if (dist < DISTFOLLOW && angle < (ANGLEFOLLOW * Math.PI / 360) && state != 2) {
-            state = 1;//move
+         } else if (dist < DISTFOLLOW && angle < (ANGLEFOLLOW * Math.PI / 360) && state != 2) {
+         state = 1;//move
 
-        } else {
-            state = 0;//stand
-            //audio_zombie.stop();
-            zombieControl.setWalkDirection(new Vector3f(0, 0, 0));
-            //channel.setAnim(null);
-            //channel.setAnim("stand"); de moment no te animacio stand
-            //channel.setAnim("walk");
-        }/**/
-        
-        SoundManager.zombieSoundSetVolume(app.getRootNode(), 7/dist);
+         } else {
+         state = 0;//stand
+         //audio_zombie.stop();
+         zombieControl.setWalkDirection(new Vector3f(0, 0, 0));
+         //channel.setAnim(null);
+         //channel.setAnim("stand"); de moment no te animacio stand
+         //channel.setAnim("walk");
+         }/**/
+
+        SoundManager.zombieSoundSetVolume(app.getRootNode(), 7 / dist);
     }
 
     public void onAnimCycleDone(AnimControl control, AnimChannel channel, String animName) {
