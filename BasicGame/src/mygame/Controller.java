@@ -75,10 +75,8 @@ public class Controller extends SimpleApplication {
         
         //Mostramos el Menu Principal
         stateManager.attach(menuPrincipal);
-
         setDisplayFps(false);       // to hide the FPS
         setDisplayStatView(false);  // to hide the statistics
-
         
         //Inicializamos todos los sonidos
         SoundManager.initAudio(this);

@@ -56,7 +56,6 @@ public class ZombieManager implements ZombieManagerInterface{
         zombies.add(z);
         addZombieToScene(z);
         setZombiColission();
-        zombies.get(2).doDamage(100, true);
 //        z = new Zombie(this.app, new Vector3f(40f, 5f, 40f), 0.006f);
 //        zombies.add(z);
 //        addZombieToScene(z);
