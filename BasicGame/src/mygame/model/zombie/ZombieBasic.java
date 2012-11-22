@@ -11,5 +11,7 @@ public class ZombieBasic extends Zombie{
         
     public ZombieBasic(SimpleApplication app, Vector3f position, Vector3f viewDirection, float speed) {
         super(app, position, viewDirection, speed);
+        
+        
     }
 }

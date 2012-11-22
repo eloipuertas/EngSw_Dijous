@@ -42,20 +42,21 @@ public class ZombieManager implements ZombieManagerInterface{
 //            addZombieToScene(z);
 //        }
 
-        Zombie z = new Zombie(this.app, new Vector3f(5f, 5f, 0f), new Vector3f(1f, 0f, 1f), 0.003f);
+        Zombie z = new Zombie(this.app, new Vector3f(5f, 5f, 0f), new Vector3f(0f, 0f, 1f), 0.05f);
         zombies.add(z);
         addZombieToScene(z);
         
         
-        z = new Zombie(this.app, new Vector3f(15f, 5f, 10f), new Vector3f(1f, 0f, 1f), 0.003f);
+        z = new Zombie(this.app, new Vector3f(15f, 5f, 10f), new Vector3f(1f, 0f, 1f), 0.05f);
         zombies.add(z);
         addZombieToScene(z);
         
         
-        z = new Zombie(this.app, new Vector3f(0f, 5f, 10f), new Vector3f(1f, 0f, 1f), 0.003f);
+        z = new Zombie(this.app, new Vector3f(0f, 5f, 10f), new Vector3f(1f, 0f, 1f), 0.05f);
         zombies.add(z);
         addZombieToScene(z);
         setZombiColission();
+        //zombies.get(2).doDamage(100, true);
 //        z = new Zombie(this.app, new Vector3f(40f, 5f, 40f), 0.006f);
 //        zombies.add(z);
 //        addZombieToScene(z);
@@ -105,7 +106,7 @@ public class ZombieManager implements ZombieManagerInterface{
 
     public void update() {
         for (ZombieInterface z : zombies) {
-            z.update(((Controller)app).getPlayerManager().getPlayerPosition()); //Here goes player position
+            z.update(); //Here goes player position
 
         }
     }
@@ -119,12 +120,15 @@ public class ZombieManager implements ZombieManagerInterface{
         this.paused = paused;
         for (ZombieInterface z : zombies) {
             z.setPaused(this.paused);
-
         }
     }
 
     public ArrayList<ZombieInterface> getZombies() {
         return zombies;
 
+    }
+
+    public void deleteZombie(Zombie aThis) {
+        zombies.remove(aThis);
     }
 }
