@@ -51,8 +51,13 @@ public class ObjVida  {
         
         //TODO: Add weapon model
         // Loading, scaling and adding control for our weapon.
+
         botiquinShape = (Node) app.getAssetManager().loadModel("Scenes/maleta.j3o");
         botiquinShape.scale(1f);
+/*=======
+        botiquinShape = (Node) app.getAssetManager().loadModel("Scenes/botiquin.j3o");
+        botiquinShape.scale(0.05f);
+>>>>>>> origin/TEAM-F/**/
         botiquinShape.addControl(botiquinControl);
         botiquinShape.setName(name);
         

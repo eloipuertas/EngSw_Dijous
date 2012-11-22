@@ -44,10 +44,10 @@ public class GUIPlayerMain extends AbstractAppState implements ScreenController 
         
         nifty.fromXml("Interface/RunningGame/GUIrunningGame.xml", "start", this);
         app.getGuiViewPort().addProcessor(niftyDisplay);
-        
+        while (this.screen != null){//stefan teamf (me da null pointer
         this.screen.startScreen();
         guiPlayer = new GUIPlayer( this.screen); 
-  
+        }//stefan teamf
         
     }
     
