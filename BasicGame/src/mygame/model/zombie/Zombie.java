@@ -112,10 +112,11 @@ public class Zombie implements AnimEventListener, ZombieInterface {
         float dist = playerPos.distance(zombiePos);
         float angle = zombieControl.getViewDirection().normalize().angleBetween(playerPos.subtract(zombiePos).normalize());
 
-        // @David C. -- Añadido condición del parámetro pause
+        
         if(state==3){
             //dead
         }
+        // @David C. -- Añadido condición del parámetro pause
         else if(dist < distAttack && angle < (angleFollow * Math.PI / 360) && !paused ){
             if(state!=2){
                 channel.setAnim("attack", 0.50f);
@@ -161,43 +162,31 @@ public class Zombie implements AnimEventListener, ZombieInterface {
 
     public void onAnimCycleDone(AnimControl control, AnimChannel channel, String animName) {
         if (animName.equals("walk")&&state==1) {
-            System.out.println("looop");
-            //channel.setAnim("stand", 0.50f); de moment no te animacio stand
+
             channel.setAnim("walk", 0.50f);
             channel.setLoopMode(LoopMode.DontLoop);
             channel.setSpeed(1f);
         }
         else if (animName.equals("walk")&&state==0) {
-            System.out.println("looop");
-            //channel.setAnim("stand", 0.50f); de moment no te animacio stand
+
             channel.setAnim("stand", 0.50f);
             channel.setLoopMode(LoopMode.DontLoop);
             channel.setSpeed(1f);
         }
         else if (animName.equals("stand")&&state==0) {
-            System.out.println("looop");
-            //channel.setAnim("stand", 0.50f); de moment no te animacio stand
+
             channel.setAnim("stand", 0.50f);
             channel.setLoopMode(LoopMode.DontLoop);
             channel.setSpeed(0f);
         }
         else if (animName.equals("stand")&&state==1) {
-            System.out.println("looop");
-            //channel.setAnim("stand", 0.50f); de moment no te animacio stand
+
             channel.setAnim("walk", 0.50f);
             channel.setLoopMode(LoopMode.DontLoop);
             channel.setSpeed(1f);
         }
         else if (animName.equals("attack")) {
-            System.out.println("looop");
-            //channel.setAnim("stand", 0.50f); de moment no te animacio stand
-            channel.setAnim("walk", 0.50f);
-            channel.setLoopMode(LoopMode.DontLoop);
-            channel.setSpeed(1f);
-            state=0;
-        }else if (animName.equals("attack")) {
-            System.out.println("looop");
-            //channel.setAnim("stand", 0.50f); de moment no te animacio stand
+
             channel.setAnim("walk", 0.50f);
             channel.setLoopMode(LoopMode.DontLoop);
             channel.setSpeed(1f);
