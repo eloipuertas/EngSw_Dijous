@@ -20,6 +20,7 @@ import com.jme3.font.BitmapText;
 import com.jme3.input.KeyInput;
 import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
+import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
 
@@ -62,7 +63,7 @@ import mygame.sound.SoundManager;
  * footsteps sound and Pause and Mute states. Getters and setters for
  * Character's attributes
  */
-public class CharacterMainJMonkey
+public final class CharacterMainJMonkey
         implements ActionListener, CharacterMainInterface {
 
     private BulletAppState bulletAppState;
@@ -70,10 +71,11 @@ public class CharacterMainJMonkey
     private WeaponInterface currentWeapon;
     private List<WeaponInterface> weapons;  // list of caught weapons
     private CharacterControl playerControl; // character control
-    private Node playerModelPorra;
+    private Node playerModelLoad;
     private AssetManager assetManager;
     private Vector3f walkDirection = new Vector3f();
-    private boolean left = false, right = false, up = false, down = false, run = false, mute = false; // booleans for listeners
+    private boolean left = false, right = false, up = false, down = false, 
+            run = false, mute = false, weapon1=false, weapon2=false; // booleans for listeners
     private SimpleApplication app;
     //boolean musica = false; // booleans for states
     boolean primeraVez = true;
@@ -88,7 +90,8 @@ public class CharacterMainJMonkey
     Scenario escenari;  // scenario object
     protected BitmapFont guiFont;  // fonts
     private Node pivot; // secundary node in order to avoid that character flies.
-
+    private String modelLoad="";
+    
     /**
      * Initialize method. Main method called in RunningGameState. It initializes
      * all character's variables. It creates and loads our character. It
@@ -121,13 +124,14 @@ public class CharacterMainJMonkey
 
         // Creating pivot Node so that our character doesn't float
         pivot = new Node();
+        playerModelLoad = (Node) app.getAssetManager().loadModel("Character/playerPistola.j3o");
+        
         // Loding our first character model
-        playerModelPorra = (Node) app.getAssetManager().loadModel("Character/porra.j3o");
+        
         //Material playerMaterial = app.getAssetManager().loadMaterial("Character/Cube.002.j3m");
-        pivot.attachChild(playerModelPorra);  // attach 'player model porra' node as a child of pivot node of character
+        pivot.attachChild(playerModelLoad);  // attach 'player model porra' node as a child of pivot node of character
         pivot.addControl(playerControl); // setting control
-        playerModelPorra.move(0f, -4f, 0f); // setting correct position in order to appears on the floor
-
+        playerModelLoad.move(0f, -5.5f, 0f); // setting correct position in order to appears on the floor
         // Positionig char and attaching pivot
         playerControl.setPhysicsLocation(new Vector3f(0, 5, 0));
         bulletAppState.getPhysicsSpace().add(playerControl);
@@ -143,7 +147,16 @@ public class CharacterMainJMonkey
 
     }
 
-
+    private void carregaModel(String model){
+        if (model.equals("porra")){
+            playerModelLoad = (Node) app.getAssetManager().loadModel("Character/porra.j3o");
+        }
+        if (model.equals("pistola")){
+            playerModelLoad = (Node) app.getAssetManager().loadModel("Character/playerPistola.j3o");   
+        }
+        pivot.attachChild(playerModelLoad);
+        app.getRootNode().attachChild(pivot);
+    }
 
     /**
      * State setter. Argument: BulletAppState
@@ -169,22 +182,28 @@ public class CharacterMainJMonkey
         app.getInputManager().addMapping("Mute", new KeyTrigger(KeyInput.KEY_M));
         app.getInputManager().addMapping("Paused", new KeyTrigger(KeyInput.KEY_P));
 
+        app.getInputManager().addMapping("Weapon1", new KeyTrigger(KeyInput.KEY_1));
+        app.getInputManager().addMapping("Weapon2", new KeyTrigger(KeyInput.KEY_2));
+        
         // Adding shoot action as a mouse left button
         app.getInputManager().addMapping("Shoot",
                 new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
         // Adding all listeners for all of our previous defined actions
         app.getInputManager().addListener(accioDisparar, "Shoot");
-
+        
         app.getInputManager().addListener(this, "Left");
         app.getInputManager().addListener(this, "Right");
         app.getInputManager().addListener(this, "Up");
         app.getInputManager().addListener(this, "Down");
         app.getInputManager().addListener(this, "Run");
-
         app.getInputManager().addListener(this, "Jump");
+        
         app.getInputManager().addListener(this, "Mute");
         app.getInputManager().addListener(this, "Paused");
-
+        
+        app.getInputManager().addListener(changeWeapon, "Weapon1");
+        app.getInputManager().addListener(changeWeapon, "Weapon2");
+        
     }
 
     /**
@@ -213,39 +232,6 @@ public class CharacterMainJMonkey
                 mute = value;
             }
         }
-
-/* Stefan before:
-        // If game receives a mute action
-        if (binding.equals("Mute")) {
-            if (contadorMute != 0) {
-                reproducirAudio();
-                contadorMute--;
-            } else {
-                contadorMute = 1;
-            }
-        }
-        // If game receives a pause action
-        if (binding.equals("Paused")) {
-            if (!isPaused) {  // if game wasn't paused
-                if (contadorPause == 2) {
-                    isPaused = true; // set as paused now 
-                }
-            } else { // if game was paused
-                if (contadorPause == 0) {
-                    isPaused = false;  // change flag
-                    contadorPause = 4;
-                }
-            }
-            contadorPause--;
-        }
-
-        // Always plays footsteps sound in left,right,up or down actions
-        if (left || right || up || down) {
-            audio_footstep.play();
-        } else {
-            audio_footstep.pause(); // otherwise, pause sound
-        }
-After:       /**/
         
          if (binding.equals("Paused") && !value) {               //@Emilio nuevo, para pausar
             isPaused = !isPaused;
@@ -281,6 +267,7 @@ After:       /**/
         Vector3f viewDirection = new Vector3f();
         walkDirection.set(0, 0, 0); // setting walking direction as 0,0,0
         
+        
         /*  @David C. -- Añadido Condicional isPaused y 
          *  bloqueo de cámara cuando está en pause
          */
@@ -292,7 +279,7 @@ After:       /**/
               // look at this direction  
                 app.getCamera().lookAtDirection( new Vector3f(0,app.getCamera().getDirection().y,0),new Vector3f(app.getCamera().getUp().x,-0.1f, app.getCamera().getUp().z));
             }
-            camDir.setY(0); // set y as 0 
+            //camDir.setY(0); // set y as 0 
             camDir = camDir.normalize().multLocal(0.2f); 
 
 
@@ -316,6 +303,7 @@ After:       /**/
                 if (up)    { walkDirection.addLocal(camDir.mult(3)); }
                 if (down)  { walkDirection.addLocal(camDir.negate().mult(3)); }
             }
+            
         } else {
             // @David C. -- Bloqueo de las direcciones cuando está en pause
             left = false;
@@ -330,7 +318,7 @@ After:       /**/
         }
 
         // Creating view direction vector as direction which our character looks
-        viewDirection.set(new Vector3f(camDir.getX(), 0, camDir.getZ()));
+        viewDirection.set(new Vector3f(camDir.getX(), camDir.getY(), camDir.getZ()));
 
         // Setting walk direction
         playerControl.setWalkDirection(walkDirection);
@@ -400,7 +388,19 @@ After:       /**/
             }
         }
     };
-
+    
+    private ActionListener changeWeapon = new ActionListener() {
+        public void onAction(String name, boolean keyPressed, float tpf) {
+           if (name.equals("Weapon1") && !keyPressed) {
+               carregaModel("porra");
+               modelLoad = "porra";
+           } 
+           if (name.equals("Weapon2") && !keyPressed) {
+               carregaModel("pistola");
+               modelLoad = "pistola";
+           }
+        }
+    };
     /**
      * Method which creates a red mark as a sphere. Useful for test if weapon
      * can shoot
@@ -436,6 +436,7 @@ After:       /**/
                 settings.getHeight() / 2 + ch.getLineHeight() / 2, 0);
         app.getGuiNode().attachChild(ch); // attaching to GUI
     }
+    
 
     /**
      * Method which loads fonts
