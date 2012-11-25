@@ -116,7 +116,7 @@ public final class CharacterMainJMonkey
 
         // Creating and setting character's features as:
         // collision box, jump speed, fall speed and gravity
-        CapsuleCollisionShape capsuleShape = new CapsuleCollisionShape(3f, 4f, 1);
+        CapsuleCollisionShape capsuleShape = new CapsuleCollisionShape(3f, 8f, 1);
         playerControl = new CharacterControl(capsuleShape, 0.05f);
         playerControl.setJumpSpeed(40);
         playerControl.setFallSpeed(100);
@@ -148,14 +148,18 @@ public final class CharacterMainJMonkey
     }
 
     private void carregaModel(String model){
+        pivot.detachChild(playerModelLoad);
         if (model.equals("porra")){
             playerModelLoad = (Node) app.getAssetManager().loadModel("Character/porra.j3o");
+            playerModelLoad.move(-0.5f, -3.5f, 0f); // setting correct position in order to appears on the floor
         }
         if (model.equals("pistola")){
-            playerModelLoad = (Node) app.getAssetManager().loadModel("Character/playerPistola.j3o");   
+            playerModelLoad = (Node) app.getAssetManager().loadModel("Character/playerPistola.j3o");
+            playerModelLoad.move(0f, -5.5f, 0f); // setting correct position in order to appears on the floor
         }
+        
         pivot.attachChild(playerModelLoad);
-        app.getRootNode().attachChild(pivot);
+        //app.getRootNode().attachChild(pivot);
     }
 
     /**
@@ -463,7 +467,7 @@ public final class CharacterMainJMonkey
      * Current weapon setter
      */
     public void setCurrentWeapon(WeaponInterface weapon) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        this.currentWeapon = weapon;
     }
 
     /**
