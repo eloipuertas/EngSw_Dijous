@@ -172,6 +172,10 @@ public final class CharacterMainJMonkey
      * Method which assign keys with character actions through listeners.
      */
     public void setUpKeys() {
+        
+        // @ Ernest, deleting zoom of flycam
+        app.getInputManager().deleteMapping("FLYCAM_ZoomOut");
+        app.getInputManager().deleteMapping("FLYCAM_ZoomIn");
 
         // Adding left, right, up, down and run actions as a defined keyboard keys
         app.getInputManager().addMapping("Left", new KeyTrigger(KeyInput.KEY_A));
