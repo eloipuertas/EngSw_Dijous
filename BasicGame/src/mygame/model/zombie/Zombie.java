@@ -27,6 +27,7 @@ import mygame.sound.SoundManager;
 public class Zombie implements AnimEventListener, ZombieInterface {
 
     private static final int DISTFOLLOW = 50;
+    private static final int DISTDETECT = 20;
     private static final int ANGLEFOLLOW = 160;
     private static final int DISTATTACK = 7;
     private static final int DAMAGEDONE = 20;
@@ -131,7 +132,7 @@ public class Zombie implements AnimEventListener, ZombieInterface {
         float dist = playerPos.distance(zombiePos);
         float angle = zombieControl.getViewDirection().normalize().angleBetween(playerPos.subtract(zombiePos).normalize());
 
-        if (dist < DISTFOLLOW && angle < (ANGLEFOLLOW * Math.PI / 360)) {
+        if (dist < DISTFOLLOW && angle < (ANGLEFOLLOW * Math.PI / 360) || dist < DISTDETECT) {
             // follow player
             if (dist < DISTATTACK) { //near the player, attack and stop
                 if (state != 2) {
