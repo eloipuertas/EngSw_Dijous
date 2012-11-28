@@ -42,26 +42,26 @@ public class ZombieManager implements ZombieManagerInterface{
 //            addZombieToScene(z);
 //        }
 
-        Zombie z = new Zombie(this.app, new Vector3f(5f, 5f, 0f), new Vector3f(0f, 0f, 1f), 0.05f);
+        ZombieBasic z = new ZombieBasic(this.app, new Vector3f(5f, 5f, 0f), new Vector3f(0f, 0f, 1f), 0.05f);
         zombies.add(z);
         addZombieToScene(z);
          
-        z = new Zombie(this.app, new Vector3f(15f, 5f, 10f), new Vector3f(1f, 0f, 1f), 0.05f);
+        z = new ZombieBasic(this.app, new Vector3f(15f, 5f, 10f), new Vector3f(1f, 0f, 1f), 0.05f);
         zombies.add(z);
         addZombieToScene(z);
        
         
-        z = new Zombie(this.app, new Vector3f(0f, 5f, 10f), new Vector3f(1f, 0f, 1f), 0.05f);
+        z = new ZombieBasic(this.app, new Vector3f(0f, 5f, 10f), new Vector3f(1f, 0f, 1f), 0.05f);
         zombies.add(z);
         addZombieToScene(z);
         
         
-        z = new Zombie(this.app, new Vector3f(0f, 5f, 10f), new Vector3f(-1f, 0f, -1f), 0.05f);
+        z = new ZombieBasic(this.app, new Vector3f(0f, 5f, 10f), new Vector3f(-1f, 0f, -1f), 0.05f);
         zombies.add(z);
         addZombieToScene(z);
         
         
-        z = new Zombie(this.app, new Vector3f(0f, 5f, 10f), new Vector3f(1f, 0f, -1f), 0.05f);
+        z = new ZombieBasic(this.app, new Vector3f(0f, 5f, 10f), new Vector3f(1f, 0f, -1f), 0.05f);
         zombies.add(z);
         addZombieToScene(z);
         
@@ -117,7 +117,7 @@ public class ZombieManager implements ZombieManagerInterface{
 
     public void update() {
         for (ZombieInterface z : zombies) {
-            z.update(); //Here goes player position
+            z.update();
 
         }
     }
