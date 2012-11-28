@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package mygame.sound;
 
 import com.jme3.app.SimpleApplication;
@@ -45,10 +41,17 @@ public class SoundManager {
         // Initialize gothic tune
         AudioNode gothicTune = new AudioNode(assetManager,
 "Sounds/Songs/Dark_music_Vampirical.ogg",true);
-        //gothicTune.setLooping(true);
         gothicTune.setVolume(0.3f);
         gothicTune.setName("gothicTune");
         rootNode.attachChild(gothicTune);
+    
+      // Initialize zombie footstep
+        AudioNode zombieFootstep = new AudioNode(assetManager,
+"Sounds/Effects/footStepZombie.wav",true);
+        zombieFootstep.setLooping(true);
+        zombieFootstep.setVolume(0.1f);
+        zombieFootstep.setName("zombieFootstep");
+        rootNode.attachChild(zombieFootstep);
     }
 
     /* Play the footsteps */
@@ -88,15 +91,34 @@ public class SoundManager {
     }
     
     /* Set volume to the zombie sounds  */
-    public static void zombieSoundSetVolume(Node rootNode, float f){
+    public static void zombieSoundSetVolume(Node rootNode, float vol){
         AudioNode zombieSound = (AudioNode) rootNode.getChild("zombieSound");
-        zombieSound.setVolume(f);
+        zombieSound.setVolume(vol);
     }
 
     /* Play Click  */
     public static void clickPlayInstance(Node rootNode){
         AudioNode click = (AudioNode) rootNode.getChild("click");
         click.playInstance();
+    }
+    
+    
+       /* Play the zombie footsteps */
+    public static void zombieFootStepsPlay(Node rootNode){
+        AudioNode zombieFootstep = (AudioNode) rootNode.getChild("zombieFootstep");
+        zombieFootstep.play();
+    }
+
+    /* Pause the zombie  footsteps */
+    public static void zombieFootStepsPause(Node rootNode){
+        AudioNode zombieFootstep = (AudioNode) rootNode.getChild("zombieFootstep");
+        zombieFootstep.pause();
+    }
+    
+    /* Set volume to the zombie sounds  */
+    public static void zombieFootStepsSetVolume(Node rootNode, float vol){
+        AudioNode zombieFootstep = (AudioNode) rootNode.getChild("zombieFootstep");
+        zombieFootstep.setVolume(vol);
     }
 
     /* Mute all sounds, set Volume to 0  */
@@ -112,6 +134,9 @@ public class SoundManager {
 
         AudioNode footSteps = (AudioNode) rootNode.getChild("footSteps");
         footSteps.setVolume(0);
+        
+        AudioNode zombieFootstep = (AudioNode) rootNode.getChild("zombieFootstep");
+        zombieFootstep.setVolume(0);
         
        
     }
@@ -129,7 +154,9 @@ public class SoundManager {
 
         AudioNode footSteps = (AudioNode) rootNode.getChild("footSteps");
         footSteps.setVolume(0.5f);
+        
+        AudioNode zombieFootstep = (AudioNode) rootNode.getChild("zombieFootstep");
+        zombieFootstep.setVolume(0.1f);
     }
-
 
 }
