@@ -39,6 +39,7 @@ public class MenuPrincipalState extends AbstractAppState implements ScreenContro
     private Screen screen;
     private boolean isRunningMenuPrincipal = true;
     private boolean enPantalla = false;
+    private boolean icono = false;
 
     
     public MenuPrincipalState(SimpleApplication app){
@@ -83,7 +84,9 @@ public class MenuPrincipalState extends AbstractAppState implements ScreenContro
     // @Emilio nuevo.
     public void setUpKeys() {
         app.getInputManager().addMapping("pausa", new KeyTrigger(KeyInput.KEY_P));
+        app.getInputManager().addMapping("mute", new KeyTrigger(KeyInput.KEY_M));
         app.getInputManager().addListener(this, "pausa");
+        app.getInputManager().addListener(this, "mute");
     }
     
     /*
@@ -102,6 +105,17 @@ public class MenuPrincipalState extends AbstractAppState implements ScreenContro
                 }
             }
         } 
+        if (name.equals("mute")){
+           if(!icono && isPressed){
+                    icono = true;
+                    mute();
+            }else{
+                if(isPressed){
+                    icono = false;
+                    nifty.gotoScreen("end");
+                }
+            } 
+        }
     }
     
     public void newGame(){
@@ -125,6 +139,10 @@ public class MenuPrincipalState extends AbstractAppState implements ScreenContro
         nifty.gotoScreen("pausa");
         //this.app.getInputManager().setCursorVisible(true);
         this.setIsRunningMenuPrincipal(false);
+    }
+    
+    public void mute(){
+        nifty.gotoScreen("mute");
     }
     
     public void quitMenu() throws InterruptedException{
