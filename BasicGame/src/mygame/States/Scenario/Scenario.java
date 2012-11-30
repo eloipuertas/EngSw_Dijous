@@ -54,7 +54,7 @@ public class Scenario {
         landscape = new RigidBodyControl(sceneShape, 0);
         sceneModel.addControl(landscape);
         sceneModel.setName("Escenario");  
-        rootNode.attachChild(sceneModel);
+        //rootNode.attachChild(sceneModel);
         this.app.getStateManager().getState(BulletAppState.class).getPhysicsSpace().add(landscape);
         
         setUpLight();
