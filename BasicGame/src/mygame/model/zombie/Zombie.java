@@ -15,7 +15,9 @@ import com.jme3.bullet.collision.shapes.CompoundCollisionShape;
 import com.jme3.bullet.control.CharacterControl;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.Vector3f;
+import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 import java.util.Random;
 import mygame.Controller;
 import mygame.sound.SoundManager;
@@ -32,7 +34,8 @@ public class Zombie implements AnimEventListener, ZombieInterface {
     private static final int DAMAGEDONE = 20;
     private SimpleApplication app;
     private CharacterControl zombieControl;
-    private Node zombieShape;
+    //private Node zombieShape;
+    private Spatial zombieShape;
     private float speed;
     private float hitpoints;
     private AnimChannel channel;
@@ -50,11 +53,11 @@ public class Zombie implements AnimEventListener, ZombieInterface {
     float xIncrement;
     float zIncrement;
 
-    Zombie(SimpleApplication app, Vector3f position, Vector3f viewDirection, float speed) {
+    public Zombie(SimpleApplication app, Vector3f position, Vector3f viewDirection, float speed) {
         this.app = app;
         CapsuleCollisionShape cilinder = new CapsuleCollisionShape(1.5f, 2f, 1);
         zombieControl = new CharacterControl(cilinder, 0.1f);
-        zombieShape = (Node) app.getAssetManager().loadModel("Models/zombie/zombie.mesh.j3o");
+        zombieShape = app.getAssetManager().loadModel("Models/zombie/zombie.mesh.j3o");
         node1 = new Node();
         node1.attachChild(zombieShape);
         zombieShape.move(0f, -2.5f, 0f);
@@ -70,7 +73,7 @@ public class Zombie implements AnimEventListener, ZombieInterface {
         colisions.setFriction(0);
         colisions.setKinematic(true);
         //MODIFICACION PARA EL GRUPO DE LOS ZOMBIES
-        zombieShape.setName("Zombie");
+        zombieShape.setName("Zombie");        
         zombieControl.setPhysicsLocation(position);
         zombieControl.setViewDirection(viewDirection);
         moveDirection = viewDirection;
@@ -88,7 +91,12 @@ public class Zombie implements AnimEventListener, ZombieInterface {
     public RigidBodyControl getColision() {
         return colisions;
     }
-
+    
+    //By Polit
+    public Spatial getZombieShape(){
+        return zombieShape;
+    }
+    
     Node getNode() {
         return node1;
     }
@@ -296,5 +304,5 @@ public class Zombie implements AnimEventListener, ZombieInterface {
         System.out.println("La animacio dura" + channel.getAnimMaxTime());
         channel.setLoopMode(LoopMode.DontLoop);
         System.out.println(((Controller) app).getZombieManager());
-    }
+}    
 }

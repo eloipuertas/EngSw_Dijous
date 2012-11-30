@@ -12,6 +12,8 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.BulletAppState;
+import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 /**
  *
  * @author rociotovar
@@ -52,4 +54,6 @@ public interface CharacterMainInterface {
      * @param value how much?
      */
     public void doDamage(int value);
+    
+    public Node getShootables();
 }
