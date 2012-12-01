@@ -47,11 +47,27 @@ public class SoundManager {
     
       // Initialize zombie footstep
         AudioNode zombieFootstep = new AudioNode(assetManager,
-"Sounds/Effects/footStepZombie.wav",true);
+"Sounds/Effects/footStepZombie.wav",false);
         zombieFootstep.setLooping(true);
         zombieFootstep.setVolume(0.1f);
         zombieFootstep.setName("zombieFootstep");
         rootNode.attachChild(zombieFootstep);
+        
+        // Initiliaze zombie hurt
+        AudioNode zombieHurt = new AudioNode(assetManager,
+"Sounds/Effects/zombieHurt.wav",false);
+        zombieHurt.setLooping(true);
+        zombieHurt.setName("zombieHurt");
+        zombieHurt.setVolume(0.2f);
+        rootNode.attachChild(zombieHurt);
+        
+        // Initiliaze zombie hurt
+        AudioNode zombieDie = new AudioNode(assetManager,
+"Sounds/Effects/zombieDie.wav",false);
+        zombieDie.setLooping(true);
+        zombieDie.setName("zombieDie");
+        zombieDie.setVolume(0.4f);
+        rootNode.attachChild(zombieDie);
     }
 
     /* Play the footsteps */
@@ -120,7 +136,20 @@ public class SoundManager {
         AudioNode zombieFootstep = (AudioNode) rootNode.getChild("zombieFootstep");
         zombieFootstep.setVolume(vol);
     }
+    
+    /* Play zombie hurt  */
+    public static void zombieHurtPlayInstance(Node rootNode){
+        AudioNode zombieHurt = (AudioNode) rootNode.getChild("zombieHurt");
+        zombieHurt.playInstance();
+    }
+    
+    /* Play zombie die  */
+    public static void zombieDiePlayInstance(Node rootNode){
+        AudioNode zombieDie = (AudioNode) rootNode.getChild("zombieDie");
+        zombieDie.playInstance();
+    }
 
+    
     /* Mute all sounds, set Volume to 0  */
     public static void muteAllSounds(Node rootNode){
         AudioNode click = (AudioNode) rootNode.getChild("click");
@@ -137,6 +166,12 @@ public class SoundManager {
         
         AudioNode zombieFootstep = (AudioNode) rootNode.getChild("zombieFootstep");
         zombieFootstep.setVolume(0);
+        
+        AudioNode zombieHurt = (AudioNode) rootNode.getChild("zombieHurt");
+        zombieHurt.setVolume(0);
+        
+        AudioNode zombieDie = (AudioNode) rootNode.getChild("zombieDie");
+        zombieDie.setVolume(0);
         
        
     }
@@ -157,6 +192,12 @@ public class SoundManager {
         
         AudioNode zombieFootstep = (AudioNode) rootNode.getChild("zombieFootstep");
         zombieFootstep.setVolume(0.1f);
+        
+        AudioNode zombieHurt = (AudioNode) rootNode.getChild("zombieHurt");
+        zombieHurt.setVolume(0.2f);
+        
+        AudioNode zombieDie = (AudioNode) rootNode.getChild("zombieDie");
+        zombieDie.setVolume(0.4f);
     }
 
 }
