@@ -110,7 +110,7 @@ public final class CharacterMainJMonkey
         
         
         setUpKeys();  // set up keys and listeners
-        inicialitzarMarcaCollisio();  // call shooting methods
+        //inicialitzarMarcaCollisio();  // call shooting methods
         //initMirilla();
 
 
@@ -124,6 +124,7 @@ public final class CharacterMainJMonkey
 
         // Creating pivot Node so that our character doesn't float
         playerModelLoad = (Node) app.getAssetManager().loadModel("Character/playerPistola.j3o");
+        //playerModelLoad = (Node) app.getAssetManager().loadModel("Character/prova.j3o");
         
         // Loding our first character model        
         //Material playerMaterial = app.getAssetManager().loadMaterial("Character/Cube.002.j3m");
@@ -157,7 +158,7 @@ public final class CharacterMainJMonkey
            //System.out.println("ZombiePositon: " + z.getZombieShape().getWorldTranslation());
            //System.out.println("GeometryPosition: " + g.getWorldTranslation());
            if(z.getZombieShape().getWorldTranslation().equals(g.getWorldTranslation())){
-               z.doDamage(101, true);
+               z.doDamage(50, true);
            }
         }
     }
@@ -352,9 +353,9 @@ public final class CharacterMainJMonkey
         
     //by Polit
     public void initAnimacio(){
-        //controlAnim = playerModelLoad.getControl(AnimControl.class);
-        //controlAnim.addListener(this);
-        //channelAnim = controlAnim.createChannel();
+        controlAnim = playerModelLoad.getControl(AnimControl.class);
+//        controlAnim.addListener(this);
+  //      channelAnim = controlAnim.createChannel();
         /*channelAnim.setAnim("shootAction");
         channelAnim.setSpeed(0f);
         channelAnim.setLoopMode(LoopMode.Loop);*/
@@ -389,11 +390,13 @@ public final class CharacterMainJMonkey
                     CollisionResult closest = resultat.getClosestCollision();
                     damageToZombies(closest.getGeometry());
                     // Let's interact - we mark the hit with a red dot.
-                    marcaVermella.setLocalTranslation(closest.getContactPoint());
-                    app.getRootNode().attachChild(marcaVermella); // put red sphere at that point
-                    //channelAnim.setAnim("shootAction", 0.50f);
-                    //channelAnim.setLoopMode(LoopMode.DontLoop);
-                    System.out.println("shootAction");
+                    if (modelLoad.equals("pistola")){
+                        marcaVermella.setLocalTranslation(closest.getContactPoint());
+                        app.getRootNode().attachChild(marcaVermella); // put red sphere at that point
+                        //channelAnim.setAnim("shootAction", 0.50f);
+                        //channelAnim.setLoopMode(LoopMode.DontLoop);
+                        System.out.println("shootAction");
+                    }
                 } else {
                     // No hits? Then remove the red mark.
                     app.getRootNode().detachChild(marcaVermella);
@@ -427,7 +430,7 @@ public final class CharacterMainJMonkey
            if (name.equals("Weapon2") && !keyPressed) {
                carregaModel("pistola");
                modelLoad = "pistola";
-               
+               inicialitzarMarcaCollisio();
            }
         }
     };
