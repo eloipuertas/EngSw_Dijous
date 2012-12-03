@@ -154,7 +154,7 @@ public final class CharacterMainJMonkey
            //System.out.println("ZombiePositon: " + z.getZombieShape().getWorldTranslation());
            //System.out.println("GeometryPosition: " + g.getWorldTranslation());
            if(z.getZombieShape().getWorldTranslation().equals(g.getWorldTranslation())){
-               z.doDamage(101, true);
+               z.doDamage(50, true);
            }
         }
     }
@@ -284,13 +284,16 @@ public final class CharacterMainJMonkey
         this.app.getFlyByCamera().setEnabled(!isPaused);
         if (!this.isPaused) {
             //@Ernest --  Setting limits in up/down camera movement
-             if(app.getCamera().getUp().y < -0.1) // axis more than -0.1
+             if(app.getCamera().getUp().y < 0) // axis more than 0
              {
               // look at this direction  
-                app.getCamera().lookAtDirection( new Vector3f(0,app.getCamera().getDirection().y,0),new Vector3f(app.getCamera().getUp().x,-0.1f, app.getCamera().getUp().z));
-            }
+              //  app.getCamera().lookAtDirection( new Vector3f(0,app.getCamera().getDirection().y,0),new Vector3f(app.getCamera().getUp().x,-0.1f, app.getCamera().getUp().z));
+              // setting axis restiction
+              app.getCamera().setAxes(camLeft, new Vector3f (0,1,0), viewDirection);
+                 
+             }
             //camDir.setY(0); // set y as 0 
-            camDir = camDir.normalize().multLocal(0.2f); 
+            //camDir = camDir.normalize().multLocal(0.2f); 
 
 
             // Setting camera according to action
