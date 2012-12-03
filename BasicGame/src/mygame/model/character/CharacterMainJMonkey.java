@@ -76,6 +76,8 @@ public final class CharacterMainJMonkey
     boolean primeraVez = true;
     boolean isPaused;
     boolean isMuted = false; // Booleano que controla si es luego esta silenciado
+    boolean shootActivated = false;
+    boolean created = false;
     AudioNode audio_environment;  // environment audio node
     Node shootables;
     Geometry marcaVermella;  // red mark for shoot
@@ -86,6 +88,7 @@ public final class CharacterMainJMonkey
     private AnimChannel channelAnim;
     private AnimControl controlAnim;
     private ArrayList<ZombieInterface> zombiesMI;
+    
     
     /**
      * Initialize method. Main method called in RunningGameState. It initializes
@@ -107,13 +110,8 @@ public final class CharacterMainJMonkey
         this.pivot = new Node();
         this.shootables = new Node("Shootables");
        
-        
-        
         setUpKeys();  // set up keys and listeners
-        //inicialitzarMarcaCollisio();  // call shooting methods
-        //initMirilla();
-
-
+        
         // Creating and setting character's features as:
         // collision box, jump speed, fall speed and gravity
         CapsuleCollisionShape capsuleShape = new CapsuleCollisionShape(3f, 8f, 1);
@@ -123,20 +121,18 @@ public final class CharacterMainJMonkey
         playerControl.setGravity(100);
 
         // Creating pivot Node so that our character doesn't float
-        playerModelLoad = (Node) app.getAssetManager().loadModel("Character/playerPistola.j3o");
-        //playerModelLoad = (Node) app.getAssetManager().loadModel("Character/prova.j3o");
+        playerModelLoad = (Node) app.getAssetManager().loadModel("Character/porra.j3o");
         
         // Loding our first character model        
         //Material playerMaterial = app.getAssetManager().loadMaterial("Character/Cube.002.j3m");
         pivot.attachChild(playerModelLoad);  // attach 'player model porra' node as a child of pivot node of character
         pivot.addControl(playerControl); // setting control
-        playerModelLoad.move(0f, -5.5f, 0f); // setting correct position in order to appears on the floor
+        playerModelLoad.move(-0.5f, -3.75f, 0f); // setting correct position in order to appears on the floor
         // Positionig char and attaching pivot
         playerControl.setPhysicsLocation(new Vector3f(0, 5, 0));
         bulletAppState.getPhysicsSpace().add(playerControl);
         app.getRootNode().attachChild(pivot);
-        
-        
+          
         // Creating node for shoot action and ataching it as a child of Scenario object
         app.getRootNode().attachChild(shootables);
         shootables.attachChild(escenari.getEscenari());        
@@ -158,7 +154,7 @@ public final class CharacterMainJMonkey
            //System.out.println("ZombiePositon: " + z.getZombieShape().getWorldTranslation());
            //System.out.println("GeometryPosition: " + g.getWorldTranslation());
            if(z.getZombieShape().getWorldTranslation().equals(g.getWorldTranslation())){
-               z.doDamage(50, true);
+               z.doDamage(101, true);
            }
         }
     }
@@ -188,12 +184,6 @@ public final class CharacterMainJMonkey
         app.getInputManager().addMapping("Weapon1", new KeyTrigger(KeyInput.KEY_1));
         app.getInputManager().addMapping("Weapon2", new KeyTrigger(KeyInput.KEY_2));
         
-        // Adding shoot action as a mouse left button
-        app.getInputManager().addMapping("Shoot",
-                new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
-        // Adding all listeners for all of our previous defined actions
-        app.getInputManager().addListener(accioDisparar, "Shoot");
-        
         app.getInputManager().addListener(this, "Left");
         app.getInputManager().addListener(this, "Right");
         app.getInputManager().addListener(this, "Up");
@@ -207,6 +197,23 @@ public final class CharacterMainJMonkey
         app.getInputManager().addListener(changeWeapon, "Weapon1");
         app.getInputManager().addListener(changeWeapon, "Weapon2");
         
+    }
+    
+    
+    /** @Ernest --> Method which adds shoot action listener and mapping. It only used in fire weapons model
+     */ 
+    public void shootListenerMappingManagement(boolean isActivated) {
+        
+        if (!created && isActivated) {
+        app.getInputManager().addMapping("Shoot", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
+        app.getInputManager().addListener(accioDisparar, "Shoot");
+        created = true;
+       }
+        
+        if (created && !isActivated) {
+          app.getInputManager().deleteMapping("Shoot");
+          created = false;  
+        }
     }
 
     /**
@@ -244,10 +251,10 @@ public final class CharacterMainJMonkey
         // Controla si se ha pulsado "M" y si el juego esta mutado
         if (mute && !isMuted) {               
             SoundManager.muteAllSounds(app.getRootNode());
-            isMuted = !isMuted;
+            isMuted = true;
         } else if(mute && isMuted) {               
             SoundManager.unMuteAllSounds(app.getRootNode());
-            isMuted = !isMuted;
+            isMuted = false;
         }
         // Si esta pulsada "W","A","S" o "D" suenan pasos
         if ((left || right || up || down)) {
@@ -353,9 +360,9 @@ public final class CharacterMainJMonkey
         
     //by Polit
     public void initAnimacio(){
-        controlAnim = playerModelLoad.getControl(AnimControl.class);
-//        controlAnim.addListener(this);
-  //      channelAnim = controlAnim.createChannel();
+        //controlAnim = playerModelLoad.getControl(AnimControl.class);
+        //controlAnim.addListener(this);
+        //channelAnim = controlAnim.createChannel();
         /*channelAnim.setAnim("shootAction");
         channelAnim.setSpeed(0f);
         channelAnim.setLoopMode(LoopMode.Loop);*/
@@ -390,13 +397,11 @@ public final class CharacterMainJMonkey
                     CollisionResult closest = resultat.getClosestCollision();
                     damageToZombies(closest.getGeometry());
                     // Let's interact - we mark the hit with a red dot.
-                    if (modelLoad.equals("pistola")){
-                        marcaVermella.setLocalTranslation(closest.getContactPoint());
-                        app.getRootNode().attachChild(marcaVermella); // put red sphere at that point
-                        //channelAnim.setAnim("shootAction", 0.50f);
-                        //channelAnim.setLoopMode(LoopMode.DontLoop);
-                        System.out.println("shootAction");
-                    }
+                    marcaVermella.setLocalTranslation(closest.getContactPoint());
+                    app.getRootNode().attachChild(marcaVermella); // put red sphere at that point
+                    //channelAnim.setAnim("shootAction", 0.50f);
+                    //channelAnim.setLoopMode(LoopMode.DontLoop);
+                    System.out.println("shootAction");
                 } else {
                     // No hits? Then remove the red mark.
                     app.getRootNode().detachChild(marcaVermella);
@@ -410,13 +415,16 @@ public final class CharacterMainJMonkey
         if (model.equals("porra")){
             playerModelLoad = (Node) app.getAssetManager().loadModel("Character/porra.j3o");
             playerModelLoad.move(-0.5f, -3.5f, 0f); // setting correct position in order to appears on the floor
+            shootActivated = false;
         }
         if (model.equals("pistola")){
             playerModelLoad = (Node) app.getAssetManager().loadModel("Character/playerPistola.j3o");
             playerModelLoad.move(0f, -5.5f, 0f); // setting correct position in order to appears on the floor
-            
+            shootActivated = true;
+            inicialitzarMarcaCollisio();  // call shooting red mark method
         }
         
+        shootListenerMappingManagement(shootActivated);
         pivot.attachChild(playerModelLoad);
         //app.getRootNode().attachChild(pivot);
     }
@@ -430,7 +438,7 @@ public final class CharacterMainJMonkey
            if (name.equals("Weapon2") && !keyPressed) {
                carregaModel("pistola");
                modelLoad = "pistola";
-               inicialitzarMarcaCollisio();
+               
            }
         }
     };
