@@ -16,6 +16,7 @@ import com.jme3.bullet.control.CharacterControl;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 import java.util.Random;
 import mygame.Controller;
 import mygame.sound.SoundManager;
@@ -33,7 +34,7 @@ public abstract class Zombie implements AnimEventListener, ZombieInterface {
     protected static final int DAMAGEDONE = 20;
     protected SimpleApplication app;
     protected CharacterControl zombieControl;
-    protected Node zombieShape;
+    protected Spatial zombieShape;
     protected float speed;
     protected float hitpoints;
     protected AnimChannel channel;
@@ -49,7 +50,7 @@ public abstract class Zombie implements AnimEventListener, ZombieInterface {
 
         CapsuleCollisionShape cilinder = new CapsuleCollisionShape(1.5f, 2f, 1);
         zombieControl = new CharacterControl(cilinder, 0.1f);
-        zombieShape = (Node) app.getAssetManager().loadModel("Models/zombie/zombie.mesh.j3o");
+        zombieShape = app.getAssetManager().loadModel("Models/zombie/zombie.mesh.j3o");
         node1 = new Node();
         node1.attachChild(zombieShape);
         zombieShape.move(0f, -2.5f, 0f);
@@ -82,7 +83,10 @@ public abstract class Zombie implements AnimEventListener, ZombieInterface {
     public RigidBodyControl getColision() {
         return colisions;
     }
-
+    public Spatial getZombieSHape(){
+        return zombieShape;
+    }
+    
     Node getNode() {
         return node1;
     }

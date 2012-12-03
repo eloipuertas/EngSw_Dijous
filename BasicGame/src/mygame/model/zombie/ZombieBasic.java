@@ -16,6 +16,7 @@ import com.jme3.bullet.control.CharacterControl;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 import java.util.Random;
 import mygame.Controller;
 import mygame.sound.SoundManager;
@@ -53,7 +54,7 @@ public class ZombieBasic extends Zombie implements AnimEventListener, ZombieInte
         
         CapsuleCollisionShape cilinder = new CapsuleCollisionShape(1.5f, 2f, 1);
         zombieControl = new CharacterControl(cilinder, 0.1f);
-        zombieShape = (Node) app.getAssetManager().loadModel("Models/zombie/zombie.mesh.j3o");
+        zombieShape = app.getAssetManager().loadModel("Models/zombie/zombie.mesh.j3o");
         node1 = new Node();
         node1.attachChild(zombieShape);
         zombieShape.move(0f, -2.5f, 0f);
@@ -91,6 +92,11 @@ public class ZombieBasic extends Zombie implements AnimEventListener, ZombieInte
     Node getNode() {
         return node1;
     }
+    @Override
+    public Spatial getZombieShape(){
+        return zombieShape;
+    }
+    
 
     private void initAnimation() {
 

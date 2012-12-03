@@ -45,6 +45,7 @@ import mygame.States.Scenario.Scenario;
 import mygame.model.weapon.Gun;
 import mygame.model.weapon.WeaponInterface;
 import mygame.model.character.CharacterMainInterface;
+import mygame.model.zombie.ZombieInterface;
 import mygame.sound.SoundManager;
 
 /**
@@ -91,6 +92,7 @@ public final class CharacterMainJMonkey
     protected BitmapFont guiFont;  // fonts
     private Node pivot; // secundary node in order to avoid that character flies.
     private String modelLoad="";
+    ArrayList<ZombieInterface>zombiesMI;
     
     /**
      * Initialize method. Main method called in RunningGameState. It initializes
@@ -146,6 +148,20 @@ public final class CharacterMainJMonkey
   
 
     }
+    
+    public void damageToZombies(Geometry g){
+       zombiesMI = ((Controller)app).getZombieManager().getZombies();
+       for(ZombieInterface z: zombiesMI){
+
+          if(z.getZombieShape().getWorldTranslation().equals(g.getWorldTranslation())){
+              z.doDamage(41, true);
+          }
+       }
+   }
+    public Node getShootables(){
+        return shootables;
+    }
+
 
     private void carregaModel(String model){
         if (model.equals("porra")){
@@ -379,6 +395,7 @@ public final class CharacterMainJMonkey
                     // The closest collision point is what was truly hit:
                     CollisionResult closest = resultat.getClosestCollision();
                     // Let's interact - we mark the hit with a red dot.
+                    damageToZombies(closest.getGeometry());
                     marcaVermella.setLocalTranslation(closest.getContactPoint());
                     app.getRootNode().attachChild(marcaVermella); // put red sphere at that point
                 } else {

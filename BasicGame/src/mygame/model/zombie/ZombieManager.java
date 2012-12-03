@@ -98,7 +98,8 @@ public class ZombieManager implements ZombieManagerInterface{
         
         
         //bulletAppState.getPhysicsSpace().add(z.getNode().getChild("Zombie"));
-        rootNode.attachChild(z.getNode());
+        //rootNode.attachChild(z.getNode());
+        ((Controller)app).getPlayerManager().getShootables().attachChild(z.getNode());
     }
     
     private void setZombiColission(){

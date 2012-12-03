@@ -7,6 +7,7 @@ package mygame.model.zombie;
 import com.jme3.bullet.collision.shapes.CompoundCollisionShape;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.Vector3f;
+import com.jme3.scene.Spatial;
 
 /**
  *
@@ -45,5 +46,7 @@ public interface ZombieInterface {
     public void doDamage(int damage, boolean distance);
 
     public void setPaused(boolean paused);
+    
+    public Spatial getZombieShape();
     
 }
