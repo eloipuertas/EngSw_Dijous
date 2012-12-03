@@ -42,6 +42,7 @@ public class ZombieBasic extends Zombie implements AnimEventListener, ZombieInte
     private Node node1;
     private CompoundCollisionShape ccs; /**/
     //for random movement
+    private float dist1=0;
     private boolean randMoveSet = false;
     private Random rand = new Random();
     private int timeLeft;
@@ -119,8 +120,11 @@ public class ZombieBasic extends Zombie implements AnimEventListener, ZombieInte
 
         float dist = playerPos.distance(zombiePos);
         float angle = zombieControl.getViewDirection().normalize().angleBetween(playerPos.subtract(zombiePos).normalize());
-
-        if (dist < DISTFOLLOW && angle < (ANGLEFOLLOW * Math.PI / 360) || dist < DISTDETECT) {
+        dist1=dist;
+        if(state==3){
+            //do nothing
+        }
+        else if (dist < DISTFOLLOW && angle < (ANGLEFOLLOW * Math.PI / 360) || dist < DISTDETECT) {
             // follow player
             if (dist < DISTATTACK) { //near the player, attack and stop
                 if (state != 2) {
@@ -194,14 +198,17 @@ public class ZombieBasic extends Zombie implements AnimEventListener, ZombieInte
          //channel.setAnim("stand"); de moment no te animacio stand
          //channel.setAnim("walk");
          }/**/
-
-        SoundManager.zombieSoundSetVolume(app.getRootNode(), 7 / dist);
+        if(state!=3){
+            SoundManager.zombieSoundSetVolume(app.getRootNode(), 7 / dist);
+        }
     }
 
     public void onAnimCycleDone(AnimControl control, AnimChannel channel, String animName) {
 
         if (animName.equals("walk") && state == 1) {
-
+            SoundManager.zombieFootStepsPlay(app.getRootNode());
+            System.out.println("Zombie walks");
+            SoundManager.zombieFootStepsSetVolume(app.getRootNode(), 7 / dist1);
             channel.setAnim("walk", 0.50f);
             channel.setLoopMode(LoopMode.DontLoop);
             channel.setSpeed(1f);
@@ -227,12 +234,16 @@ public class ZombieBasic extends Zombie implements AnimEventListener, ZombieInte
             channel.setSpeed(1f);
             state = 0;
         } else if (animName.equals("death")) {
+            System.out.println("Zombie dies");
             node1.detachChild(zombieShape);
+            /*SoundManager.zombieFootStepsSetVolume(app.getRootNode(), 0);
+            SoundManager.zombieSoundSetVolume(app.getRootNode(), 0);*/
             app.getRootNode().attachChild(zombieShape);
             zombieShape.setLocalTranslation(colisions.getPhysicsLocation());
             zombieShape.move(0f, -2.5f, 0f);
             node1.removeControl(colisions);
             node1.removeControl(zombieControl);
+            channel.setSpeed(0f);
             this.app.getStateManager().getState(BulletAppState.class).getPhysicsSpace().remove(colisions);
             this.app.getStateManager().getState(BulletAppState.class).getPhysicsSpace().remove(zombieControl);
 
@@ -259,19 +270,27 @@ public class ZombieBasic extends Zombie implements AnimEventListener, ZombieInte
 
     public void doDamage(int damage, boolean distance) {
         System.out.println("zombie class -> damage done");
-        if (distance) { //long range, allways does damage
-            hitpoints = hitpoints - damage;
-            if (hitpoints <= 0) {
-                killZombie();
-            }
-        } else {
-            Vector3f zombiePos = zombieControl.getPhysicsLocation();
-            Vector3f playerPos = ((Controller) app).getPlayerManager().getPlayerPosition();
-
-            if (playerPos.distance(zombiePos) < 10) {
+        if(state!=3){
+            if (distance) { //long range, allways does damage
                 hitpoints = hitpoints - damage;
                 if (hitpoints <= 0) {
                     killZombie();
+                }
+                else{
+                    SoundManager.zombieHurtPlayInstance(app.getRootNode());
+                }
+            } else {
+                Vector3f zombiePos = zombieControl.getPhysicsLocation();
+                Vector3f playerPos = ((Controller) app).getPlayerManager().getPlayerPosition();
+
+                if (playerPos.distance(zombiePos) < 10) {
+                    hitpoints = hitpoints - damage;
+                    if (hitpoints <= 0) {
+                        killZombie();
+                    }
+                    else{
+                        SoundManager.zombieHurtPlayInstance(app.getRootNode());
+                    }
                 }
             }
         }
@@ -279,10 +298,11 @@ public class ZombieBasic extends Zombie implements AnimEventListener, ZombieInte
 
     public void killZombie() {
         state = 3;
-        //zombieControl.setFallSpeed(1000000f);    
+        //zombieControl.setFallSpeed(1000000f);
+        SoundManager.zombieDiePlayInstance(app.getRootNode());
         channel.setAnim("death");
         channel.setSpeed(0.4f);
-        System.out.println("La animacio dura" + channel.getAnimMaxTime());
+        
         channel.setLoopMode(LoopMode.DontLoop);
         System.out.println(((Controller) app).getZombieManager());
     }
