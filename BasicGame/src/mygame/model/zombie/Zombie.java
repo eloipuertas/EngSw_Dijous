@@ -114,7 +114,7 @@ public abstract class Zombie implements AnimEventListener, ZombieInterface {
             }
         } else {
             //GAME is paused
-            SoundManager.zombieSoundPause(app.getRootNode());
+//            SoundManager.zombieSoundPause(app.getRootNode());
 
             zombieControl.setWalkDirection(new Vector3f(0, 0, 0));
             channel.setSpeed(0f);

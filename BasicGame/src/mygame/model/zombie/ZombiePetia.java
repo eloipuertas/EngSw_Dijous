@@ -113,7 +113,7 @@ public ZombiePetia(SimpleApplication app, Vector3f position, Vector3f viewDirect
     }
 
     protected void moveZombie() {
-        SoundManager.zombieSoundPlay(app.getRootNode()); // Reproduce el sonido de los zombies
+//        SoundManager.zombieSoundPlay(app.getRootNode()); // Reproduce el sonido de los zombies
         Vector3f zombiePos = zombieControl.getPhysicsLocation();
         Vector3f playerPos = ((Controller) app).getPlayerManager().getPlayerPosition();
 
@@ -195,7 +195,7 @@ public ZombiePetia(SimpleApplication app, Vector3f position, Vector3f viewDirect
          //channel.setAnim("walk");
          }/**/
 
-        SoundManager.zombieSoundSetVolume(app.getRootNode(), 7 / dist);
+//        SoundManager.zombieSoundSetVolume(app.getRootNode(), 7 / dist);
     }
 
     public void onAnimCycleDone(AnimControl control, AnimChannel channel, String animName) {

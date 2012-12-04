@@ -114,7 +114,7 @@ public class ZombieBasic extends Zombie implements AnimEventListener, ZombieInte
     }
 
     protected void moveZombie() {
-        SoundManager.zombieSoundPlay(app.getRootNode()); // Reproduce el sonido de los zombies
+//        SoundManager.zombieSoundPlay(app.getRootNode()); // Reproduce el sonido de los zombies
         Vector3f zombiePos = zombieControl.getPhysicsLocation();
         Vector3f playerPos = ((Controller) app).getPlayerManager().getPlayerPosition();
 
@@ -199,16 +199,16 @@ public class ZombieBasic extends Zombie implements AnimEventListener, ZombieInte
          //channel.setAnim("walk");
          }/**/
         if(state!=3){
-            SoundManager.zombieSoundSetVolume(app.getRootNode(), 7 / dist);
+//            SoundManager.zombieSoundSetVolume(app.getRootNode(), 7 / dist);
         }
     }
 
     public void onAnimCycleDone(AnimControl control, AnimChannel channel, String animName) {
 
         if (animName.equals("walk") && state == 1) {
-            SoundManager.zombieFootStepsPlay(app.getRootNode());
+//            SoundManager.zombieFootStepsPlay(app.getRootNode());
             System.out.println("Zombie walks");
-            SoundManager.zombieFootStepsSetVolume(app.getRootNode(), 7 / dist1);
+//            SoundManager.zombieFootStepsSetVolume(app.getRootNode(), 7 / dist1);
             channel.setAnim("walk", 0.50f);
             channel.setLoopMode(LoopMode.DontLoop);
             channel.setSpeed(1f);
