@@ -67,7 +67,7 @@ public final class CharacterMainJMonkey
     private WeaponInterface currentWeapon;
     private List<WeaponInterface> weapons;  // list of caught weapons
     private CharacterControl playerControl; // character control
-    private Node playerModelLoad;
+    private Spatial playerModelLoad;
     private AssetManager assetManager;
     private Vector3f walkDirection = new Vector3f();
     private boolean left = false, right = false, up = false, down = false, 
@@ -121,7 +121,7 @@ public final class CharacterMainJMonkey
         playerControl.setGravity(100);
 
         // Creating pivot Node so that our character doesn't float
-        playerModelLoad = (Node) app.getAssetManager().loadModel("Character/porra.j3o");
+        playerModelLoad = app.getAssetManager().loadModel("Character/porra.j3o");
         
         // Loding our first character model        
         //Material playerMaterial = app.getAssetManager().loadMaterial("Character/Cube.002.j3m");
@@ -156,6 +156,22 @@ public final class CharacterMainJMonkey
            if(z.getZombieShape().getWorldTranslation().equals(g.getWorldTranslation())){
                z.doDamage(50, true);
            }
+        }
+    }
+    
+    //By Polit
+    //Metode que els zombies criden per fernos mal i matarnos
+    public void doDamage(int value){
+        int vida = ((Controller)app).getScenarioManager().getGuiPlayer().getSaludGUI();
+        vida = vida - value;
+        ((Controller)app).getScenarioManager().getGuiPlayer().setSaludGUI(vida);
+        if (vida <=0){
+            //Ara mateix, com que no tenim animacio de morir, i que no se que passa
+            //quan ens morim, el jugador no mor, i crido a pausa, per veure un canvi
+            //despres de quedarnos sense vida.
+            
+            isPaused = !isPaused;
+            ((Controller)app).setIsRunning(isPaused);
         }
     }
 
@@ -544,10 +560,6 @@ public final class CharacterMainJMonkey
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    // TODO for zombies: decrement health!!
-    public void doDamage(int value) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
 
     // @David C. -- Añadido getters del parámetro isPaused
     public boolean isPaused() {
