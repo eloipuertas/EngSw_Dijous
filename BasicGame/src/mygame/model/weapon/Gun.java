@@ -43,8 +43,8 @@ public class Gun implements WeaponInterface {
         
         //TODO: Add weapon model
         // Loading, scaling and adding control for our weapon.
-        weaponShape = (Node) app.getAssetManager().loadModel("Models/Elephant/Elephant.mesh.xml");
-        weaponShape.scale(0.05f);
+        weaponShape = (Node) app.getAssetManager().loadModel("Character/Pistola.mesh.xml");
+        weaponShape.scale(0.4f);
         weaponShape.addControl(weaponControl);
         weaponShape.setName(name);
         

@@ -251,10 +251,10 @@ public final class CharacterMainJMonkey
         // Controla si se ha pulsado "M" y si el juego esta mutado
         if (mute && !isMuted) {               
             SoundManager.muteAllSounds(app.getRootNode());
-            isMuted = true;
+            isMuted = !isMuted;
         } else if(mute && isMuted) {               
             SoundManager.unMuteAllSounds(app.getRootNode());
-            isMuted = false;
+            isMuted = !isMuted;
         }
         // Si esta pulsada "W","A","S" o "D" suenan pasos
         if ((left || right || up || down)) {
