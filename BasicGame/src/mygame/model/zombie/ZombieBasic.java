@@ -78,6 +78,8 @@ public class ZombieBasic extends Zombie implements AnimEventListener, ZombieInte
         moveDirection = viewDirection;
 
 
+        SoundManager.initBasicZombieSound(app, id);
+        SoundManager.initFootStepBasicZombieSound(app, id);
         this.speed = speed;
         this.hitpoints = 100;
         initAnimation();
@@ -207,9 +209,10 @@ public class ZombieBasic extends Zombie implements AnimEventListener, ZombieInte
     public void onAnimCycleDone(AnimControl control, AnimChannel channel, String animName) {
 
         if (animName.equals("walk") && state == 1) {
-//            SoundManager.zombieFootStepsPlay(app.getRootNode());
+            SoundManager.basicZombieFootStepsPlay(app.getRootNode(), id);
             System.out.println("Zombie walks");
 //            SoundManager.zombieFootStepsSetVolume(app.getRootNode(), 7 / dist1);
+            SoundManager.basicZombieFootStepsSetVolume(app.getRootNode(), id, 7 / dist1);
             channel.setAnim("walk", 0.50f);
             channel.setLoopMode(LoopMode.DontLoop);
             channel.setSpeed(1f);
