@@ -41,7 +41,7 @@ import mygame.model.zombie.ZombieManagerInterface;
  *
  * @author David C.
  */
-public class RunningGameState extends AbstractAppState {
+public class RunningGameState extends AbstractAppState implements RunningGameStateInterface{
 
     private SimpleApplication app;
     private ViewPort viewPort;
@@ -60,6 +60,7 @@ public class RunningGameState extends AbstractAppState {
     private ObjectsInGame objetos;
     private DamageCollision damageCollision;
     private int contadorPause = 2;
+    private int difficulty; // Facil: 1 ;Medio: 2; Dificil: 3;
     
     public RunningGameState(SimpleApplication app)  {
         this.rootNode = app.getRootNode();
@@ -98,7 +99,13 @@ public class RunningGameState extends AbstractAppState {
         // loadMap();
  
     }
-    
+    public int getDifficulty() {
+        return this.difficulty;
+    }
+
+    public void setDifficulty(int difficulty) {
+        this.difficulty = difficulty;
+    }
 
 /*
     public void setUpKeys() {
@@ -176,4 +183,6 @@ public class RunningGameState extends AbstractAppState {
 >>>>>>> origin/TEAM-G_2
 /**/
     }
+
+
 }

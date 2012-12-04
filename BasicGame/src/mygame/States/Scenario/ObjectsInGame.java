@@ -26,18 +26,23 @@ public class ObjectsInGame extends AbstractAppState  {
 
     List<ObjVida> ObjetosVida;
     List<WeaponInterface> weaponsList;
+    ArrayList<ObjAntidoto> ObjetosAntidoto;
    
     
     
     public ObjectsInGame(SimpleApplication application){
         this.app =application;
         this.bulletAppState = this.app.getStateManager().getState(BulletAppState.class);
-  
+        
+        //Guardamos los botiquines que creemos en una lista
+        ObjetosAntidoto = new ArrayList<ObjAntidoto>();
+        ObjetosAntidoto.add(new ObjAntidoto(this.bulletAppState,this.app,0,141.61f,-0.65f,-79.91f, 0));
+        ObjetosAntidoto.get(0).addAntidotoToScenario();
         
         //Guardamos los botiquines que creemos en una lista
         ObjetosVida = new ArrayList<ObjVida>();
-        ObjetosVida.add(new ObjVida(this.bulletAppState,this.app,1,10.0f,0f,10.0f, 0));
-        ObjetosVida.add(new ObjVida(this.bulletAppState,this.app,2,15.0f,0f,17.0f, 1));
+        ObjetosVida.add(new ObjVida(this.bulletAppState,this.app,1,10.0f,1f,10.0f, 0));
+        ObjetosVida.add(new ObjVida(this.bulletAppState,this.app,2,15.0f,1f,17.0f, 1));
         ObjetosVida.get(0).addFirstAidKitToScenario();
         ObjetosVida.get(1).addFirstAidKitToScenario();
         
@@ -49,7 +54,13 @@ public class ObjectsInGame extends AbstractAppState  {
     
    public void update(GUIPlayerMain gui, CharacterMainInterface player){
        
-
+       // grab Antidote Kit near player if there is one
+       ObjAntidoto antidoto = getAntidotoNearPlayer(player.getPlayerPosition());
+       if (antidoto != null) {
+            antidoto.deleteFromScenario();
+            ObjetosAntidoto.remove(antidoto);
+       }
+       
        // grab First-Aid Kit near player if there is one
        ObjVida botiquin = getBotiquinNearPlayer(player.getPlayerPosition());
        if (botiquin != null) {
@@ -66,6 +77,18 @@ public class ObjectsInGame extends AbstractAppState  {
      
     }
     
+   
+   public ObjAntidoto getAntidotoNearPlayer(Vector3f playerPosition) {
+       
+       for (ObjAntidoto antidoto : ObjetosAntidoto) {
+           if (antidoto.getPosition().distance(playerPosition) < 5.0f ) {
+               return antidoto;
+           }
+       }
+       
+       return null;
+   }
+   
    public ObjVida getBotiquinNearPlayer(Vector3f playerPosition) {
        
        for (ObjVida botiquin : ObjetosVida) {

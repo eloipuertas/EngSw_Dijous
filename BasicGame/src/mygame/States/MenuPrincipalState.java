@@ -19,6 +19,7 @@ import com.jme3.scene.Node;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
+import mygame.Controller;
 import mygame.sound.SoundManager;
 
 /**
@@ -40,6 +41,15 @@ public class MenuPrincipalState extends AbstractAppState implements ScreenContro
     private boolean isRunningMenuPrincipal = true;
     private boolean enPantalla = false;
     private boolean icono = false;
+    private int difficulty = 2;
+
+    public int getDificulty() {
+        return difficulty;
+    }
+
+    public void setDificulty(int dificulty) {
+        this.difficulty = dificulty;
+    }
 
     
     public MenuPrincipalState(SimpleApplication app){
@@ -117,6 +127,45 @@ public class MenuPrincipalState extends AbstractAppState implements ScreenContro
             } 
         }
     }
+     public void showOptionsMenu(){
+        
+        // STEFAN!! tengo error de java memory
+       //audio_theme.pause(); // Pausa la cancion para entrar en el juego
+       //audio_click.playInstance();// Suena el click
+        //--
+        
+     
+       SoundManager.clickPlayInstance(rootNode); // Play click
+       nifty.gotoScreen("menuOpciones");
+       
+       //this.setIsRunningMenuPrincipal(false);
+    }
+    
+     
+     
+    public void opcionNivelFacil(){
+       //SoundManager.clickPlayInstance(rootNode); // Play click
+       nifty.gotoScreen("start");
+       this.difficulty = 1;
+       
+    }
+    public void opcionNivelMedio(){
+       SoundManager.clickPlayInstance(rootNode); // Play click
+       nifty.gotoScreen("start");
+       this.difficulty = 2;
+    }
+    public void opcionNivelDificil(){
+       SoundManager.clickPlayInstance(rootNode); // Play click
+       nifty.gotoScreen("start");
+       this.difficulty = 3;
+    }
+     
+    public void quitMenuOpciones(){
+      
+       SoundManager.clickPlayInstance(rootNode); // Play click
+       nifty.gotoScreen("start");
+    }
+    
     
     public void newGame(){
         
@@ -130,6 +179,8 @@ public class MenuPrincipalState extends AbstractAppState implements ScreenContro
        nifty.gotoScreen("end");
        this.app.getInputManager().setCursorVisible(false);
        this.setIsRunningMenuPrincipal(false);
+       ((Controller)app).getRunningGameState().setDifficulty(difficulty);
+       
     }
     
     /* @Emilio muestra menú pausa, pero no pausa el juego solo el movimiento
