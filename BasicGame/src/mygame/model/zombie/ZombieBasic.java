@@ -232,7 +232,7 @@ public class ZombieBasic extends Zombie implements AnimEventListener, ZombieInte
             channel.setLoopMode(LoopMode.DontLoop);
             channel.setSpeed(1f);
         } else if (animName.equals("attack")) {
-
+            //damagePlayer();
             channel.setAnim("walk", 0.50f);
             channel.setLoopMode(LoopMode.DontLoop);
             channel.setSpeed(1f);
@@ -303,12 +303,16 @@ public class ZombieBasic extends Zombie implements AnimEventListener, ZombieInte
     public void killZombie() {
         state = 3;
         //zombieControl.setFallSpeed(1000000f);
+        zombieControl.setWalkDirection(new Vector3f(0, 0, 0));
         SoundManager.zombieDiePlayInstance(app.getRootNode());
         channel.setAnim("death");
         channel.setSpeed(0.4f);
         
         channel.setLoopMode(LoopMode.DontLoop);
         System.out.println(((Controller) app).getZombieManager());
+    }
+    public void damagePlayer(){
+        ((Controller)app).getPlayerManager().doDamage(DAMAGEDONE);
     }
 }
 

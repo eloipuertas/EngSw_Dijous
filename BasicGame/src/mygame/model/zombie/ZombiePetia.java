@@ -223,7 +223,7 @@ public ZombiePetia(SimpleApplication app, Vector3f position, Vector3f viewDirect
             channel.setLoopMode(LoopMode.DontLoop);
             channel.setSpeed(1f);
         } else if (animName.equals("attack")) {
-
+            //damagePlayer();
             channel.setAnim("walk", 0.50f);
             channel.setLoopMode(LoopMode.DontLoop);
             channel.setSpeed(1f);
@@ -287,5 +287,8 @@ public ZombiePetia(SimpleApplication app, Vector3f position, Vector3f viewDirect
         System.out.println("La animacio dura" + channel.getAnimMaxTime());
         channel.setLoopMode(LoopMode.DontLoop);
         System.out.println(((Controller) app).getZombieManager());
+    }
+    public void damagePlayer(){
+        ((Controller)app).getPlayerManager().doDamage(DAMAGEDONE);
     }
 }

@@ -147,7 +147,7 @@ public abstract class Zombie implements AnimEventListener, ZombieInterface {
             channel.setLoopMode(LoopMode.DontLoop);
             channel.setSpeed(1f);
         } else if (animName.equals("attack")) {
-
+            //damagePlayer();
             channel.setAnim("walk", 0.50f);
             channel.setLoopMode(LoopMode.DontLoop);
             channel.setSpeed(1f);
@@ -193,5 +193,8 @@ public abstract class Zombie implements AnimEventListener, ZombieInterface {
         System.out.println("La animacio dura" + channel.getAnimMaxTime());
         channel.setLoopMode(LoopMode.DontLoop);
         System.out.println(((Controller) app).getZombieManager());
+    }
+    public void damagePlayer(){
+        ((Controller)app).getPlayerManager().doDamage(DAMAGEDONE);
     }
 }
