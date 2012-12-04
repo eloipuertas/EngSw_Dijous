@@ -47,10 +47,12 @@ public class ZombiePetia extends Zombie implements AnimEventListener, ZombieInte
     Vector3f moveDirection;
     float xIncrement;
     float zIncrement;
+    private int id;
     
     
-public ZombiePetia(SimpleApplication app, Vector3f position, Vector3f viewDirection, float speed) {
-        super(app, position, viewDirection, speed);
+public ZombiePetia(SimpleApplication app, Vector3f position, Vector3f viewDirection, float speed, int i) {
+        super(app, position, viewDirection, speed, i);
+        id=i;
     
         this.app = app;
         CapsuleCollisionShape cilinder = new CapsuleCollisionShape(1.5f, 2f, 1);

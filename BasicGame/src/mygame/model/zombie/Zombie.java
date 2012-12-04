@@ -44,10 +44,11 @@ public abstract class Zombie implements AnimEventListener, ZombieInterface {
     protected RigidBodyControl colisions;
     protected Node node1;
     protected CompoundCollisionShape ccs;
+    protected int id;
 
-    protected Zombie(SimpleApplication app, Vector3f position, Vector3f viewDirection, float speed) {
+    protected Zombie(SimpleApplication app, Vector3f position, Vector3f viewDirection, float speed, int i) {
         this.app = app;
-
+        id=i;
         CapsuleCollisionShape cilinder = new CapsuleCollisionShape(1.5f, 2f, 1);
         zombieControl = new CharacterControl(cilinder, 0.1f);
         zombieShape = app.getAssetManager().loadModel("Models/zombie/zombie.mesh.j3o");

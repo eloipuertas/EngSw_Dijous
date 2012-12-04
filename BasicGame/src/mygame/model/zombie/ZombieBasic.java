@@ -49,10 +49,11 @@ public class ZombieBasic extends Zombie implements AnimEventListener, ZombieInte
     private Vector3f moveDirection;
     private float xIncrement;
     private float zIncrement;
+    private int id;
 
-    public ZombieBasic(SimpleApplication app, Vector3f position, Vector3f viewDirection, float speed) {
-        super(app, position, viewDirection, speed);
-        
+    public ZombieBasic(SimpleApplication app, Vector3f position, Vector3f viewDirection, float speed, int i) {
+        super(app, position, viewDirection, speed, i);
+        id=i;
         CapsuleCollisionShape cilinder = new CapsuleCollisionShape(1.5f, 2f, 1);
         zombieControl = new CharacterControl(cilinder, 0.1f);
         zombieShape = app.getAssetManager().loadModel("Models/zombie/zombie.mesh.j3o");
@@ -243,7 +244,7 @@ public class ZombieBasic extends Zombie implements AnimEventListener, ZombieInte
             zombieShape.move(0f, -2.5f, 0f);
             node1.removeControl(colisions);
             node1.removeControl(zombieControl);
-            channel.setSpeed(0f);
+            control.clearListeners();
             this.app.getStateManager().getState(BulletAppState.class).getPhysicsSpace().remove(colisions);
             this.app.getStateManager().getState(BulletAppState.class).getPhysicsSpace().remove(zombieControl);
 

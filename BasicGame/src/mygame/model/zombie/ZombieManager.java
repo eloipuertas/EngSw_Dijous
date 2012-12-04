@@ -27,6 +27,7 @@ public class ZombieManager implements ZombieManagerInterface{
     private ArrayList<ZombieInterface> zombies = new ArrayList<ZombieInterface>();
     private int[] groups = new int[]{0x00000002,0x00000004,0x00000008,0x00000010,0x00000020,0x00000040,0x00000080,0x00000100,0x00000200,0x00000400,0x00000800};
     private int colisionGroupCounter=0;
+    private int id=0;
 
     public ZombieManager(Application app) {
         /**
@@ -42,29 +43,30 @@ public class ZombieManager implements ZombieManagerInterface{
 //            addZombieToScene(z);
 //        }
 
-        ZombieBasic z = new ZombieBasic(this.app, new Vector3f(5f, 5f, 0f), new Vector3f(0f, 0f, 1f), 0.05f);
+        ZombieBasic z = new ZombieBasic(this.app, new Vector3f(5f, 5f, 0f), new Vector3f(0f, 0f, 1f), 0.05f, id);
         zombies.add(z);
         addZombieToScene(z);
-         
-        z = new ZombieBasic(this.app, new Vector3f(15f, 5f, 10f), new Vector3f(1f, 0f, 1f), 0.05f);
+        id++;
+        
+        z = new ZombieBasic(this.app, new Vector3f(15f, 5f, 10f), new Vector3f(1f, 0f, 1f), 0.05f,id);
         zombies.add(z);
         addZombieToScene(z);
-       
+        id++;
         
-        z = new ZombieBasic(this.app, new Vector3f(0f, 5f, 10f), new Vector3f(1f, 0f, 1f), 0.05f);
+        z = new ZombieBasic(this.app, new Vector3f(0f, 5f, 10f), new Vector3f(1f, 0f, 1f), 0.05f,id);
         zombies.add(z);
         addZombieToScene(z);
+        id++;
         
-        
-        z = new ZombieBasic(this.app, new Vector3f(0f, 5f, 10f), new Vector3f(-1f, 0f, -1f), 0.05f);
+        z = new ZombieBasic(this.app, new Vector3f(0f, 5f, 10f), new Vector3f(-1f, 0f, -1f), 0.05f,id);
         zombies.add(z);
         addZombieToScene(z);
+        id++;
         
-        
-        z = new ZombieBasic(this.app, new Vector3f(0f, 5f, 10f), new Vector3f(1f, 0f, -1f), 0.05f);
+        z = new ZombieBasic(this.app, new Vector3f(0f, 5f, 10f), new Vector3f(1f, 0f, -1f), 0.05f, id);
         zombies.add(z);
         addZombieToScene(z);
-        
+        id++;
         /**/
         setZombiColission();
         //zombies.get(2).doDamage(100, true);
