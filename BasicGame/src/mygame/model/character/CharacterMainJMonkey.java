@@ -122,7 +122,7 @@ public final class CharacterMainJMonkey
 
         // Creating pivot Node so that our character doesn't float
         playerModelLoad = app.getAssetManager().loadModel("Character/porra.j3o");
-        
+           
         // Loding our first character model        
         //Material playerMaterial = app.getAssetManager().loadMaterial("Character/Cube.002.j3m");
         pivot.attachChild(playerModelLoad);  // attach 'player model porra' node as a child of pivot node of character
@@ -380,11 +380,13 @@ public final class CharacterMainJMonkey
     //by Polit
     public void initAnimacio(){
         //controlAnim = playerModelLoad.getControl(AnimControl.class);
+        //System.out.println("Model carregat: " + playerModelLoad);
+        //System.out.println("ControlAnimacio: " + controlAnim);
         //controlAnim.addListener(this);
         //channelAnim = controlAnim.createChannel();
-        /*channelAnim.setAnim("shootAction");
-        channelAnim.setSpeed(0f);
-        channelAnim.setLoopMode(LoopMode.Loop);*/
+        //channelAnim.setAnim("shootAction");
+        //channelAnim.setSpeed(0f);
+        //channelAnim.setLoopMode(LoopMode.Loop);
         
     }
     
