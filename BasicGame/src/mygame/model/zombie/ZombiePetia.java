@@ -40,6 +40,7 @@ public class ZombiePetia extends Zombie implements AnimEventListener, ZombieInte
     private RigidBodyControl colisions;
     private Node node1;
     private CompoundCollisionShape ccs;
+    private float dist1;
     //for random movement
     boolean randMoveSet = false;
     Random rand = new Random();
@@ -77,7 +78,6 @@ public ZombiePetia(SimpleApplication app, Vector3f position, Vector3f viewDirect
         zombieControl.setPhysicsLocation(position);
         zombieControl.setViewDirection(viewDirection);
         moveDirection = viewDirection;
-
 
         this.speed = speed;
         this.hitpoints = 100;
@@ -121,7 +121,7 @@ public ZombiePetia(SimpleApplication app, Vector3f position, Vector3f viewDirect
 
         float dist = playerPos.distance(zombiePos);
         float angle = zombieControl.getViewDirection().normalize().angleBetween(playerPos.subtract(zombiePos).normalize());
-
+        dist1=dist;
         if (dist < DISTFOLLOW && angle < (ANGLEFOLLOW * Math.PI / 360) || dist < DISTDETECT) {
             // follow player
             if (dist < DISTATTACK) { //near the player, attack and stop
@@ -131,6 +131,7 @@ public ZombiePetia(SimpleApplication app, Vector3f position, Vector3f viewDirect
                     channel.setLoopMode(LoopMode.DontLoop);
                     System.out.println("attack");
                 }
+                SoundManager.PetiaZombieFootStepsPause(app.getRootNode());
                 state = 2;//attack
                 zombieControl.setWalkDirection(new Vector3f(0, 0, 0));
                 channel.setSpeed(1f);
@@ -204,6 +205,10 @@ public ZombiePetia(SimpleApplication app, Vector3f position, Vector3f viewDirect
 
         if (animName.equals("walk") && state == 1) {
 
+            SoundManager.PetiaZombieFootStepsPlay(app.getRootNode());
+            System.out.println("Zombie walks");
+            SoundManager.PetiaZombieFootStepsSetVolume(app.getRootNode(), 7 / dist1);
+            
             channel.setAnim("walk", 0.50f);
             channel.setLoopMode(LoopMode.DontLoop);
             channel.setSpeed(1f);
@@ -229,10 +234,13 @@ public ZombiePetia(SimpleApplication app, Vector3f position, Vector3f viewDirect
             channel.setSpeed(1f);
             state = 0;
         } else if (animName.equals("death")) {
+            SoundManager.PetiaZombieFootStepsPause(app.getRootNode());
+            SoundManager.PetiaZombieSoundPause(app.getRootNode());
             node1.detachChild(zombieShape);
             app.getRootNode().attachChild(zombieShape);
             zombieShape.setLocalTranslation(colisions.getPhysicsLocation());
             zombieShape.move(0f, -2.5f, 0f);
+            control.clearListeners();
             node1.removeControl(colisions);
             node1.removeControl(zombieControl);
             this.app.getStateManager().getState(BulletAppState.class).getPhysicsSpace().remove(colisions);
@@ -266,6 +274,9 @@ public ZombiePetia(SimpleApplication app, Vector3f position, Vector3f viewDirect
             if (hitpoints <= 0) {
                 killZombie();
             }
+            else{
+                SoundManager.basicZombieHurtPlayInstance(app.getRootNode());
+            }
         } else {
             Vector3f zombiePos = zombieControl.getPhysicsLocation();
             Vector3f playerPos = ((Controller) app).getPlayerManager().getPlayerPosition();
@@ -275,13 +286,17 @@ public ZombiePetia(SimpleApplication app, Vector3f position, Vector3f viewDirect
                 if (hitpoints <= 0) {
                     killZombie();
                 }
+                else{
+                    SoundManager.basicZombieHurtPlayInstance(app.getRootNode());
+                }
             }
         }
     }
 
     public void killZombie() {
         state = 3;
-        //zombieControl.setFallSpeed(1000000f);    
+        //zombieControl.setFallSpeed(1000000f);
+        SoundManager.basicZombieDiePlayInstance(app.getRootNode());
         channel.setAnim("death");
         channel.setSpeed(0.4f);
         System.out.println("La animacio dura" + channel.getAnimMaxTime());

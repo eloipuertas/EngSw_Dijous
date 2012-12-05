@@ -110,6 +110,7 @@ public abstract class Zombie implements AnimEventListener, ZombieInterface {
         if (!paused) {
             if (state == 3) { // dying, playing animation (only seting speed if comming back from pause)
                 channel.setSpeed(1f);
+                zombieControl.setWalkDirection(new Vector3f(0, 0, 0));
             } else {
                 moveZombie();
             }

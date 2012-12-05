@@ -83,6 +83,7 @@ public class ZombieBasic extends Zombie implements AnimEventListener, ZombieInte
         this.speed = speed;
         this.hitpoints = 100;
         initAnimation();
+        
     }
 
     public CharacterControl getControl() {
@@ -124,10 +125,7 @@ public class ZombieBasic extends Zombie implements AnimEventListener, ZombieInte
         float dist = playerPos.distance(zombiePos);
         float angle = zombieControl.getViewDirection().normalize().angleBetween(playerPos.subtract(zombiePos).normalize());
         dist1=dist;
-        if(state==3){
-            zombieControl.setWalkDirection(new Vector3f(0, 0, 0));
-        }
-        else if (dist < DISTFOLLOW && angle < (ANGLEFOLLOW * Math.PI / 360) || dist < DISTDETECT) {
+        if (dist < DISTFOLLOW && angle < (ANGLEFOLLOW * Math.PI / 360) || dist < DISTDETECT) {
             // follow player
             if (dist < DISTATTACK) { //near the player, attack and stop
                 if (state != 2) {
