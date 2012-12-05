@@ -37,6 +37,9 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import mygame.Controller;
 import mygame.States.Scenario.Scenario;
 import mygame.model.weapon.WeaponInterface;
@@ -88,6 +91,7 @@ public final class CharacterMainJMonkey
     private AnimChannel channelAnim;
     private AnimControl controlAnim;
     private ArrayList<ZombieInterface> zombiesMI;
+    private static final ScheduledExecutorService worker = Executors.newSingleThreadScheduledExecutor();
     
     
     /**
@@ -114,7 +118,7 @@ public final class CharacterMainJMonkey
         
         // Creating and setting character's features as:
         // collision box, jump speed, fall speed and gravity
-        CapsuleCollisionShape capsuleShape = new CapsuleCollisionShape(3f, 8f, 1);
+        CapsuleCollisionShape capsuleShape = new CapsuleCollisionShape(3f, 3.5f, 1);
         playerControl = new CharacterControl(capsuleShape, 0.05f);
         playerControl.setJumpSpeed(40);
         playerControl.setFallSpeed(100);
@@ -397,6 +401,12 @@ public final class CharacterMainJMonkey
         
     }
     
+    Runnable deleteRedSpot = new Runnable() {
+        public void run() {
+            app.getRootNode().detachChild(marcaVermella);
+        }
+    };
+    
     /**
      * Shoot Listener Method and listener which performs shooting action in
      * scenario whithin peephole and red mark. It also and shows collision
@@ -427,6 +437,7 @@ public final class CharacterMainJMonkey
                     // Let's interact - we mark the hit with a red dot.
                     marcaVermella.setLocalTranslation(closest.getContactPoint());
                     app.getRootNode().attachChild(marcaVermella); // put red sphere at that point
+                    worker.schedule(deleteRedSpot, 5, TimeUnit.SECONDS); // remove red spot after 5 seconds
                     //channelAnim.setAnim("shootAction", 0.50f);
                     //channelAnim.setLoopMode(LoopMode.DontLoop);
                     System.out.println("shootAction");
