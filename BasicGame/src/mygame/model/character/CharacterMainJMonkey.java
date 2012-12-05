@@ -183,7 +183,7 @@ public final class CharacterMainJMonkey
         // @ Ernest, deleting zoom of flycam
         app.getInputManager().deleteMapping("FLYCAM_ZoomOut");
         app.getInputManager().deleteMapping("FLYCAM_ZoomIn");
-
+        
         // Adding left, right, up, down and run actions as a defined keyboard keys
         app.getInputManager().addMapping("Left", new KeyTrigger(KeyInput.KEY_A));
         app.getInputManager().addMapping("Right", new KeyTrigger(KeyInput.KEY_D));
@@ -196,9 +196,6 @@ public final class CharacterMainJMonkey
         
         app.getInputManager().addMapping("Mute", new KeyTrigger(KeyInput.KEY_M));
         app.getInputManager().addMapping("Paused", new KeyTrigger(KeyInput.KEY_P));
-
-        app.getInputManager().addMapping("Weapon1", new KeyTrigger(KeyInput.KEY_1));
-        app.getInputManager().addMapping("Weapon2", new KeyTrigger(KeyInput.KEY_2));
         
         app.getInputManager().addListener(this, "Left");
         app.getInputManager().addListener(this, "Right");
@@ -209,9 +206,6 @@ public final class CharacterMainJMonkey
         
         app.getInputManager().addListener(this, "Mute");
         app.getInputManager().addListener(this, "Paused");
-        
-        app.getInputManager().addListener(changeWeapon, "Weapon1");
-        app.getInputManager().addListener(changeWeapon, "Weapon2");
         
     }
     
@@ -231,7 +225,20 @@ public final class CharacterMainJMonkey
           created = false;  
         }
     }
-
+    
+    
+    /** @Ernest --> Method wich controls if list of weapons has gun and allows change weapon when players had grabbed a gun 
+     */
+    
+    public void controlChangeWeapons () {
+            
+            app.getInputManager().addMapping("Weapon1", new KeyTrigger(KeyInput.KEY_1));
+            app.getInputManager().addMapping("Weapon2", new KeyTrigger(KeyInput.KEY_2));
+        
+            app.getInputManager().addListener(changeWeapon, "Weapon1");
+            app.getInputManager().addListener(changeWeapon, "Weapon2");
+    }
+    
     /**
      * Method which has our custom actions triggered by key presses. We do not
      * walk yet, we just keep track of the direction the user pressed.
