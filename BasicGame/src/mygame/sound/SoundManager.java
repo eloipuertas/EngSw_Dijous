@@ -46,7 +46,7 @@ public class SoundManager {
         zombieHurt.setVolume(0.2f);
         rootNode.attachChild(zombieHurt);
         
-        // Initiliaze zombie hurt
+        // Initiliaze zombie die
         AudioNode zombieDie = new AudioNode(assetManager,
 "Sounds/Effects/zombieDie.wav",false);
         zombieDie.setLooping(true);
@@ -71,6 +71,62 @@ public class SoundManager {
         rootNode.attachChild(zombieFootstepOriol);  
         
         
+        // Initialize zombieAttack
+         AudioNode zombieAttack = new AudioNode(assetManager,
+"Sounds/Effects/zombieAttack1.wav",false);
+        zombieAttack.setLooping(true);
+        zombieAttack.setName("zombieAttack");
+        zombieAttack.setVolume(0.4f);
+        rootNode.attachChild(zombieAttack);
+        
+        
+                // Initiliaze zombie hurt Petia
+        AudioNode PetiaZombieHurt = new AudioNode(assetManager,
+"Sounds/Effects/zombiePetiaHurt.wav",false);
+        PetiaZombieHurt.setLooping(true);
+        PetiaZombieHurt.setName("PetiaZombieHurt");
+        PetiaZombieHurt.setVolume(0.2f);
+        rootNode.attachChild(PetiaZombieHurt);
+        
+        // Initiliaze zombie die Petia
+        AudioNode PetiaZombieDie = new AudioNode(assetManager,
+"Sounds/Effects/zombiePetiaDie.wav",false);
+        PetiaZombieDie.setLooping(true);
+        PetiaZombieDie.setName("PetiaZombieDie");
+        PetiaZombieDie.setVolume(0.4f);
+        rootNode.attachChild(PetiaZombieDie);
+        
+              // Initialize zombieAttack Petia
+         AudioNode PetiaZombieAttack = new AudioNode(assetManager,
+"Sounds/Effects/zombieAttack1.wav",false);
+        PetiaZombieAttack.setLooping(true);
+        PetiaZombieAttack.setName("PetiaZombieAttack");
+        PetiaZombieAttack.setVolume(0.4f);
+        rootNode.attachChild(PetiaZombieAttack);
+        
+        // Initiliaze zombie hurt Oriol
+        AudioNode OriolZombieHurt = new AudioNode(assetManager,
+"Sounds/Effects/zombieOriolHurt.wav",false);
+        OriolZombieHurt.setLooping(true);
+        OriolZombieHurt.setName("OriolZombieHurt");
+        OriolZombieHurt.setVolume(0.2f);
+        rootNode.attachChild(OriolZombieHurt);
+        
+        // Initiliaze zombie die Oriol
+        AudioNode OriolZombieDie = new AudioNode(assetManager,
+"Sounds/Effects/zombieOriolDie.wav",false);
+        OriolZombieDie.setLooping(true);
+        OriolZombieDie.setName("OriolZombieDie");
+        OriolZombieDie.setVolume(0.4f);
+        rootNode.attachChild(OriolZombieDie);
+        
+              // Initialize zombieAttack Petia
+         AudioNode OriolZombieAttack = new AudioNode(assetManager,
+"Sounds/Effects/zombieAttack1.wav",false);
+        OriolZombieAttack.setLooping(true);
+        OriolZombieAttack.setName("OriolZombieAttack");
+        OriolZombieAttack.setVolume(0.4f);
+        rootNode.attachChild(OriolZombieAttack);
    
     }
     
@@ -99,7 +155,7 @@ public class SoundManager {
             
       // Initialize zombie footstep
         AudioNode zombieFootstep = new AudioNode(assetManager,
-                "Sounds/Effects/footStepZombie.wav",false);
+                "Sounds/Effects/zombieFootStep2.wav",false);
         zombieFootstep.setLooping(true);
         zombieFootstep.setVolume(0.1f);
         
@@ -108,6 +164,7 @@ public class SoundManager {
         zombieFootstep.setName("zombieFootstep"+idS);
          
         rootNode.attachChild(zombieFootstep);
+        
     }
     
     /* Play the footsteps */
@@ -249,28 +306,31 @@ public class SoundManager {
         AudioNode zombieFootstepPetia = (AudioNode) rootNode.getChild("zombieFootstepPetia");
         zombieFootstepPetia.setVolume(vol);
     }
-    
-    
-    
-    
-    
+        
     /* Set volume to the zombie sounds  */
     public static void basicZombieFootStepsSetVolume(Node rootNode, int id, float vol){
         String idS = String.valueOf(id);
+
         AudioNode zombieFootstep = (AudioNode) rootNode.getChild("zombieFootstep"+idS);
-        zombieFootstep.setVolume(vol);
+        zombieFootstep.setVolume(0.5f * vol);
     }
     
     /* Play zombie hurt  */
-    public static void zombieHurtPlayInstance(Node rootNode){
+    public static void basicZombieHurtPlayInstance(Node rootNode){
         AudioNode zombieHurt = (AudioNode) rootNode.getChild("zombieHurt");
         zombieHurt.playInstance();
     }
     
     /* Play zombie die  */
-    public static void zombieDiePlayInstance(Node rootNode){
+    public static void basicZombieDiePlayInstance(Node rootNode){
         AudioNode zombieDie = (AudioNode) rootNode.getChild("zombieDie");
         zombieDie.playInstance();
+    }
+
+    /* Play zombie attack  */
+    public static void basicZombieAttackPlayInstance(Node rootNode){
+        AudioNode zombieAttack = (AudioNode) rootNode.getChild("zombieAttack");
+        zombieAttack.playInstance();
     }
 
     
@@ -294,9 +354,12 @@ public class SoundManager {
         AudioNode zombieDie = (AudioNode) rootNode.getChild("zombieDie");
         zombieDie.setVolume(0);
         
+        AudioNode zombieAttack = (AudioNode) rootNode.getChild("zombieAttack");
+        zombieAttack.setVolume(0);
+        
                 
         // For each zombie mute sound and footStep
-        int numZombies = 1;
+        int numZombies = 5;
         for (int i = 0; i < numZombies; ++i){
             String idS = String.valueOf(i);
             
@@ -307,6 +370,24 @@ public class SoundManager {
             zombieSound.setVolume(0);    
             
         }
+        
+        AudioNode PetiaZombieHurt = (AudioNode) rootNode.getChild("PetiaZombieHurt");
+        PetiaZombieHurt.setVolume(0);
+        
+        AudioNode PetiaZombieDie = (AudioNode) rootNode.getChild("PetiaZombieDie");
+        PetiaZombieDie.setVolume(0);
+        
+        AudioNode PetiaZombieAttack = (AudioNode) rootNode.getChild("PetiaZombieAttack");
+        PetiaZombieAttack.setVolume(0);
+        
+        AudioNode OriolZombieHurt = (AudioNode) rootNode.getChild("OriolZombieHurt");
+        OriolZombieHurt.setVolume(0);
+        
+        AudioNode OriolZombieDie = (AudioNode) rootNode.getChild("OriolZombieDie");
+        OriolZombieDie.setVolume(0);
+        
+        AudioNode OriolZombieAttack = (AudioNode) rootNode.getChild("OriolZombieAttack");
+        OriolZombieAttack.setVolume(0);
         
        
     }
@@ -333,6 +414,28 @@ public class SoundManager {
         
         AudioNode zombieDie = (AudioNode) rootNode.getChild("zombieDie");
         zombieDie.setVolume(0.4f);
+        
+        AudioNode zombieAttack = (AudioNode) rootNode.getChild("zombieAttack");
+        zombieAttack.setVolume(0.4f);
+        
+        AudioNode PetiaZombieHurt = (AudioNode) rootNode.getChild("PetiaZombieHurt");
+        PetiaZombieHurt.setVolume(0.2f);
+        
+        AudioNode PetiaZombieDie = (AudioNode) rootNode.getChild("PetiaZombieDie");
+        PetiaZombieDie.setVolume(0.4f);
+        
+        AudioNode PetiaZombieAttack = (AudioNode) rootNode.getChild("PetiaZombieAttack");
+        PetiaZombieAttack.setVolume(0.4f);
+        
+        AudioNode OriolZombieHurt = (AudioNode) rootNode.getChild("OriolZombieHurt");
+        OriolZombieHurt.setVolume(0.2f);
+        
+        AudioNode OriolZombieDie = (AudioNode) rootNode.getChild("OriolZombieDie");
+        OriolZombieDie.setVolume(0.4f);
+        
+        AudioNode OriolZombieAttack = (AudioNode) rootNode.getChild("OriolZombieAttack");
+        OriolZombieAttack.setVolume(0.4f);
+        
         
         
         

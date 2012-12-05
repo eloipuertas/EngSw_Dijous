@@ -237,6 +237,7 @@ public class ZombieBasic extends Zombie implements AnimEventListener, ZombieInte
             channel.setLoopMode(LoopMode.DontLoop);
             channel.setSpeed(1f);
             state = 0;
+            SoundManager.basicZombieAttackPlayInstance(app.getRootNode());
         } else if (animName.equals("death")) {
             System.out.println("Zombie dies");
             node1.detachChild(zombieShape);
@@ -281,7 +282,7 @@ public class ZombieBasic extends Zombie implements AnimEventListener, ZombieInte
                     killZombie();
                 }
                 else{
-                    SoundManager.zombieHurtPlayInstance(app.getRootNode());
+                    SoundManager.basicZombieHurtPlayInstance(app.getRootNode());
                 }
             } else {
                 Vector3f zombiePos = zombieControl.getPhysicsLocation();
@@ -293,7 +294,7 @@ public class ZombieBasic extends Zombie implements AnimEventListener, ZombieInte
                         killZombie();
                     }
                     else{
-                        SoundManager.zombieHurtPlayInstance(app.getRootNode());
+                        SoundManager.basicZombieHurtPlayInstance(app.getRootNode());
                     }
                 }
             }
@@ -304,7 +305,7 @@ public class ZombieBasic extends Zombie implements AnimEventListener, ZombieInte
         state = 3;
         //zombieControl.setFallSpeed(1000000f);
         zombieControl.setWalkDirection(new Vector3f(0, 0, 0));
-        SoundManager.zombieDiePlayInstance(app.getRootNode());
+        SoundManager.basicZombieDiePlayInstance(app.getRootNode());
         channel.setAnim("death");
         channel.setSpeed(0.4f);
         
