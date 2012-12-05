@@ -37,9 +37,6 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import mygame.Controller;
 import mygame.States.Scenario.Scenario;
 import mygame.model.weapon.WeaponInterface;
@@ -91,7 +88,6 @@ public final class CharacterMainJMonkey
     private AnimChannel channelAnim;
     private AnimControl controlAnim;
     private ArrayList<ZombieInterface> zombiesMI;
-    private static final ScheduledExecutorService worker = Executors.newSingleThreadScheduledExecutor();
     
     
     /**
@@ -141,10 +137,11 @@ public final class CharacterMainJMonkey
         app.getRootNode().attachChild(shootables);
         shootables.attachChild(escenari.getEscenari());        
 
-        isPaused = false;
+        isPaused = false;;
         
         initAnimacio();
-    }    
+    }
+    
     
     /******By pòlit*****/
     /*****Metode afegir models al node shootables*******/
@@ -401,11 +398,12 @@ public final class CharacterMainJMonkey
         
     }
     
+    /*
     Runnable deleteRedSpot = new Runnable() {
         public void run() {
             app.getRootNode().detachChild(marcaVermella);
         }
-    };
+    };*/
     
     /**
      * Shoot Listener Method and listener which performs shooting action in
@@ -413,6 +411,7 @@ public final class CharacterMainJMonkey
      * sceneario elements
      */
     private ActionListener accioDisparar = new ActionListener() {
+        @SuppressWarnings("empty-statement")
         public void onAction(String name, boolean keyPressed, float tpf) {
             // If receives a 'Shoot action
             if (name.equals("Shoot") && !keyPressed) {
@@ -435,16 +434,29 @@ public final class CharacterMainJMonkey
                     CollisionResult closest = resultat.getClosestCollision();
                     damageToZombies(closest.getGeometry());
                     // Let's interact - we mark the hit with a red dot.
-                    marcaVermella.setLocalTranslation(closest.getContactPoint());
-                    app.getRootNode().attachChild(marcaVermella); // put red sphere at that point
-                    worker.schedule(deleteRedSpot, 5, TimeUnit.SECONDS); // remove red spot after 5 seconds
+                    
+                    // -----> DESCOMENTAR LA SIGUIENTE LINEA SI NO OS GUSTA LA IDEA DE UNA MARCA POR CADA TIRO - ROCIO
+                    //marcaVermella.setLocalTranslation(closest.getContactPoint());                    
+                    // <-------
+                    
+                    // -----> COMENTAR LAS SIGUIENTES 3 LINEAS SI NO OS GUSTA LA IDEA DE UNA MARCA POR CADA TIRO - ROCIO
+                    Geometry redSpot = getNewRedSpot();
+                    redSpot.setLocalTranslation(closest.getContactPoint());
+                    app.getRootNode().attachChild(redSpot); // put red sphere at that point
+                    // <-------
+                    
+                    // -----> DESCOMENTAR LAS SIGUIENTES 2 LINEAS SI NO OS GUSTA LA IDEA DE UNA MARCA POR CADA TIRO
+                    //marcaVermella.setLocalTranslation(closest.getContactPoint());
+                    //app.getRootNode().attachChild(marcaVermella);
+                    // <-------
+                    
                     //channelAnim.setAnim("shootAction", 0.50f);
                     //channelAnim.setLoopMode(LoopMode.DontLoop);
                     System.out.println("shootAction");
-                } else {
+                } /*else {
                     // No hits? Then remove the red mark.
                     app.getRootNode().detachChild(marcaVermella);
-                }
+                }*/
             }
         }
     };
@@ -460,7 +472,9 @@ public final class CharacterMainJMonkey
             playerModelLoad = (Node) app.getAssetManager().loadModel("Character/playerPistola.j3o");
             playerModelLoad.move(0f, -5.5f, 0f); // setting correct position in order to appears on the floor
             shootActivated = true;
-            inicialitzarMarcaCollisio();  // call shooting red mark method
+            // -----> DESCOMENTAR LA SIGUIENTE LINEAS SI NO OS GUSTA LA IDEA DE UNA MARCA POR CADA TIRO - ROCIO
+            //inicialitzarMarcaCollisio();  // call shooting red mark method
+            // <-------
         }
         
         shootListenerMappingManagement(shootActivated);
@@ -482,18 +496,34 @@ public final class CharacterMainJMonkey
         }
     };
 
+    
+    // -----> COMENTAR LAS SIGUIENTES 13 LINEAS SI NO OS GUSTA LA IDEA DE UNA MARCA POR CADA TIRO - ROCIO             
     /**
-     * Method which creates a red mark as a sphere. Useful for test if weapon
+     * Method which creates a red SPOT as a sphere. Useful for test if weapon
      * can shoot
      */
-    protected void inicialitzarMarcaCollisio() {
+    protected Geometry getNewRedSpot() {
         // Creating red sphere and set its material
         Sphere sphere = new Sphere(30, 30, 0.2f);
-        marcaVermella = new Geometry("BOOM!", sphere);
-        Material marcaVermella_mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-        marcaVermella_mat.setColor("Color", ColorRGBA.Red);
-        marcaVermella.setMaterial(marcaVermella_mat);
+        Geometry redSpot = new Geometry("BOOM!", sphere);
+        Material redSpot_mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        redSpot_mat.setColor("Color", ColorRGBA.Red);
+        redSpot.setMaterial(redSpot_mat);
+        return redSpot;
     }
+    // <-------
+    
+    
+    // -----> DESCOMENTAR LAS SIGUIENTES LINEAS SI NO OS GUSTA LA IDEA DE UNA MARCA POR CADA TIRO - ROCIO
+    //protected void inicialitzarMarcaCollisio() {
+    //    // Creating red sphere and set its material
+    //    Sphere sphere = new Sphere(30, 30, 0.2f);
+    //    marcaVermella = new Geometry("BOOM!", sphere);
+    //    Material marcaVermella_mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+    //    marcaVermella_mat.setColor("Color", ColorRGBA.Red);
+    //    marcaVermella.setMaterial(marcaVermella_mat);
+    //}
+    // <-------
 
     /**
      * Method which constructs a peephole that recreates our target shooting It
