@@ -125,7 +125,7 @@ public class ZombieBasic extends Zombie implements AnimEventListener, ZombieInte
         float angle = zombieControl.getViewDirection().normalize().angleBetween(playerPos.subtract(zombiePos).normalize());
         dist1=dist;
         if(state==3){
-            //do nothing
+            zombieControl.setWalkDirection(new Vector3f(0, 0, 0));
         }
         else if (dist < DISTFOLLOW && angle < (ANGLEFOLLOW * Math.PI / 360) || dist < DISTDETECT) {
             // follow player
@@ -136,10 +136,12 @@ public class ZombieBasic extends Zombie implements AnimEventListener, ZombieInte
                     channel.setLoopMode(LoopMode.DontLoop);
                     System.out.println("attack");
                 }
+                SoundManager.basicZombieFootStepsPause(app.getRootNode(), id);
                 state = 2;//attack
                 zombieControl.setWalkDirection(new Vector3f(0, 0, 0));
                 channel.setSpeed(1f);
             } else if (state != 2) {
+                SoundManager.basicZombieFootStepsPlay(app.getRootNode(), id);
                 state = 1;
                 // Si el juego NO esta mutado o pausado ejecutar la siguiente linea
                 //SoundManager.zombieSoundSetVolume(app.getRootNode(), 1 / dist);
@@ -152,6 +154,7 @@ public class ZombieBasic extends Zombie implements AnimEventListener, ZombieInte
             }
         } else {
             //random movement
+            SoundManager.basicZombieFootStepsPlay(app.getRootNode(), id);
             state = 1;//move
 
             if (!randMoveSet) {
@@ -211,7 +214,6 @@ public class ZombieBasic extends Zombie implements AnimEventListener, ZombieInte
         if (animName.equals("walk") && state == 1) {
             SoundManager.basicZombieFootStepsPlay(app.getRootNode(), id);
             System.out.println("Zombie walks");
-//            SoundManager.zombieFootStepsSetVolume(app.getRootNode(), 7 / dist1);
             SoundManager.basicZombieFootStepsSetVolume(app.getRootNode(), id, 7 / dist1);
             channel.setAnim("walk", 0.50f);
             channel.setLoopMode(LoopMode.DontLoop);
@@ -233,12 +235,15 @@ public class ZombieBasic extends Zombie implements AnimEventListener, ZombieInte
             channel.setSpeed(1f);
         } else if (animName.equals("attack")) {
             //damagePlayer();
+            
             channel.setAnim("walk", 0.50f);
             channel.setLoopMode(LoopMode.DontLoop);
             channel.setSpeed(1f);
             state = 0;
             SoundManager.basicZombieAttackPlayInstance(app.getRootNode());
         } else if (animName.equals("death")) {
+            SoundManager.basicZombieFootStepsPause(app.getRootNode(), id);
+            SoundManager.basicZombieSoundPause(app.getRootNode(), id);
             System.out.println("Zombie dies");
             node1.detachChild(zombieShape);
             /*SoundManager.zombieFootStepsSetVolume(app.getRootNode(), 0);
