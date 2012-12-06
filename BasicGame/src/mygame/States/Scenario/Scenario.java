@@ -78,10 +78,10 @@ public class Scenario {
         dl.setDirection(new Vector3f(2.8f, -2.8f, -2.8f).normalizeLocal());
         rootNode.addLight(dl);
         
-        FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
+        /*FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
         SSAOFilter ssaoFilter = new SSAOFilter(12.94f, 43.92f, 0.33f, 0.61f);
         fpp.addFilter(ssaoFilter);
-        viewPort.addProcessor(fpp);
+        viewPort.addProcessor(fpp);*/
         
     }
 }
