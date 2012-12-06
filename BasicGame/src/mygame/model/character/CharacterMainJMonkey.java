@@ -487,11 +487,13 @@ public final class CharacterMainJMonkey
            if (name.equals("Weapon1") && !keyPressed) {
                carregaModel("porra");
                modelLoad = "porra";
+               System.out.println("PORRA");
            } 
            if (name.equals("Weapon2") && !keyPressed) {
                carregaModel("pistola");
                modelLoad = "pistola";
-               
+               System.out.println("PISTOLA");
+
            }
         }
     };

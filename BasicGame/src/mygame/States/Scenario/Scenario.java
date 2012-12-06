@@ -15,6 +15,8 @@ import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
+import com.jme3.post.FilterPostProcessor;
+import com.jme3.post.ssao.SSAOFilter;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
@@ -28,7 +30,7 @@ public class Scenario {
     private final Node rootNode;
     private final ViewPort viewPort;
     private final AssetManager assetManager;
-    private final ColorRGBA backgroundColor = ColorRGBA.Blue;
+    private final ColorRGBA backgroundColor = ColorRGBA.Black;
     private Spatial sceneModel;
     private RigidBodyControl landscape;
     private SimpleApplication app;
@@ -56,7 +58,8 @@ public class Scenario {
         sceneModel.setName("Escenario");  
         //rootNode.attachChild(sceneModel);
         this.app.getStateManager().getState(BulletAppState.class).getPhysicsSpace().add(landscape);
-        
+        //Cargaremos solo lo que este a cierta distancia del pj
+        this.app.getCamera().setFrustumPerspective( 45.0f, (float) 800/ (float) 600, 0.1f,250 );
         setUpLight();
     }
     
@@ -74,5 +77,11 @@ public class Scenario {
         dl.setColor(ColorRGBA.White);
         dl.setDirection(new Vector3f(2.8f, -2.8f, -2.8f).normalizeLocal());
         rootNode.addLight(dl);
+        
+        /*FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
+        SSAOFilter ssaoFilter = new SSAOFilter(12.94f, 43.92f, 0.33f, 0.61f);
+        fpp.addFilter(ssaoFilter);
+        viewPort.addProcessor(fpp);*/
+        
     }
 }

@@ -5,7 +5,9 @@ import com.jme3.bullet.BulletAppState;
 import com.jme3.util.BufferUtils;
 import mygame.States.MenuPrincipalState;
 import mygame.States.RunningGameState;
+import mygame.States.RunningGameStateInterface;
 import mygame.States.Scenario.ScenarioInterface;
+import mygame.States.Scenario.ScenarioManager;
 import mygame.model.zombie.ZombieManagerInterface;
 import mygame.model.character.CharacterMainInterface;
 import mygame.sound.SoundManager;
@@ -23,7 +25,17 @@ public class Controller extends SimpleApplication {
     private ZombieManagerInterface zombieManager;
     private CharacterMainInterface playerManager;
     private ScenarioInterface scenarioManager;
+    private RunningGameStateInterface runningGameInterface;
 
+    
+    
+    public RunningGameStateInterface getRunningGameState() {
+        return runningGameInterface;
+    }
+    
+    public void setRunningGameStateInterface(RunningGameStateInterface runningGameInterface) {
+        this.runningGameInterface = runningGameInterface;
+    }
     public ScenarioInterface getScenarioManager() {
         return scenarioManager;
     }
@@ -71,7 +83,11 @@ public class Controller extends SimpleApplication {
         menuPrincipal  = new MenuPrincipalState(this);
         
         //Juego
-        runningGame  = new RunningGameState(this);
+        //Scenario
+        runningGame = new RunningGameState(this);
+        setRunningGameStateInterface(runningGame);
+        
+       //runningGame  = new RunningGameState(this);
         
         //Mostramos el Menu Principal
         stateManager.attach(menuPrincipal);
@@ -99,6 +115,7 @@ public class Controller extends SimpleApplication {
           stateManager.detach(menuPrincipal);
           stateManager.attach(runningGame);
           runningGame.setIsRunningGame(true);
+         
       }
       
       //Running Game

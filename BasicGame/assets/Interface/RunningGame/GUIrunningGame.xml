@@ -1,14 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <nifty>
- 
+   
   <screen id="start" controller="mygame.States.Scenario.GUIPlayerMain" >
     <layer id="background" backgroundColor="#0000">
       <!-- ... -->
     </layer>
+       <layer id="background" backgroundColor="#0000">
+      <!-- ... -->
+    </layer>
+    <layer id="foreground" backgroundColor="#0000" childLayout="center">
+        <panel id="panelBotonPausado" height="50%" width="100%" valign="center" childLayout="center" 
+             backgroundColor="#f600"> 
+            <image filename="Interface/RunningGame/mirilla.png" width="30" height="30"
+                valign="center" align="center"  >
+            </image> 
+              <interact onClick=""/>
+                <effect>
+                  <onStartScreen name="move" mode="in" direction="top" length="300" startDelay="0" inherit="true"/>
+                  <onEndScreen name="move" mode="out" direction="bottom" length="300" startDelay="0" inherit="true"/>
+                  <onHover name="pulsate" scaleFactor="0.008" startColor="#f600" endColor="#f600" post="true"/>
+                </effect>
+        </panel>
+    </layer>
     <layer id="foreground" backgroundColor="#0000" childLayout="center" >
       <panel id="panelInfo" height="15%" width="100%" valign="bottom" align="center"  childLayout="Horizontal"
              backgroundColor="#f600">  
-        <panel id="panelMunicion" backgroundImage="Interface/RunningGame/interfacUBMunicion.png" height="100%" width="33.33%" valign="center" childLayout="center" 
+        <panel id="panelMunicion" backgroundImage="Interface/RunningGame/interfazUBPistola.png" height="100%" width="33.33%" valign="center" childLayout="center" 
              backgroundColor="#f600">  
             
                 <effect>
