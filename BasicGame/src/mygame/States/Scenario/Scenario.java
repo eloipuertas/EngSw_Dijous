@@ -58,6 +58,7 @@ public class Scenario {
         sceneModel.setName("Escenario");  
         //rootNode.attachChild(sceneModel);
         this.app.getStateManager().getState(BulletAppState.class).getPhysicsSpace().add(landscape);
+        //Cargaremos solo lo que este a cierta distancia del pj
         this.app.getCamera().setFrustumPerspective( 45.0f, (float) 800/ (float) 600, 0.1f,250 );
         setUpLight();
     }

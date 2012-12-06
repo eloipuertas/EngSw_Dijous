@@ -27,7 +27,7 @@
         </panel>
         <panel id="panelBotonOpciones" height="50%" width="100%" valign="center" childLayout="center" 
              backgroundColor="#f600">
-          <image filename="Interface/MenuPrincipal/botonJugar.png" 
+          <image filename="Interface/MenuPrincipal/boton_dificultad.png" 
             valign="center" align="center" height="120%" width="100%" >
             </image>
               <interact onClick="showOptionsMenu()"/>
@@ -113,7 +113,7 @@
             <panel id="panelBotonSalir" height="50%" width="100%" valign="center" childLayout="center"
              backgroundColor="#f600"> 
       
-              <image filename="Interface/MenuPrincipal/botonSalir.png" 
+              <image filename="Interface/MenuPrincipal/botonVolver.png" 
                 valign="center" align="center" height="120%" width="100%" >
                 </image> 
                 <effect>
