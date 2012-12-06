@@ -144,22 +144,22 @@ public class ZombieManager implements ZombieManagerInterface{
     }
 
     public void addZombieBasic(Vector3f position, Vector3f viewDirection, difficulty dif) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        //throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public void addZombiePetia(Vector3f position, Vector3f viewDirection, difficulty dif) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        //throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public void addZombieOriol(Vector3f position, Vector3f viewDirection, difficulty dif) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        //throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public void addZombieManel(Vector3f position, Vector3f viewDirection, difficulty dif) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        //throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public void setDifficulty(difficulty dif) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        //throw new UnsupportedOperationException("Not supported yet.");
     }
 }
