@@ -174,4 +174,10 @@ public class ZombieManager implements ZombieManagerInterface {
     public void deleteZombie(Zombie aThis) {
         zombies.remove(aThis);
     }
+
+    public void setDifficulty(difficulty dif) {
+        for (ZombieInterface z : zombies) {
+            z.setDifficulty(dif);
+        }
+    }
 }

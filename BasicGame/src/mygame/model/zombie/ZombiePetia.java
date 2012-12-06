@@ -278,6 +278,23 @@ public class ZombiePetia extends Zombie implements AnimEventListener {
         
         channel.setLoopMode(LoopMode.DontLoop);
         System.out.println(((Controller) app).getZombieManager());
+    } 
+    
+    public void setDifficulty(difficulty dif) {
+        switch (dif) {
+            case low:
+                this.speed = 0.05f;
+                this.hitpoints = 100;
+                break;
+            case middle:
+                this.speed = 0.075f;
+                this.hitpoints = 150;
+                break;
+            case high:
+                this.speed = 0.1f;
+                this.hitpoints = 200;
+                break;
+        }
     }
 }
 

@@ -29,7 +29,7 @@ public class ZombieBasic extends Zombie implements AnimEventListener {
     private static final int DISTATTACK = 7;
     private static final int DAMAGEDONE = 20;
     //for random movement
-    private float dist1=0;
+    private float dist1 = 0;
     private boolean randMoveSet = false;
     private Random rand = new Random();
     private int timeLeft;
@@ -39,7 +39,7 @@ public class ZombieBasic extends Zombie implements AnimEventListener {
 
     public ZombieBasic(SimpleApplication app, Vector3f position, Vector3f viewDirection, difficulty dif, int i) {
         super(app, position, viewDirection, i);
-        
+
         CapsuleCollisionShape cilinder = new CapsuleCollisionShape(1.5f, 2f, 1);
         zombieControl = new CharacterControl(cilinder, 0.1f);
         zombieShape = app.getAssetManager().loadModel("Models/zombie/zombie.mesh.j3o");
@@ -82,8 +82,8 @@ public class ZombieBasic extends Zombie implements AnimEventListener {
                 break;
         }
         initAnimation();
-        
-    }    
+
+    }
 
     private void initAnimation() {
 
@@ -106,7 +106,7 @@ public class ZombieBasic extends Zombie implements AnimEventListener {
 
         float dist = playerPos.distance(zombiePos);
         float angle = zombieControl.getViewDirection().normalize().angleBetween(playerPos.subtract(zombiePos).normalize());
-        dist1=dist;
+        dist1 = dist;
         if (dist < DISTFOLLOW && angle < (ANGLEFOLLOW * Math.PI / 360) || dist < DISTDETECT) {
             // follow player
             if (dist < DISTATTACK) { //near the player, attack and stop
@@ -184,7 +184,7 @@ public class ZombieBasic extends Zombie implements AnimEventListener {
          //channel.setAnim("stand"); de moment no te animacio stand
          //channel.setAnim("walk");
          }/**/
-        if(state!=3){
+        if (state != 3) {
 //            SoundManager.zombieSoundSetVolume(app.getRootNode(), 7 / dist);
         }
     }
@@ -215,7 +215,7 @@ public class ZombieBasic extends Zombie implements AnimEventListener {
             channel.setSpeed(1f);
         } else if (animName.equals("attack")) {
             //damagePlayer();
-            
+
             channel.setAnim("walk", 0.50f);
             channel.setLoopMode(LoopMode.DontLoop);
             channel.setSpeed(1f);
@@ -240,13 +240,12 @@ public class ZombieBasic extends Zombie implements AnimEventListener {
 
     public void doDamage(int damage, boolean distance) {
         System.out.println("zombie class -> damage done");
-        if(state!=3){
+        if (state != 3) {
             if (distance) { //long range, allways does damage
                 hitpoints = hitpoints - damage;
                 if (hitpoints <= 0) {
                     killZombie();
-                }
-                else{
+                } else {
                     SoundManager.basicZombieHurtPlayInstance(app.getRootNode());
                 }
             } else {
@@ -257,8 +256,7 @@ public class ZombieBasic extends Zombie implements AnimEventListener {
                     hitpoints = hitpoints - damage;
                     if (hitpoints <= 0) {
                         killZombie();
-                    }
-                    else{
+                    } else {
                         SoundManager.basicZombieHurtPlayInstance(app.getRootNode());
                     }
                 }
@@ -273,9 +271,25 @@ public class ZombieBasic extends Zombie implements AnimEventListener {
         SoundManager.basicZombieDiePlayInstance(app.getRootNode());
         channel.setAnim("death");
         channel.setSpeed(0.4f);
-        
+
         channel.setLoopMode(LoopMode.DontLoop);
         System.out.println(((Controller) app).getZombieManager());
     }
-}
 
+    public void setDifficulty(difficulty dif) {
+        switch (dif) {
+            case low:
+                this.speed = 0.05f;
+                this.hitpoints = 100;
+                break;
+            case middle:
+                this.speed = 0.075f;
+                this.hitpoints = 150;
+                break;
+            case high:
+                this.speed = 0.1f;
+                this.hitpoints = 200;
+                break;
+        }
+    }
+}
