@@ -25,7 +25,7 @@ public class Controller extends SimpleApplication {
     private ScenarioInterface scenarioManager;
 
     public ScenarioInterface getScenarioManager() {
-        return scenarioManager;
+        return this.scenarioManager;
     }
     
     public void setScenarioManager(ScenarioInterface scenarioManager) {
@@ -49,7 +49,7 @@ public class Controller extends SimpleApplication {
     }
 
     public boolean isIsRunning() {
-        return isRunning;
+        return this.isRunning;
     }
 
     public void setIsRunning(boolean isRunning) {
