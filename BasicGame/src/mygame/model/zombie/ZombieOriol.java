@@ -21,7 +21,7 @@ import mygame.Controller;
 import mygame.model.zombie.ZombieManagerInterface.difficulty;
 import mygame.sound.SoundManager;
 
-public class ZombiePetia extends Zombie implements AnimEventListener {
+public class ZombieOriol extends Zombie implements AnimEventListener {
 
 
     private static final int DISTFOLLOW = 50;
@@ -39,12 +39,12 @@ public class ZombiePetia extends Zombie implements AnimEventListener {
     private float xIncrement;
     private float zIncrement;
 
-    public ZombiePetia(SimpleApplication app, Vector3f position, Vector3f viewDirection, difficulty dif, int i) {
+    public ZombieOriol(SimpleApplication app, Vector3f position, Vector3f viewDirection, difficulty dif, int i) {
         super(app, position, viewDirection, i);
         
         CapsuleCollisionShape cilinder = new CapsuleCollisionShape(1.5f, 2f, 1);
         zombieControl = new CharacterControl(cilinder, 0.1f);
-        zombieShape = app.getAssetManager().loadModel("Models/zombie/new/zombie2.mesh.xml");
+        zombieShape = app.getAssetManager().loadModel("Models/zombie/new/oriol.mesh.xml");
         node1 = new Node();
         node1.attachChild(zombieShape);
         zombieShape.move(0f, -2.5f, 0f);

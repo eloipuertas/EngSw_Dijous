@@ -16,31 +16,18 @@ import com.jme3.bullet.control.CharacterControl;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
-import com.jme3.scene.Spatial;
 import java.util.Random;
 import mygame.Controller;
+import mygame.model.zombie.ZombieManagerInterface.difficulty;
 import mygame.sound.SoundManager;
 
-public class ZombieBasic extends Zombie implements AnimEventListener, ZombieInterface {
+public class ZombieBasic extends Zombie implements AnimEventListener {
 
-    /*
     private static final int DISTFOLLOW = 50;
     private static final int DISTDETECT = 20;
     private static final int ANGLEFOLLOW = 160;
     private static final int DISTATTACK = 7;
     private static final int DAMAGEDONE = 20;
-    private SimpleApplication app;
-    private CharacterControl zombieControl;
-    private Node zombieShape;
-    private float speed;
-    private float hitpoints;
-    private AnimChannel channel;
-    private AnimControl control;
-    private int state = 0;
-    private boolean paused;
-    private RigidBodyControl colisions;
-    private Node node1;
-    private CompoundCollisionShape ccs; /**/
     //for random movement
     private float dist1=0;
     private boolean randMoveSet = false;
@@ -49,11 +36,10 @@ public class ZombieBasic extends Zombie implements AnimEventListener, ZombieInte
     private Vector3f moveDirection;
     private float xIncrement;
     private float zIncrement;
-    private int id;
 
-    public ZombieBasic(SimpleApplication app, Vector3f position, Vector3f viewDirection, float speed, int i) {
-        super(app, position, viewDirection, speed, i);
-        id=i;
+    public ZombieBasic(SimpleApplication app, Vector3f position, Vector3f viewDirection, difficulty dif, int i) {
+        super(app, position, viewDirection, i);
+        
         CapsuleCollisionShape cilinder = new CapsuleCollisionShape(1.5f, 2f, 1);
         zombieControl = new CharacterControl(cilinder, 0.1f);
         zombieShape = app.getAssetManager().loadModel("Models/zombie/zombie.mesh.j3o");
@@ -80,28 +66,24 @@ public class ZombieBasic extends Zombie implements AnimEventListener, ZombieInte
 
         SoundManager.initBasicZombieSound(app, id);
         SoundManager.initFootStepBasicZombieSound(app, id);
-        this.speed = speed;
-        this.hitpoints = 100;
+
+        switch (dif) {
+            case low:
+                this.speed = 0.05f;
+                this.hitpoints = 100;
+                break;
+            case middle:
+                this.speed = 0.075f;
+                this.hitpoints = 150;
+                break;
+            case high:
+                this.speed = 0.1f;
+                this.hitpoints = 200;
+                break;
+        }
         initAnimation();
         
-    }
-
-    public CharacterControl getControl() {
-        return zombieControl;
-    }
-
-    public RigidBodyControl getColision() {
-        return colisions;
-    }
-
-    Node getNode() {
-        return node1;
-    }
-    @Override
-    public Spatial getZombieShape(){
-        return zombieShape;
-    }
-    
+    }    
 
     private void initAnimation() {
 
@@ -263,19 +245,6 @@ public class ZombieBasic extends Zombie implements AnimEventListener, ZombieInte
         // unused
     }
 
-    // @David C. -- Añadido getters & setters del parámetro paused
-    public void setPaused(boolean paused) {
-        this.paused = paused;
-    }
-
-    public boolean isPaused() {
-        return this.paused;
-    }
-
-    public CompoundCollisionShape getShapeForCollision() {
-        return ccs;
-    }
-
     public void doDamage(int damage, boolean distance) {
         System.out.println("zombie class -> damage done");
         if(state!=3){
@@ -314,9 +283,6 @@ public class ZombieBasic extends Zombie implements AnimEventListener, ZombieInte
         
         channel.setLoopMode(LoopMode.DontLoop);
         System.out.println(((Controller) app).getZombieManager());
-    }
-    public void damagePlayer(){
-        ((Controller)app).getPlayerManager().doDamage(DAMAGEDONE);
     }
 }
 

@@ -16,18 +16,16 @@ import mygame.Controller;
  *
  * @author user
  */
-public class ZombieManager implements ZombieManagerInterface{
+public class ZombieManager implements ZombieManagerInterface {
 
-  
     private BulletAppState bulletAppState;
     private Node rootNode = new Node("gameRoot");
     private SimpleApplication app;
     private boolean paused;
-
     private ArrayList<ZombieInterface> zombies = new ArrayList<ZombieInterface>();
-    private int[] groups = new int[]{0x00000002,0x00000004,0x00000008,0x00000010,0x00000020,0x00000040,0x00000080,0x00000100,0x00000200,0x00000400,0x00000800};
-    private int colisionGroupCounter=0;
-    private int id=0;
+    private int[] groups = new int[]{0x00000002, 0x00000004, 0x00000008, 0x00000010, 0x00000020, 0x00000040, 0x00000080, 0x00000100, 0x00000200, 0x00000400, 0x00000800};
+    private int colisionGroupCounter = 0;
+    private int id = 0;
 
     public ZombieManager(Application app) {
         /**
@@ -42,33 +40,43 @@ public class ZombieManager implements ZombieManagerInterface{
 //            zombies.add(z);
 //            addZombieToScene(z);
 //        }
+        
+        //TO DELETE!!!! JUST FOR TESTING, WILL BE CALLED BY TEAM E!!!!!!!!!!!!!!
+        /*
+        addZombieBasic(new Vector3f(5f, 5f, 0f), new Vector3f(0f, 0f, 1f), difficulty.low);
+        addZombieBasic(new Vector3f(15f, 5f, 10f), new Vector3f(1f, 0f, 1f), difficulty.high);
+        addZombieBasic(new Vector3f(0f, 5f, 10f), new Vector3f(-1f, 0f, 1f), difficulty.high);
+        addZombieBasic(new Vector3f(0f, 5f, 10f), new Vector3f(0f, 0f, -1f), difficulty.low);
+        /**/
+        addZombieBasic(new Vector3f(0f, 5f, 10f), new Vector3f(0f, 0f, 1f), difficulty.low);
+        addZombiePetia(new Vector3f(0f, 5f, 10f), new Vector3f(0f, 0f, 1f), difficulty.high);
+        addZombieOriol(new Vector3f(15f, 5f, 10f), new Vector3f(0f, 0f, 1f), difficulty.high);
 
-        ZombieBasic z = new ZombieBasic(this.app, new Vector3f(5f, 5f, 0f), new Vector3f(0f, 0f, 1f), 0.05f, id);
+
+        setZombiColission();
+        
+        
+/*
+        z = new ZombieBasic(this.app, new Vector3f(15f, 5f, 10f), new Vector3f(1f, 0f, 1f), 0.05f, id);
         zombies.add(z);
         addZombieToScene(z);
         id++;
-        
-        z = new ZombieBasic(this.app, new Vector3f(15f, 5f, 10f), new Vector3f(1f, 0f, 1f), 0.05f,id);
+
+        z = new ZombieBasic(this.app, new Vector3f(0f, 5f, 10f), new Vector3f(1f, 0f, 1f), 0.05f, id);
         zombies.add(z);
         addZombieToScene(z);
         id++;
-        
-        z = new ZombieBasic(this.app, new Vector3f(0f, 5f, 10f), new Vector3f(1f, 0f, 1f), 0.05f,id);
+
+        z = new ZombieBasic(this.app, new Vector3f(0f, 5f, 10f), new Vector3f(-1f, 0f, -1f), 0.05f, id);
         zombies.add(z);
         addZombieToScene(z);
         id++;
-        
-        z = new ZombieBasic(this.app, new Vector3f(0f, 5f, 10f), new Vector3f(-1f, 0f, -1f), 0.05f,id);
-        zombies.add(z);
-        addZombieToScene(z);
-        id++;
-        
+
         z = new ZombieBasic(this.app, new Vector3f(0f, 5f, 10f), new Vector3f(1f, 0f, -1f), 0.05f, id);
         zombies.add(z);
         addZombieToScene(z);
         id++;
         /**/
-        setZombiColission();
         //zombies.get(2).doDamage(100, true);
 //        z = new Zombie(this.app, new Vector3f(40f, 5f, 40f), 0.006f);
 //        zombies.add(z);
@@ -87,6 +95,27 @@ public class ZombieManager implements ZombieManagerInterface{
 //        addZombieToScene(z);
     }
 
+    public void addZombieBasic(Vector3f position, Vector3f viewDirection, difficulty dif) {
+        ZombieBasic z = new ZombieBasic(this.app, position, viewDirection, dif, id);
+        zombies.add(z);
+        addZombieToScene(z);
+        id++;
+    }
+
+    public void addZombiePetia(Vector3f position, Vector3f viewDirection, difficulty dif) {
+        ZombiePetia z = new ZombiePetia(this.app, position, viewDirection, dif, id);
+        zombies.add(z);
+        addZombieToScene(z);
+        id++;
+    }
+
+    public void addZombieOriol(Vector3f position, Vector3f viewDirection, difficulty dif) {
+        ZombieOriol z = new ZombieOriol(this.app, position, viewDirection, dif, id);
+        zombies.add(z);
+        addZombieToScene(z);
+        id++;
+    }
+
     private void addZombieToScene(Zombie z) {
         z.getControl().setCollisionGroup(groups[colisionGroupCounter]);
         z.getControl().removeCollideWithGroup(groups[colisionGroupCounter]);
@@ -94,26 +123,26 @@ public class ZombieManager implements ZombieManagerInterface{
         z.getColision().setCollisionGroup(groups[colisionGroupCounter]);
         z.getColision().removeCollideWithGroup(groups[colisionGroupCounter]);
         z.getColision().addCollideWithGroup(0x00000001);
-        colisionGroupCounter+=1;
+        colisionGroupCounter += 1;
         bulletAppState.getPhysicsSpace().add(z.getControl());
         bulletAppState.getPhysicsSpace().add(z.getColision());
-        
-        
+
+
         //bulletAppState.getPhysicsSpace().add(z.getNode().getChild("Zombie"));
         //rootNode.attachChild(z.getNode());
-        ((Controller)app).getPlayerManager().getShootables().attachChild(z.getNode());
+        ((Controller) app).getPlayerManager().getShootables().attachChild(z.getNode());
     }
-    
-    private void setZombiColission(){
-        int i=0;
-        for(ZombieInterface z:zombies){
-            i=0;
-            while(i<colisionGroupCounter){                
-                if(z.getColision().getCollisionGroup()!=groups[i]){
-                    System.out.println("!!!!"+z.getColision().getCollisionGroup()+" "+groups[i]);
+
+    private void setZombiColission() {
+        int i = 0;
+        for (ZombieInterface z : zombies) {
+            i = 0;
+            while (i < colisionGroupCounter) {
+                if (z.getColision().getCollisionGroup() != groups[i]) {
+                    System.out.println("!!!!" + z.getColision().getCollisionGroup() + " " + groups[i]);
                     z.getColision().addCollideWithGroup(groups[i]);
                 }
-                i+=1;
+                i += 1;
             }
         }
     }
@@ -124,12 +153,12 @@ public class ZombieManager implements ZombieManagerInterface{
 
         }
     }
-    
+
     // @David C. -- Añadido getters & setters del parámetro paused
     public boolean isPaused() {
         return paused;
     }
-    
+
     public void setPaused(boolean paused) {
         this.paused = paused;
         for (ZombieInterface z : zombies) {
