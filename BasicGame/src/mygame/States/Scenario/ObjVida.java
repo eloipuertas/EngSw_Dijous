@@ -8,6 +8,7 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
+import com.jme3.bullet.collision.shapes.BoxCollisionShape;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.collision.shapes.CylinderCollisionShape;
 import com.jme3.bullet.control.CharacterControl;
@@ -46,8 +47,8 @@ public class ObjVida  {
         
         
         // creating collision box of gun as cilider shape
-        CylinderCollisionShape cilinder = new CylinderCollisionShape(new Vector3f(0.5f,1.5f,1.5f));
-        botiquinControl = new CharacterControl(cilinder, 0.5f);
+        BoxCollisionShape cilinder = new BoxCollisionShape(new Vector3f(0.5f,1.5f,0.5f));
+        botiquinControl = new CharacterControl(cilinder, 1f);
         
         //TODO: Add weapon model
         // Loading, scaling and adding control for our weapon.

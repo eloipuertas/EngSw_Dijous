@@ -53,11 +53,19 @@ public class ZombieManager implements ZombieManagerInterface {
         addZombieOriol(new Vector3f(15f, 1f, 10f), new Vector3f(0f, 0f, 1f), difficulty.high);
 
 
+
         setZombiColission();
         
         
 /*
         z = new ZombieBasic(this.app, new Vector3f(15f, 5f, 10f), new Vector3f(1f, 0f, 1f), 0.05f, id);
+=======
+        /*Zombie z = new Zombie(this.app, new Vector3f(5f, 5f, 0f), new Vector3f(0f, 0f, 1f), 0.05f);
+        zombies.add(z);
+        addZombieToScene(z);
+         
+        z = new Zombie(this.app, new Vector3f(15f, 5f, 10f), new Vector3f(1f, 0f, 1f), 0.05f);
+>>>>>>> 3bef85e616f26fc3287f58b423a667e9c004b047
         zombies.add(z);
         addZombieToScene(z);
         id++;
@@ -76,6 +84,7 @@ public class ZombieManager implements ZombieManagerInterface {
         zombies.add(z);
         addZombieToScene(z);
         id++;
+
         /**/
         //zombies.get(2).doDamage(100, true);
 //        z = new Zombie(this.app, new Vector3f(40f, 5f, 40f), 0.006f);
@@ -180,4 +189,5 @@ public class ZombieManager implements ZombieManagerInterface {
             z.setDifficulty(dif);
         }
     }
+
 }

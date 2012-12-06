@@ -41,25 +41,25 @@ import mygame.model.zombie.ZombieManagerInterface;
  *
  * @author David C.
  */
-public class RunningGameState extends AbstractAppState {
+public class RunningGameState extends AbstractAppState implements RunningGameStateInterface{
 
     private SimpleApplication app;
     private ViewPort viewPort;
     private AssetManager assetManager;
     private Node rootNode;
     private Node guiNode;
+    private ZombieManagerInterface zombieManager;
     private Scenario scenario;
     private boolean isRunningGame;
     private GUIPlayerMain guiPlayer;
     private Spatial sceneModel;
     private RigidBodyControl landscape;
     private BulletAppState bulletAppState;
-    private ZombieManagerInterface zombieManager;
     private CharacterMainInterface playerManager;
     private ScenarioInterface scenarioManager;
     private ObjectsInGame objetos;
     private DamageCollision damageCollision;
-    private int contadorPause = 2;
+    private int difficulty = 2; // Facil: 1 ;Medio: 2; Dificil: 3;
     
     public RunningGameState(SimpleApplication app)  {
         this.rootNode = app.getRootNode();
@@ -74,6 +74,9 @@ public class RunningGameState extends AbstractAppState {
         this.app = (SimpleApplication) app;
         bulletAppState = app.getStateManager().getState(BulletAppState.class);
       
+        zombieManager = new ZombieManager(app);
+        ((Controller)app).setZombieManager(zombieManager);
+        
         //Scenario
         scenarioManager = new ScenarioManager(this.app);
         ((Controller)app).setScenarioManager(scenarioManager);
@@ -87,8 +90,7 @@ public class RunningGameState extends AbstractAppState {
         //playerManager.initialize(stateManager, app);
         
         //Zombies
-        zombieManager = new ZombieManager(app);
-        ((Controller)app).setZombieManager(zombieManager);
+
 
         // @David C. -- La iluminación la cargamos en el ScenarioManager
         //setUpLight();
@@ -98,7 +100,13 @@ public class RunningGameState extends AbstractAppState {
         // loadMap();
  
     }
-    
+    public int getDifficulty() {
+        return this.difficulty;
+    }
+
+    public void setDifficulty(int difficulty) {
+        this.difficulty = difficulty;
+    }
 
 /*
     public void setUpKeys() {
@@ -176,4 +184,6 @@ public class RunningGameState extends AbstractAppState {
 >>>>>>> origin/TEAM-G_2
 /**/
     }
+
+
 }
