@@ -42,7 +42,7 @@ public class ZombieManager implements ZombieManagerInterface{
 //            addZombieToScene(z);
 //        }
 
-        Zombie z = new Zombie(this.app, new Vector3f(5f, 5f, 0f), new Vector3f(0f, 0f, 1f), 0.05f);
+        /*Zombie z = new Zombie(this.app, new Vector3f(5f, 5f, 0f), new Vector3f(0f, 0f, 1f), 0.05f);
         zombies.add(z);
         addZombieToScene(z);
          
@@ -63,7 +63,7 @@ public class ZombieManager implements ZombieManagerInterface{
         
         z = new Zombie(this.app, new Vector3f(0f, 5f, 10f), new Vector3f(1f, 0f, -1f), 0.05f);
         zombies.add(z);
-        addZombieToScene(z);
+        addZombieToScene(z);*/
         
         /**/
         setZombiColission();
@@ -158,8 +158,8 @@ public class ZombieManager implements ZombieManagerInterface{
     public void addZombieManel(Vector3f position, Vector3f viewDirection, difficulty dif) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    
-    public void pene(){
-        System.out.println("HOLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+
+    public void setDifficulty(difficulty dif) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
