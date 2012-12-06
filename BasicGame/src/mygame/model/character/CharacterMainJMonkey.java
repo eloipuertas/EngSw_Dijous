@@ -89,7 +89,7 @@ public final class CharacterMainJMonkey
     private AnimControl controlAnim;
     private ArrayList<ZombieInterface> zombiesMI;
     
-    
+
     /**
      * Initialize method. Main method called in RunningGameState. It initializes
      * all character's variables. It creates and loads our character. It
@@ -142,6 +142,7 @@ public final class CharacterMainJMonkey
         initAnimacio();
     }
     
+
     
     /******By pòlit*****/
     /*****Metode afegir models al node shootables*******/
@@ -157,6 +158,7 @@ public final class CharacterMainJMonkey
            if(z.getZombieShape().getWorldTranslation().equals(g.getWorldTranslation())){
                z.doDamage(50, true);
            }
+
         }
     }
     

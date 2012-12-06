@@ -14,6 +14,7 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+
 /**
  *
  * @author rociotovar
@@ -54,7 +55,6 @@ public interface CharacterMainInterface {
      * Zombie does damage to main player
      * @param value how much?
      */
-    public void doDamage(int value);
-    
     public Node getShootables();
+    public void doDamage(int value);
 }
