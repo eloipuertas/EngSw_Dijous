@@ -35,4 +35,6 @@ public interface ZombieManagerInterface {
 
     public void deleteZombie(Zombie aThis);
     
+    public void setDifficulty(difficulty dif);
+    
 }
