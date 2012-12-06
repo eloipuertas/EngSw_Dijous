@@ -8,7 +8,7 @@
     <layer id="foreground" backgroundColor="#0000" childLayout="center" >
       <panel id="panelInfo" height="15%" width="100%" valign="bottom" align="center"  childLayout="Horizontal"
              backgroundColor="#f600">  
-        <panel id="panelMunicion" backgroundImage="Interface/RunningGame/interfacUBMunicion.png" height="100%" width="33.33%" valign="center" childLayout="center" 
+        <panel id="panelMunicion" backgroundImage="Interface/RunningGame/interfazUBPistola.png" height="100%" width="33.33%" valign="center" childLayout="center" 
              backgroundColor="#f600">  
             
                 <effect>

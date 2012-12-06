@@ -16,6 +16,7 @@ public class ScenarioManager implements ScenarioInterface {
     private GUIPlayerMain guiPlayer;
     private ObjectsInGame objetos;
     private Scenario scenario;
+    private ZombiesInGame zombies;
 
     public GUIPlayerMain getGuiPlayer() {
         return guiPlayer;
@@ -31,6 +32,14 @@ public class ScenarioManager implements ScenarioInterface {
 
     public void setObjetos(ObjectsInGame objetos) {
         this.objetos = objetos;
+    }
+    
+     public ZombiesInGame getZombies() {
+        return zombies;
+    }
+
+    public void setZombies(ZombiesInGame zombies) {
+        this.zombies = zombies;
     }
 
     public Scenario getScenario() {
@@ -51,6 +60,8 @@ public class ScenarioManager implements ScenarioInterface {
         this.objetos = new ObjectsInGame(this.app);
         //Cargamos el escenario
         this.scenario = new Scenario(this.app);
+        //Cargamos los zombies especiales
+        this.zombies = new ZombiesInGame(this.app);
       
     }
     public void update(){

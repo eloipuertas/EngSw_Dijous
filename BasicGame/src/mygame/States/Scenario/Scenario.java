@@ -30,7 +30,7 @@ public class Scenario {
     private final Node rootNode;
     private final ViewPort viewPort;
     private final AssetManager assetManager;
-    private final ColorRGBA backgroundColor = ColorRGBA.Blue;
+    private final ColorRGBA backgroundColor = ColorRGBA.Black;
     private Spatial sceneModel;
     private RigidBodyControl landscape;
     private SimpleApplication app;
@@ -58,7 +58,7 @@ public class Scenario {
         sceneModel.setName("Escenario");  
         //rootNode.attachChild(sceneModel);
         this.app.getStateManager().getState(BulletAppState.class).getPhysicsSpace().add(landscape);
-        
+        this.app.getCamera().setFrustumPerspective( 45.0f, (float) 800/ (float) 600, 0.1f,250 );
         setUpLight();
     }
     

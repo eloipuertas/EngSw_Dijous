@@ -53,10 +53,11 @@ public class ObjAntidoto  {
         
         //TODO: Add weapon model
         // Loading, scaling and adding control for our weapon.
-        antidotoShape = (Node) app.getAssetManager().loadModel("Scenes/objetoVida.j3o");
+        antidotoShape = (Node) app.getAssetManager().loadModel("Scenes/antidoto.j3o");
         antidotoShape.scale(1f);
         antidotoShape.addControl(antidotoControl);
         antidotoShape.setName(name);
+        
         
         // placing our weapon
         antidotoControl.setPhysicsLocation(new Vector3f(posX, posY, posZ)); 

@@ -142,4 +142,24 @@ public class ZombieManager implements ZombieManagerInterface{
     public void deleteZombie(Zombie aThis) {
         zombies.remove(aThis);
     }
+
+    public void addZombieBasic(Vector3f position, Vector3f viewDirection, difficulty dif) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void addZombiePetia(Vector3f position, Vector3f viewDirection, difficulty dif) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void addZombieOriol(Vector3f position, Vector3f viewDirection, difficulty dif) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void addZombieManel(Vector3f position, Vector3f viewDirection, difficulty dif) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
+    public void pene(){
+        System.out.println("HOLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+    }
 }

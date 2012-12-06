@@ -152,7 +152,7 @@ public final class CharacterMainJMonkey
             playerModelLoad = (Node) app.getAssetManager().loadModel("Character/porra.j3o");
         }
         if (model.equals("pistola")){
-            playerModelLoad = (Node) app.getAssetManager().loadModel("Character/playerPistola.j3o");   
+            playerModelLoad = (Node) app.getAssetManager().loadModel("Character/playerPistola.j3o");
         }
         pivot.attachChild(playerModelLoad);
         app.getRootNode().attachChild(pivot);
@@ -394,10 +394,12 @@ public final class CharacterMainJMonkey
            if (name.equals("Weapon1") && !keyPressed) {
                carregaModel("porra");
                modelLoad = "porra";
+               System.out.println("PORRA");
            } 
            if (name.equals("Weapon2") && !keyPressed) {
                carregaModel("pistola");
                modelLoad = "pistola";
+               System.out.println("PISTOLA");
            }
         }
     };

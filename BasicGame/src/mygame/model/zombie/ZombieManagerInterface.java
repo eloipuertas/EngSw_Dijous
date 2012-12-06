@@ -4,6 +4,7 @@
  */
 package mygame.model.zombie;
 
+import com.jme3.math.Vector3f;
 import java.util.ArrayList;
 
 public interface ZombieManagerInterface {
@@ -26,5 +27,16 @@ public interface ZombieManagerInterface {
     public void setPaused(boolean b);
 
     public void deleteZombie(Zombie aThis);
+    
+    public enum difficulty{
+        low, middle, high
+    }
+    
+    public void addZombieBasic(Vector3f position, Vector3f viewDirection, difficulty dif);
+    public void addZombiePetia(Vector3f position, Vector3f viewDirection, difficulty dif);
+    public void addZombieOriol(Vector3f position, Vector3f viewDirection, difficulty dif);
+    public void addZombieManel(Vector3f position, Vector3f viewDirection, difficulty dif);
+    
+    public void pene();
     
 }
