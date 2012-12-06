@@ -226,13 +226,6 @@ public class ZombieOriol extends Zombie implements AnimEventListener {
         } else if (animName.equals("death")) {
             SoundManager.basicZombieFootStepsPause(app.getRootNode(), id);
             SoundManager.basicZombieSoundPause(app.getRootNode(), id);
-            System.out.println("Zombie dies");
-            node1.detachChild(zombieShape);
-            /*SoundManager.zombieFootStepsSetVolume(app.getRootNode(), 0);
-            SoundManager.zombieSoundSetVolume(app.getRootNode(), 0);*/
-            app.getRootNode().attachChild(zombieShape);
-            zombieShape.setLocalTranslation(colisions.getPhysicsLocation());
-            zombieShape.move(0f, -2.5f, 0f);
             node1.removeControl(colisions);
             node1.removeControl(zombieControl);
             control.clearListeners();
