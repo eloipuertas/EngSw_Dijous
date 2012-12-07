@@ -27,7 +27,7 @@ public class ZombieBasic extends Zombie implements AnimEventListener {
     private static final int DISTDETECT = 20;
     private static final int ANGLEFOLLOW = 160;
     private static final int DISTATTACK = 7;
-    private static final int DAMAGEDONE = 20;
+    private static final int DAMAGEDONE = 10;
     //for random movement
     private float dist1 = 0;
     private boolean randMoveSet = false;
@@ -214,7 +214,7 @@ public class ZombieBasic extends Zombie implements AnimEventListener {
             channel.setLoopMode(LoopMode.DontLoop);
             channel.setSpeed(1f);
         } else if (animName.equals("attack")) {
-            //damagePlayer();
+            damagePlayer();
 
             channel.setAnim("walk", 0.50f);
             channel.setLoopMode(LoopMode.DontLoop);
@@ -291,5 +291,9 @@ public class ZombieBasic extends Zombie implements AnimEventListener {
                 this.hitpoints = 200;
                 break;
         }
+    }
+    
+    public void damagePlayer(){
+        ((Controller) app).getPlayerManager().doDamage(DAMAGEDONE);
     }
 }

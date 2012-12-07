@@ -216,7 +216,7 @@ public class ZombieOriol extends Zombie implements AnimEventListener {
             channel.setLoopMode(LoopMode.DontLoop);
             channel.setSpeed(1f);
         } else if (animName.equals("attack")) {
-            //damagePlayer();
+            damagePlayer();
             
             channel.setAnim("walk", 0.50f);
             channel.setLoopMode(LoopMode.DontLoop);
@@ -295,6 +295,9 @@ public class ZombieOriol extends Zombie implements AnimEventListener {
                 this.hitpoints = 200;
                 break;
         }
+    }
+    public void damagePlayer(){
+        ((Controller) app).getPlayerManager().doDamage(DAMAGEDONE);
     }
 }
 

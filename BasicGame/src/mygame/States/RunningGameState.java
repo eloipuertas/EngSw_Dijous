@@ -74,6 +74,9 @@ public class RunningGameState extends AbstractAppState implements RunningGameSta
         this.app = (SimpleApplication) app;
         bulletAppState = app.getStateManager().getState(BulletAppState.class);
       
+        playerManager = new CharacterMainJMonkey(stateManager, app);
+        ((Controller)app).setPlayerManager(playerManager);
+        
         zombieManager = new ZombieManager(app);
         ((Controller)app).setZombieManager(zombieManager);
         
@@ -82,8 +85,7 @@ public class RunningGameState extends AbstractAppState implements RunningGameSta
         ((Controller)app).setScenarioManager(scenarioManager);
              
         //Player
-        playerManager = new CharacterMainJMonkey(stateManager, app);
-        ((Controller)app).setPlayerManager(playerManager);
+        
         
         //stateManager.attach(player);
         //playerManager.setState(bulletAppState);
