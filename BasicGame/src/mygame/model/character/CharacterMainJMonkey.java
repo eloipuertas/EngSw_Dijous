@@ -313,13 +313,13 @@ public final class CharacterMainJMonkey
              if(app.getCamera().getUp().y < 0) // axis more than 0
              {
               // look at this direction  
-              //  app.getCamera().lookAtDirection( new Vector3f(0,app.getCamera().getDirection().y,0),new Vector3f(app.getCamera().getUp().x,-0.1f, app.getCamera().getUp().z));
+                app.getCamera().lookAtDirection( new Vector3f(0,app.getCamera().getDirection().y,0),new Vector3f(app.getCamera().getUp().x,-0.1f, app.getCamera().getUp().z));
               // setting axis restiction
-              app.getCamera().setAxes(camLeft, new Vector3f (0,1,0), viewDirection);
+              //app.getCamera().setAxes(camLeft, new Vector3f (0,1,0), viewDirection);
                  
              }
-            //camDir.setY(0); // set y as 0 
-            //camDir = camDir.normalize().multLocal(0.2f); 
+            camDir.setY(0); // set y as 0 
+            camDir = camDir.normalize().multLocal(0.2f); 
 
 
             // Setting camera according to action
