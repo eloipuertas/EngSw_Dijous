@@ -11,7 +11,7 @@ import com.jme3.math.Vector3f;
 import java.util.ArrayList;
 import java.util.List;
 import mygame.model.character.CharacterMainInterface;
-import mygame.model.weapon.Gun;
+import mygame.model.weapon.Shotgun;
 import mygame.model.weapon.WeaponInterface;
 
 /**
@@ -48,7 +48,7 @@ public class ObjectsInGame extends AbstractAppState  {
         
         //Init weapons
         weaponsList = new ArrayList<WeaponInterface>();
-        weaponsList.add(new Gun(this.app, this.bulletAppState, new Vector3f(-25f, 0f, 0f), 1220, "weapon01"));
+        weaponsList.add(new Shotgun(this.app, this.bulletAppState, new Vector3f(-25f, 0f, 0f), 1220, "weapon01"));
         weaponsList.get(0).addWeaponeToScenario();
     }
     

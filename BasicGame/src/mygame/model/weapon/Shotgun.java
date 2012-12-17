@@ -20,20 +20,22 @@ import com.jme3.scene.Node;
  * @test and comments ernest
  */
 
-public class Porra implements WeaponInterface {
+public class Shotgun implements WeaponInterface {
     private String id;  // identification
     private String name;  // name of weapon
+    private int munition;
     private Node weaponShape;   
     private CharacterControl weaponControl;
     private SimpleApplication app;
     private BulletAppState bulletAppState;
     
     // constructor
-    public Porra(SimpleApplication app, BulletAppState bulletAppState, Vector3f position, int munition, String id) {
+    public Shotgun(SimpleApplication app, BulletAppState bulletAppState, Vector3f position, int munition, String id) {
         this.app = app;
         this.bulletAppState = bulletAppState;
         this.id = id;
-        name = "Porra"; // type of weapon is Porra
+        name = "Shotgun"; // type of weapon is shotgun
+        munition = 3000;
         
         // creating collision box of gun as cilider shape
         CylinderCollisionShape cilinder = new CylinderCollisionShape(new Vector3f(0.5f,1.5f,1.5f));
@@ -60,7 +62,7 @@ public class Porra implements WeaponInterface {
     }
     
     public int getMunition() { 
-        return 0;
+        return munition;
     }
     
     public Vector3f getPosition() {

@@ -121,13 +121,13 @@ public final class CharacterMainJMonkey
         playerControl.setGravity(100);
 
         // Creating pivot Node so that our character doesn't float
-        playerModelLoad = app.getAssetManager().loadModel("Character/porra.j3o");
+        playerModelLoad = app.getAssetManager().loadModel("Character/playerPistola.j3o");
            
         // Loding our first character model        
         //Material playerMaterial = app.getAssetManager().loadMaterial("Character/Cube.002.j3m");
         pivot.attachChild(playerModelLoad);  // attach 'player model porra' node as a child of pivot node of character
         pivot.addControl(playerControl); // setting control
-        playerModelLoad.move(-0.5f, -3.75f, 0f); // setting correct position in order to appears on the floor
+        playerModelLoad.move(0f, -5.5f, 0f); // setting correct position in order to appears on the floor
         // Positionig char and attaching pivot
         playerControl.setPhysicsLocation(new Vector3f(0, 5, 0));
         bulletAppState.getPhysicsSpace().add(playerControl);
@@ -210,21 +210,24 @@ public final class CharacterMainJMonkey
         app.getInputManager().addListener(this, "Mute");
         app.getInputManager().addListener(this, "Paused");
         
+        app.getInputManager().addMapping("Shoot", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
+        app.getInputManager().addListener(accioDisparar, "Shoot");
+        
     }
     
     
     /** @Ernest --> Method which adds shoot action listener and mapping. It only used in fire weapons model
      */ 
     public void shootListenerMappingManagement(boolean isActivated) {
-        
+        // Ernest -> activar listner escopeta i desactvar-lo segons booleà
         if (!created && isActivated) {
-        app.getInputManager().addMapping("Shoot", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
-        app.getInputManager().addListener(accioDisparar, "Shoot");
+        //app.getInputManager().addMapping("Shoot", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
+        //app.getInputManager().addListener(accioDispararEscopeta, "Shoot");
         created = true;
        }
         
         if (created && !isActivated) {
-          app.getInputManager().deleteMapping("Shoot");
+          //app.getInputManager().deleteTrigger(accioDispararEscopeta, null);
           created = false;  
         }
     }
@@ -465,9 +468,9 @@ public final class CharacterMainJMonkey
     
      private void carregaModel(String model){
         pivot.detachChild(playerModelLoad);
-        if (model.equals("porra")){
+        if (model.equals("escopeta")){
             playerModelLoad = (Node) app.getAssetManager().loadModel("Character/porra.j3o");
-            playerModelLoad.move(-0.5f, -3.5f, 0f); // setting correct position in order to appears on the floor
+            playerModelLoad.move(0f, -5.5f, 0f); // setting correct position in order to appears on the floor
             shootActivated = false;
         }
         if (model.equals("pistola")){
@@ -487,9 +490,9 @@ public final class CharacterMainJMonkey
     private ActionListener changeWeapon = new ActionListener() {
         public void onAction(String name, boolean keyPressed, float tpf) {
            if (name.equals("Weapon1") && !keyPressed) {
-               carregaModel("porra");
-               modelLoad = "porra";
-               System.out.println("PORRA");
+               carregaModel("escopeta");
+               modelLoad = "escopeta";
+               System.out.println("ESCOPETA");
            } 
            if (name.equals("Weapon2") && !keyPressed) {
                carregaModel("pistola");
