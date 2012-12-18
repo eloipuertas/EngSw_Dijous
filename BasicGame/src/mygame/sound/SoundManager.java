@@ -34,7 +34,7 @@ public class SoundManager {
         // Initialize gothic tune
         AudioNode gothicTune = new AudioNode(assetManager,
             "Sounds/Songs/Dark_music_Vampirical.ogg",true);
-        gothicTune.setVolume(0.3f);
+        gothicTune.setVolume(0);
         gothicTune.setName("gothicTune");
         rootNode.attachChild(gothicTune);
         
@@ -143,14 +143,21 @@ public class SoundManager {
         changeToGun.setVolume(0.4f);
         rootNode.attachChild(changeToGun);   
         
-        // Initialize change tu truncheon
-        AudioNode changeToTruncheon = new AudioNode(assetManager,
-            "Sounds/Effects/changeToTruncheon.wav",false);
-        changeToTruncheon.setLooping(true);
-        changeToTruncheon.setName("changeToTruncheon");
-        changeToTruncheon.setVolume(0.4f);
-        rootNode.attachChild(changeToTruncheon);
+        // Initialize change to machine gun
+        AudioNode changeToMachineGun = new AudioNode(assetManager,
+            "Sounds/Effects/changeToMachineGun.wav",false);
+        changeToMachineGun.setLooping(true);
+        changeToMachineGun.setName("changeToMachineGun");
+        changeToMachineGun.setVolume(0.4f);
+        rootNode.attachChild(changeToMachineGun);
         
+        // Initialize Machine gun attack
+        AudioNode shotMachineGun = new AudioNode(assetManager,
+            "Sounds/Effects/shotMachineGun.wav",false);
+        shotMachineGun.setLooping(true);
+        shotMachineGun.setName("shotMachineGun");
+        shotMachineGun.setVolume(0.8f);
+        rootNode.attachChild(shotMachineGun);
         
         // Initilaize shot gun
         AudioNode shotGun = new AudioNode(assetManager,
@@ -158,15 +165,7 @@ public class SoundManager {
         shotGun.setLooping(true);
         shotGun.setName("shotGun");
         shotGun.setVolume(0.8f);
-        rootNode.attachChild(shotGun);
-
-        // Initialize truncheon attack
-        AudioNode hitTruncheon = new AudioNode(assetManager,
-            "Sounds/Effects/reloadGun.wav",false);
-        hitTruncheon.setLooping(true);
-        hitTruncheon.setName("hitTruncheon");
-        hitTruncheon.setVolume(0.4f);
-        hitTruncheon.attachChild(hitTruncheon);
+        rootNode.attachChild(shotGun);        
            
     }
     
@@ -385,10 +384,10 @@ public class SoundManager {
         shotGun.playInstance();
     }
     
-        /* Play truncheon attack  */
-    public static void hitTruncheonPlayInstance(Node rootNode){
-        AudioNode hitTruncheon = (AudioNode) rootNode.getChild("hitTruncheon");
-        hitTruncheon.playInstance();
+        /* Play shot machine gun  */
+    public static void shotMachineGunPlayInstance(Node rootNode){
+        AudioNode shotMachineGun = (AudioNode) rootNode.getChild("shotMachineGun");
+        shotMachineGun.playInstance();
     }
     
         /* Play change to gun  */
@@ -398,9 +397,9 @@ public class SoundManager {
     }
     
         /* Play change to truncheon  */
-    public static void changeToTruncheonPlayInstance(Node rootNode){
-        AudioNode changeToTruncheon = (AudioNode) rootNode.getChild("changeToTruncheon");
-        changeToTruncheon.playInstance();
+    public static void changeToMachineGunPlayInstance(Node rootNode){
+        AudioNode changeToMachineGun = (AudioNode) rootNode.getChild("changeToMachineGun");
+        changeToMachineGun.playInstance();
     }
    
 
