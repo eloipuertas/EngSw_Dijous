@@ -11,6 +11,7 @@ import com.jme3.math.Vector3f;
 import java.util.ArrayList;
 import java.util.List;
 import mygame.model.character.CharacterMainInterface;
+import mygame.model.Shotgun;
 import mygame.model.weapon.Gun;
 import mygame.model.weapon.Antidot;
 import mygame.model.weapon.WeaponInterface;
@@ -37,7 +38,6 @@ public class ObjectsInGame extends AbstractAppState  {
         
         //Guardamos los botiquines que creemos en una lista
         ObjetosAntidoto = new ArrayList<WeaponInterface>();
-        //ObjetosAntidoto.add(new Antidot(this.app, this.bulletAppState, new Vector3f(141.61f,-0.65f,-79.91f), "antidote"));
         ObjetosAntidoto.add(new Antidot(this.app, this.bulletAppState, new Vector3f(141.61f, 0f,-79.91f), "antidote"));
         ObjetosAntidoto.get(0).addWeaponeToScenario();
         
@@ -50,6 +50,7 @@ public class ObjectsInGame extends AbstractAppState  {
         
         //Init weapons
         weaponsList = new ArrayList<WeaponInterface>();
+	weaponsList.add(new Shotgun(this.app, this.bulletAppState, new Vector3f(-25f, 0f, 0f), 1220, "weapon01"));
         weaponsList.add(new Gun(this.app, this.bulletAppState, new Vector3f(-25f, 0f, 0f), 1220, "weapon01"));
         weaponsList.get(0).addWeaponeToScenario();
     }
