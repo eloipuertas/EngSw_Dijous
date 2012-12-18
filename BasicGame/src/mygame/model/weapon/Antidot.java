@@ -31,13 +31,13 @@ public class Antidot implements WeaponInterface {
         name = "Antidot"; // type of weapon is Gun
         
         // creating collision box of gun as cilider shape
-        CylinderCollisionShape cilinder = new CylinderCollisionShape(new Vector3f(0.5f,1.5f,1.5f));
+        CylinderCollisionShape cilinder = new CylinderCollisionShape(new Vector3f(0.5f,1.5f,0.5f));
         weaponControl = new CharacterControl(cilinder, 1.0f);
         
         //TODO: Add antidot model
         // Loading, scaling and adding control for our weapon.
-        weaponShape = (Node) app.getAssetManager().loadModel("Character/porra.j3o");
-        weaponShape.scale(0.4f);
+        weaponShape = (Node) app.getAssetManager().loadModel("Scenes/antidoto.j3o");
+        weaponShape.scale(1f);
         weaponShape.addControl(weaponControl);
         weaponShape.setName(name);
         

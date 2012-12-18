@@ -57,4 +57,5 @@ public interface CharacterMainInterface {
      */
     public Node getShootables();
     public void doDamage(int value);
+    public void incrementLife(int value);
 }

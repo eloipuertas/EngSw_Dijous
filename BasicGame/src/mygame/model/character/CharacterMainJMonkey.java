@@ -137,7 +137,7 @@ public final class CharacterMainJMonkey
         app.getRootNode().attachChild(shootables);
         shootables.attachChild(escenari.getEscenari());        
 
-        isPaused = false;;
+        isPaused = false;
         
         initAnimacio();
     }
@@ -176,6 +176,12 @@ public final class CharacterMainJMonkey
             isPaused = !isPaused;
             ((Controller)app).setIsRunning(isPaused);
         }
+    }
+    
+    public void incrementLife(int value){
+        int vida = ((Controller)app).getScenarioManager().getGuiPlayer().getSaludGUI();
+        vida = vida + value;
+        ((Controller)app).getScenarioManager().getGuiPlayer().setSaludGUI(vida);
     }
 
     /**
@@ -240,9 +246,11 @@ public final class CharacterMainJMonkey
             
             app.getInputManager().addMapping("Weapon1", new KeyTrigger(KeyInput.KEY_1));
             app.getInputManager().addMapping("Weapon2", new KeyTrigger(KeyInput.KEY_2));
+            app.getInputManager().addMapping("Antidote", new KeyTrigger(KeyInput.KEY_3));
         
             app.getInputManager().addListener(changeWeapon, "Weapon1");
             app.getInputManager().addListener(changeWeapon, "Weapon2");
+            app.getInputManager().addListener(changeWeapon, "Antidote");
     }
     
     /**
@@ -445,9 +453,15 @@ public final class CharacterMainJMonkey
                     // <-------
                     
                     // -----> COMENTAR LAS SIGUIENTES 3 LINEAS SI NO OS GUSTA LA IDEA DE UNA MARCA POR CADA TIRO - ROCIO
-                    Geometry redSpot = getNewRedSpot();
-                    redSpot.setLocalTranslation(closest.getContactPoint());
-                    app.getRootNode().attachChild(redSpot); // put red sphere at that point
+                    Geometry shootSpot;
+                    if (modelLoad.equals("antidot")) {
+                        shootSpot = getNewGreenSpot();
+                    } else {
+                        shootSpot = getNewRedSpot();
+                    }
+                    shootSpot.setLocalTranslation(closest.getContactPoint());
+                    closest.getGeometry().getParent().attachChild(shootSpot); // rocio2
+                    //app.getRootNode().attachChild(redSpot); // put red sphere at that point
                     // <-------
                     
                     // -----> DESCOMENTAR LAS SIGUIENTES 2 LINEAS SI NO OS GUSTA LA IDEA DE UNA MARCA POR CADA TIRO
@@ -481,6 +495,11 @@ public final class CharacterMainJMonkey
             //inicialitzarMarcaCollisio();  // call shooting red mark method
             // <-------
         }
+        if (model.equals("antidot")){
+            playerModelLoad = (Node) app.getAssetManager().loadModel("Scenes/antidoto.j3o");
+            playerModelLoad.move(0f, -5.5f, 0f);
+            shootActivated = true;
+        }
         
         shootListenerMappingManagement(shootActivated);
         pivot.attachChild(playerModelLoad);
@@ -499,6 +518,11 @@ public final class CharacterMainJMonkey
                modelLoad = "pistola";
                System.out.println("PISTOLA");
 
+           }
+           if (name.equals("Antidote") && !keyPressed) {
+               carregaModel("antidot");
+               modelLoad = "antidot";
+               System.out.println("ANTIDOT");
            }
         }
     };
@@ -520,6 +544,20 @@ public final class CharacterMainJMonkey
     }
     // <-------
     
+    
+    /**
+     * Method which creates a green SPOT as a sphere. Useful for test if weapon
+     * can shoot
+     */
+    protected Geometry getNewGreenSpot() {
+        // Creating red sphere and set its material
+        Sphere sphere = new Sphere(30, 30, 0.2f);
+        Geometry greenSpot = new Geometry("BOOM!", sphere);
+        Material greenSpot_mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        greenSpot_mat.setColor("Color", ColorRGBA.Green);
+        greenSpot.setMaterial(greenSpot_mat);
+        return greenSpot;
+    }
     
     // -----> DESCOMENTAR LAS SIGUIENTES LINEAS SI NO OS GUSTA LA IDEA DE UNA MARCA POR CADA TIRO - ROCIO
     //protected void inicialitzarMarcaCollisio() {
