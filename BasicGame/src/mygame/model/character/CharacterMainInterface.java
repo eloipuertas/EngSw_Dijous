@@ -12,6 +12,9 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.BulletAppState;
+import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
+
 /**
  *
  * @author rociotovar
@@ -41,6 +44,7 @@ public interface CharacterMainInterface {
     public void personatgeUpdate();
     public Vector3f getPlayerPosition();
     public void addWeapon(WeaponInterface weapon);
+    public void controlChangeWeapons();
     
     //Stefan: Nuevo para pause del grupo G
     public boolean isPaused();
@@ -51,5 +55,6 @@ public interface CharacterMainInterface {
      * Zombie does damage to main player
      * @param value how much?
      */
+    public Node getShootables();
     public void doDamage(int value);
 }

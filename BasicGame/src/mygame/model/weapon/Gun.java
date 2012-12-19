@@ -39,12 +39,12 @@ public class Gun implements WeaponInterface {
         
         // creating collision box of gun as cilider shape
         CylinderCollisionShape cilinder = new CylinderCollisionShape(new Vector3f(0.5f,1.5f,1.5f));
-        weaponControl = new CharacterControl(cilinder, 0.5f);
+        weaponControl = new CharacterControl(cilinder, 1.0f);
         
         //TODO: Add weapon model
         // Loading, scaling and adding control for our weapon.
-        weaponShape = (Node) app.getAssetManager().loadModel("Models/Elephant/Elephant.mesh.xml");
-        weaponShape.scale(0.05f);
+        weaponShape = (Node) app.getAssetManager().loadModel("Character/Pistola.mesh.xml");
+        weaponShape.scale(0.4f);
         weaponShape.addControl(weaponControl);
         weaponShape.setName(name);
         

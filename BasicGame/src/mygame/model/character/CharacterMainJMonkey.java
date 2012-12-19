@@ -1,18 +1,19 @@
 package mygame.model.character;
 
+import com.jme3.animation.AnimChannel;
+import com.jme3.animation.AnimControl;
+import com.jme3.animation.AnimEventListener;
+import com.jme3.animation.Animation;
+import com.jme3.animation.LoopMode;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
-import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
-
-import com.jme3.asset.plugins.ZipLocator;
-
 import com.jme3.asset.AssetManager;
-
 import com.jme3.audio.AudioNode;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.collision.shapes.CapsuleCollisionShape;
 import com.jme3.bullet.control.CharacterControl;
+import com.jme3.cinematic.events.AnimationEvent;
 import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
 import com.jme3.font.BitmapFont;
@@ -20,31 +21,27 @@ import com.jme3.font.BitmapText;
 import com.jme3.input.KeyInput;
 import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
-import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
-
-import com.jme3.light.AmbientLight;
-import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Ray;
-
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
-import com.jme3.scene.Mesh;
-import com.jme3.scene.Spatial;
-import com.jme3.scene.shape.Box;
 import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Sphere;
 import com.jme3.system.AppSettings;
+import java.awt.DisplayMode;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.util.ArrayList;
 import java.util.List;
 import mygame.Controller;
 import mygame.States.Scenario.Scenario;
-import mygame.model.weapon.Gun;
 import mygame.model.weapon.WeaponInterface;
-import mygame.model.character.CharacterMainInterface;
+import mygame.model.zombie.ZombieInterface;
+import mygame.model.zombie.ZombieManagerInterface;
 import mygame.sound.SoundManager;
 
 /**
@@ -64,34 +61,35 @@ import mygame.sound.SoundManager;
  * Character's attributes
  */
 public final class CharacterMainJMonkey
-        implements ActionListener, CharacterMainInterface {
+        implements AnimEventListener, ActionListener, CharacterMainInterface {
 
     private BulletAppState bulletAppState;
-    //private RigidBodyControl landscape;
     private WeaponInterface currentWeapon;
     private List<WeaponInterface> weapons;  // list of caught weapons
     private CharacterControl playerControl; // character control
-    private Node playerModelLoad;
+    private Spatial playerModelLoad;
     private AssetManager assetManager;
     private Vector3f walkDirection = new Vector3f();
     private boolean left = false, right = false, up = false, down = false, 
             run = false, mute = false, weapon1=false, weapon2=false; // booleans for listeners
     private SimpleApplication app;
-    //boolean musica = false; // booleans for states
     boolean primeraVez = true;
-    //private int contadorMute = 1;
-    //private int contadorPause = 2;
     boolean isPaused;
     boolean isMuted = false; // Booleano que controla si es luego esta silenciado
+    boolean shootActivated = false;
+    boolean created = false;
     AudioNode audio_environment;  // environment audio node
-    //private Geometry geom1;
     Node shootables;
     Geometry marcaVermella;  // red mark for shoot
     Scenario escenari;  // scenario object
     protected BitmapFont guiFont;  // fonts
     private Node pivot; // secundary node in order to avoid that character flies.
     private String modelLoad="";
+    private AnimChannel channelAnim;
+    private AnimControl controlAnim;
+    private ArrayList<ZombieInterface> zombiesMI;
     
+
     /**
      * Initialize method. Main method called in RunningGameState. It initializes
      * all character's variables. It creates and loads our character. It
@@ -109,66 +107,86 @@ public final class CharacterMainJMonkey
         this.assetManager = app.getAssetManager();
         this.escenari = new Scenario(app);  // creating scenario
         this.weapons = new ArrayList<WeaponInterface>(); // creating weapons list
-
+        this.pivot = new Node();
+        this.shootables = new Node("Shootables");
+       
         setUpKeys();  // set up keys and listeners
-        inicialitzarMarca();  // call shooting methods
-        initMirilla();
-
+        
         // Creating and setting character's features as:
         // collision box, jump speed, fall speed and gravity
-        CapsuleCollisionShape capsuleShape = new CapsuleCollisionShape(3f, 4f, 1);
+        CapsuleCollisionShape capsuleShape = new CapsuleCollisionShape(3f, 3.5f, 1);
         playerControl = new CharacterControl(capsuleShape, 0.05f);
         playerControl.setJumpSpeed(40);
         playerControl.setFallSpeed(100);
         playerControl.setGravity(100);
 
         // Creating pivot Node so that our character doesn't float
-        pivot = new Node();
-        playerModelLoad = (Node) app.getAssetManager().loadModel("Character/playerPistola.j3o");
-        
-        // Loding our first character model
-        
+        playerModelLoad = app.getAssetManager().loadModel("Character/porra.j3o");
+           
+        // Loding our first character model        
         //Material playerMaterial = app.getAssetManager().loadMaterial("Character/Cube.002.j3m");
         pivot.attachChild(playerModelLoad);  // attach 'player model porra' node as a child of pivot node of character
         pivot.addControl(playerControl); // setting control
-        playerModelLoad.move(0f, -5.5f, 0f); // setting correct position in order to appears on the floor
+        playerModelLoad.move(-0.5f, -3.75f, 0f); // setting correct position in order to appears on the floor
         // Positionig char and attaching pivot
         playerControl.setPhysicsLocation(new Vector3f(0, 5, 0));
         bulletAppState.getPhysicsSpace().add(playerControl);
         app.getRootNode().attachChild(pivot);
-
+          
         // Creating node for shoot action and ataching it as a child of Scenario object
-        shootables = new Node("Shootables");
         app.getRootNode().attachChild(shootables);
-        shootables.attachChild(escenari.getEscenari());
+        shootables.attachChild(escenari.getEscenari());        
 
-        isPaused = false;
-  
+        isPaused = false;;
+        
+        initAnimacio();
+    }
+    
 
+    
+    /******By pòlit*****/
+    /*****Metode afegir models al node shootables*******/
+    public Node getShootables(){
+        return shootables;
+    }
+    
+    public void damageToZombies(Geometry g){
+        zombiesMI = ((Controller)app).getZombieManager().getZombies();
+        for(ZombieInterface z: zombiesMI){
+           //System.out.println("ZombiePositon: " + z.getZombieShape().getWorldTranslation());
+           //System.out.println("GeometryPosition: " + g.getWorldTranslation());
+           if(z.getZombieShape().getWorldTranslation().equals(g.getWorldTranslation())){
+               z.doDamage(50, true);
+           }
+
+        }
+    }
+    
+    //By Polit
+    //Metode que els zombies criden per fernos mal i matarnos
+    public void doDamage(int value){
+        int vida = ((Controller)app).getScenarioManager().getGuiPlayer().getSaludGUI();
+        vida = vida - value;
+        ((Controller)app).getScenarioManager().getGuiPlayer().setSaludGUI(vida);
+        if (vida <=0){
+            //Ara mateix, com que no tenim animacio de morir, i que no se que passa
+            //quan ens morim, el jugador no mor, i crido a pausa, per veure un canvi
+            //despres de quedarnos sense vida.
+            
+            isPaused = !isPaused;
+            ((Controller)app).setIsRunning(isPaused);
+        }
     }
 
-    private void carregaModel(String model){
-        if (model.equals("porra")){
-            playerModelLoad = (Node) app.getAssetManager().loadModel("Character/porra.j3o");
-        }
-        if (model.equals("pistola")){
-            playerModelLoad = (Node) app.getAssetManager().loadModel("Character/playerPistola.j3o");
-        }
-        pivot.attachChild(playerModelLoad);
-        app.getRootNode().attachChild(pivot);
-    }
-
-    /**
-     * State setter. Argument: BulletAppState
-     *
-     * Stefan: se puede conseguir de app!! public void setState(BulletAppState
-     * state){ bulletAppState=state; }
-     */
     /**
      * Method which assign keys with character actions through listeners.
      */
     public void setUpKeys() {
-
+        
+        // @ Ernest, deleting zoom of flycam
+        app.getInputManager().deleteMapping("FLYCAM_ZoomOut");
+        app.getInputManager().deleteMapping("FLYCAM_ZoomIn");
+        
         // Adding left, right, up, down and run actions as a defined keyboard keys
         app.getInputManager().addMapping("Left", new KeyTrigger(KeyInput.KEY_A));
         app.getInputManager().addMapping("Right", new KeyTrigger(KeyInput.KEY_D));
@@ -181,15 +199,6 @@ public final class CharacterMainJMonkey
         
         app.getInputManager().addMapping("Mute", new KeyTrigger(KeyInput.KEY_M));
         app.getInputManager().addMapping("Paused", new KeyTrigger(KeyInput.KEY_P));
-
-        app.getInputManager().addMapping("Weapon1", new KeyTrigger(KeyInput.KEY_1));
-        app.getInputManager().addMapping("Weapon2", new KeyTrigger(KeyInput.KEY_2));
-        
-        // Adding shoot action as a mouse left button
-        app.getInputManager().addMapping("Shoot",
-                new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
-        // Adding all listeners for all of our previous defined actions
-        app.getInputManager().addListener(accioDisparar, "Shoot");
         
         app.getInputManager().addListener(this, "Left");
         app.getInputManager().addListener(this, "Right");
@@ -201,11 +210,38 @@ public final class CharacterMainJMonkey
         app.getInputManager().addListener(this, "Mute");
         app.getInputManager().addListener(this, "Paused");
         
-        app.getInputManager().addListener(changeWeapon, "Weapon1");
-        app.getInputManager().addListener(changeWeapon, "Weapon2");
-        
     }
-
+    
+    
+    /** @Ernest --> Method which adds shoot action listener and mapping. It only used in fire weapons model
+     */ 
+    public void shootListenerMappingManagement(boolean isActivated) {
+        
+        if (!created && isActivated) {
+        app.getInputManager().addMapping("Shoot", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
+        app.getInputManager().addListener(accioDisparar, "Shoot");
+        created = true;
+       }
+        
+        if (created && !isActivated) {
+          app.getInputManager().deleteMapping("Shoot");
+          created = false;  
+        }
+    }
+    
+    
+    /** @Ernest --> Method wich controls if list of weapons has gun and allows change weapon when players had grabbed a gun 
+     */
+    
+    public void controlChangeWeapons () {
+            
+            app.getInputManager().addMapping("Weapon1", new KeyTrigger(KeyInput.KEY_1));
+            app.getInputManager().addMapping("Weapon2", new KeyTrigger(KeyInput.KEY_2));
+        
+            app.getInputManager().addListener(changeWeapon, "Weapon1");
+            app.getInputManager().addListener(changeWeapon, "Weapon2");
+    }
+    
     /**
      * Method which has our custom actions triggered by key presses. We do not
      * walk yet, we just keep track of the direction the user pressed.
@@ -274,13 +310,16 @@ public final class CharacterMainJMonkey
         this.app.getFlyByCamera().setEnabled(!isPaused);
         if (!this.isPaused) {
             //@Ernest --  Setting limits in up/down camera movement
-             if(app.getCamera().getUp().y < -0.1) // axis more than -0.1
+             if(app.getCamera().getUp().y < 0) // axis more than 0
              {
               // look at this direction  
-                app.getCamera().lookAtDirection( new Vector3f(0,app.getCamera().getDirection().y,0),new Vector3f(app.getCamera().getUp().x,-0.1f, app.getCamera().getUp().z));
-            }
+              //  app.getCamera().lookAtDirection( new Vector3f(0,app.getCamera().getDirection().y,0),new Vector3f(app.getCamera().getUp().x,-0.1f, app.getCamera().getUp().z));
+              // setting axis restiction
+              app.getCamera().setAxes(camLeft, new Vector3f (0,1,0), viewDirection);
+                 
+             }
             //camDir.setY(0); // set y as 0 
-            camDir = camDir.normalize().multLocal(0.2f); 
+            //camDir = camDir.normalize().multLocal(0.2f); 
 
 
             // Setting camera according to action
@@ -310,10 +349,6 @@ public final class CharacterMainJMonkey
             right = false;
             up = false;
             down = false;
-            /* YA NO EXISTEN!!! (MERGE STEFAN)
-            turnLeft = false;
-            turnRight = false;
-            * /**/
             run = false;
         }
 
@@ -350,14 +385,35 @@ public final class CharacterMainJMonkey
     public WeaponInterface getCurrentWeapon() {
         return currentWeapon;
     }
-
-
+    
+        
+    //by Polit
+    public void initAnimacio(){
+        //controlAnim = playerModelLoad.getControl(AnimControl.class);
+        //System.out.println("Model carregat: " + playerModelLoad);
+        //System.out.println("ControlAnimacio: " + controlAnim);
+        //controlAnim.addListener(this);
+        //channelAnim = controlAnim.createChannel();
+        //channelAnim.setAnim("shootAction");
+        //channelAnim.setSpeed(0f);
+        //channelAnim.setLoopMode(LoopMode.Loop);
+        
+    }
+    
+    /*
+    Runnable deleteRedSpot = new Runnable() {
+        public void run() {
+            app.getRootNode().detachChild(marcaVermella);
+        }
+    };*/
+    
     /**
      * Shoot Listener Method and listener which performs shooting action in
      * scenario whithin peephole and red mark. It also and shows collision
      * sceneario elements
      */
     private ActionListener accioDisparar = new ActionListener() {
+        @SuppressWarnings("empty-statement")
         public void onAction(String name, boolean keyPressed, float tpf) {
             // If receives a 'Shoot action
             if (name.equals("Shoot") && !keyPressed) {
@@ -378,17 +434,56 @@ public final class CharacterMainJMonkey
                 if (resultat.size() > 0) {
                     // The closest collision point is what was truly hit:
                     CollisionResult closest = resultat.getClosestCollision();
+                    damageToZombies(closest.getGeometry());
                     // Let's interact - we mark the hit with a red dot.
-                    marcaVermella.setLocalTranslation(closest.getContactPoint());
-                    app.getRootNode().attachChild(marcaVermella); // put red sphere at that point
-                } else {
+                    
+                    // -----> DESCOMENTAR LA SIGUIENTE LINEA SI NO OS GUSTA LA IDEA DE UNA MARCA POR CADA TIRO - ROCIO
+                    //marcaVermella.setLocalTranslation(closest.getContactPoint());                    
+                    // <-------
+                    
+                    // -----> COMENTAR LAS SIGUIENTES 3 LINEAS SI NO OS GUSTA LA IDEA DE UNA MARCA POR CADA TIRO - ROCIO
+                    Geometry redSpot = getNewRedSpot();
+                    redSpot.setLocalTranslation(closest.getContactPoint());
+                    app.getRootNode().attachChild(redSpot); // put red sphere at that point
+                    // <-------
+                    
+                    // -----> DESCOMENTAR LAS SIGUIENTES 2 LINEAS SI NO OS GUSTA LA IDEA DE UNA MARCA POR CADA TIRO
+                    //marcaVermella.setLocalTranslation(closest.getContactPoint());
+                    //app.getRootNode().attachChild(marcaVermella);
+                    // <-------
+                    
+                    //channelAnim.setAnim("shootAction", 0.50f);
+                    //channelAnim.setLoopMode(LoopMode.DontLoop);
+                    System.out.println("shootAction");
+                } /*else {
                     // No hits? Then remove the red mark.
                     app.getRootNode().detachChild(marcaVermella);
-                }
+                }*/
             }
         }
     };
     
+     private void carregaModel(String model){
+        pivot.detachChild(playerModelLoad);
+        if (model.equals("porra")){
+            playerModelLoad = (Node) app.getAssetManager().loadModel("Character/porra.j3o");
+            playerModelLoad.move(-0.5f, -3.5f, 0f); // setting correct position in order to appears on the floor
+            shootActivated = false;
+        }
+        if (model.equals("pistola")){
+            playerModelLoad = (Node) app.getAssetManager().loadModel("Character/playerPistola.j3o");
+            playerModelLoad.move(0f, -5.5f, 0f); // setting correct position in order to appears on the floor
+            shootActivated = true;
+            // -----> DESCOMENTAR LA SIGUIENTE LINEAS SI NO OS GUSTA LA IDEA DE UNA MARCA POR CADA TIRO - ROCIO
+            //inicialitzarMarcaCollisio();  // call shooting red mark method
+            // <-------
+        }
+        
+        shootListenerMappingManagement(shootActivated);
+        pivot.attachChild(playerModelLoad);
+        //app.getRootNode().attachChild(pivot);
+    }
+     
     private ActionListener changeWeapon = new ActionListener() {
         public void onAction(String name, boolean keyPressed, float tpf) {
            if (name.equals("Weapon1") && !keyPressed) {
@@ -400,29 +495,45 @@ public final class CharacterMainJMonkey
                carregaModel("pistola");
                modelLoad = "pistola";
                System.out.println("PISTOLA");
+
            }
         }
     };
+
+    
+    // -----> COMENTAR LAS SIGUIENTES 13 LINEAS SI NO OS GUSTA LA IDEA DE UNA MARCA POR CADA TIRO - ROCIO             
     /**
-     * Method which creates a red mark as a sphere. Useful for test if weapon
+     * Method which creates a red SPOT as a sphere. Useful for test if weapon
      * can shoot
      */
-    protected void inicialitzarMarca() {
+    protected Geometry getNewRedSpot() {
         // Creating red sphere and set its material
         Sphere sphere = new Sphere(30, 30, 0.2f);
-        marcaVermella = new Geometry("BOOM!", sphere);
-        Material marcaVermella_mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-        marcaVermella_mat.setColor("Color", ColorRGBA.Red);
-        marcaVermella.setMaterial(marcaVermella_mat);
+        Geometry redSpot = new Geometry("BOOM!", sphere);
+        Material redSpot_mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        redSpot_mat.setColor("Color", ColorRGBA.Red);
+        redSpot.setMaterial(redSpot_mat);
+        return redSpot;
     }
+    // <-------
+    
+    
+    // -----> DESCOMENTAR LAS SIGUIENTES LINEAS SI NO OS GUSTA LA IDEA DE UNA MARCA POR CADA TIRO - ROCIO
+    //protected void inicialitzarMarcaCollisio() {
+    //    // Creating red sphere and set its material
+    //    Sphere sphere = new Sphere(30, 30, 0.2f);
+    //    marcaVermella = new Geometry("BOOM!", sphere);
+    //    Material marcaVermella_mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+    //    marcaVermella_mat.setColor("Color", ColorRGBA.Red);
+    //    marcaVermella.setMaterial(marcaVermella_mat);
+    //}
+    // <-------
 
     /**
      * Method which constructs a peephole that recreates our target shooting It
      * points to the objective where our red sphere will go
      */
-    protected void initMirilla() {
-
-
+    /*protected void initMirilla() {
         app.getGuiNode().detachAllChildren();
         guiFont = loadGuiFont();
         guiFont = assetManager.loadFont("Interface/Fonts/Default.fnt");
@@ -431,13 +542,34 @@ public final class CharacterMainJMonkey
         ch.setSize(guiFont.getCharSet().getRenderedSize() * 2);
         ch.setText("+"); // crosshairs
         AppSettings settings = new AppSettings(true);
+        
         ch.setLocalTranslation( // center
 
-                // Width and height settings
-                settings.getWidth() / 2 - guiFont.getCharSet().getRenderedSize() / 3 * 2,
-                settings.getHeight() / 2 + ch.getLineHeight() / 2, 0);
+        // Width and height settings        
+        settings.getWidth() / 2 - guiFont.getCharSet().getRenderedSize() / 3 * 2,
+        settings.getHeight() / 2 + ch.getLineHeight() / 2, 0);
+        
+        System.out.print("Amplada nova: " + settings.getWidth());
+        System.out.print("Alçada nova: " + settings.getHeight());
+        
+        GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        DisplayMode[] modes = device.getDisplayModes();
+        device.getDisplayMode();
+        System.out.println("Amplada mode 0: " + modes[0].getWidth());
+        System.out.println("Alçada mode 0: " + modes[0].getHeight());
+        System.out.println("Bits mode 0: " + modes[0].getBitDepth());
+        System.out.println("Amplada mode 1: " + modes[1].getWidth());
+        System.out.println("Alçada mode 1: " + modes[1].getHeight());
+        System.out.println("Bits mode 1: " + modes[1].getBitDepth());
+        System.out.println("Amplada mode 2: " + modes[2].getWidth());
+        System.out.println("Alçada mode 2: " + modes[2].getHeight());
+        
+        System.out.println("Patata1: " + device.getDisplayMode().getHeight());
+        System.out.println("Patata2: " + device.getDisplayMode().getWidth());
+        
+
         app.getGuiNode().attachChild(ch); // attaching to GUI
-    }
+    }*/
     
 
     /**
@@ -465,7 +597,7 @@ public final class CharacterMainJMonkey
      * Current weapon setter
      */
     public void setCurrentWeapon(WeaponInterface weapon) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        this.currentWeapon = weapon;
     }
 
     /**
@@ -482,13 +614,17 @@ public final class CharacterMainJMonkey
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    // TODO for zombies: decrement health!!
-    public void doDamage(int value) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
 
     // @David C. -- Añadido getters del parámetro isPaused
     public boolean isPaused() {
         return isPaused;
+    }
+
+    public void onAnimCycleDone(AnimControl control, AnimChannel channel, String animName) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void onAnimChange(AnimControl control, AnimChannel channel, String animName) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

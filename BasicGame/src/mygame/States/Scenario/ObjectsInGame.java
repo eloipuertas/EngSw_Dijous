@@ -73,6 +73,7 @@ public class ObjectsInGame extends AbstractAppState  {
        if (weapon != null) {
             player.addWeapon(weapon);
             weapon.deleteFromScenario();
+            player.controlChangeWeapons();
        }
      
     }
