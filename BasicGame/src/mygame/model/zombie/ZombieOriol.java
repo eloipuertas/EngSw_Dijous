@@ -110,6 +110,8 @@ public class ZombieOriol extends Zombie implements AnimEventListener {
         float angle = zombieControl.getViewDirection().normalize().angleBetween(playerPos.subtract(zombiePos).normalize());
         dist1=dist;
         if (dist < DISTFOLLOW && angle < (ANGLEFOLLOW * Math.PI / 360) || dist < DISTDETECT) {
+            Vector3f walkDirection = new Vector3f((playerPos.x - zombiePos.x), 0, (playerPos.z - zombiePos.z));
+            zombieControl.setViewDirection(walkDirection);
             // follow player
             if (dist < DISTATTACK) { //near the player, attack and stop
                 if (state != 2) {
@@ -128,10 +130,7 @@ public class ZombieOriol extends Zombie implements AnimEventListener {
                 // Si el juego NO esta mutado o pausado ejecutar la siguiente linea
                 //SoundManager.zombieSoundSetVolume(app.getRootNode(), 1 / dist);
 
-                Vector3f walkDirection = new Vector3f((playerPos.x - zombiePos.x), 0, (playerPos.z - zombiePos.z));
-
                 zombieControl.setWalkDirection(walkDirection.normalize().mult(speed));
-                zombieControl.setViewDirection(walkDirection);
                 channel.setSpeed(1f);
             }
         } else {
