@@ -139,7 +139,7 @@ public final class CharacterMainJMonkey
 
         isPaused = false;
         
-        initAnimacio();
+        //initAnimacio();
     }
     
 
@@ -219,12 +219,13 @@ public final class CharacterMainJMonkey
         app.getInputManager().addMapping("Shoot", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
         app.getInputManager().addListener(accioDisparar, "Shoot");
         
+        
     }
     
     
-    /** @Ernest --> Method which adds shoot action listener and mapping. It only used in fire weapons model
+    /** JA NO CAL !! @Ernest --> Method which adds shoot action listener and mapping. It only used in fire weapons model
      */ 
-    public void shootListenerMappingManagement(boolean isActivated) {
+    /*public void shootListenerMappingManagement(boolean isActivated) {
         // Ernest -> activar listner escopeta i desactvar-lo segons booleà
         if (!created && isActivated) {
         //app.getInputManager().addMapping("Shoot", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
@@ -236,21 +237,28 @@ public final class CharacterMainJMonkey
           //app.getInputManager().deleteTrigger(accioDispararEscopeta, null);
           created = false;  
         }
-    }
+    }*/
     
     
     /** @Ernest --> Method wich controls if list of weapons has gun and allows change weapon when players had grabbed a gun 
      */
     
-    public void controlChangeWeapons () {
+    public void controlChangeWeapons (int n) {
             
             app.getInputManager().addMapping("Weapon1", new KeyTrigger(KeyInput.KEY_1));
-            app.getInputManager().addMapping("Weapon2", new KeyTrigger(KeyInput.KEY_2));
-            app.getInputManager().addMapping("Antidote", new KeyTrigger(KeyInput.KEY_3));
-        
             app.getInputManager().addListener(changeWeapon, "Weapon1");
-            app.getInputManager().addListener(changeWeapon, "Weapon2");
+            
+            //Only active if we have antidot
+            if(n==3) {
+            app.getInputManager().addMapping("Antidote", new KeyTrigger(KeyInput.KEY_3));
             app.getInputManager().addListener(changeWeapon, "Antidote");
+            }
+            
+            // Only if we have shotgun
+            if(n==2) {
+            app.getInputManager().addMapping("Weapon2", new KeyTrigger(KeyInput.KEY_2));
+            app.getInputManager().addListener(changeWeapon, "Weapon2");
+            }
     }
     
     /**
@@ -324,12 +332,12 @@ public final class CharacterMainJMonkey
              if(app.getCamera().getUp().y < 0) // axis more than 0
              {
               // look at this direction  
-                app.getCamera().lookAtDirection( new Vector3f(0,app.getCamera().getDirection().y,0),new Vector3f(app.getCamera().getUp().x,-0.1f, app.getCamera().getUp().z));
+              //  app.getCamera().lookAtDirection( new Vector3f(0,app.getCamera().getDirection().y,0),new Vector3f(app.getCamera().getUp().x,-0.1f, app.getCamera().getUp().z));
               // setting axis restiction
-              //app.getCamera().setAxes(camLeft, new Vector3f (0,1,0), viewDirection);
+              app.getCamera().setAxes(camLeft, new Vector3f (0,1,0), viewDirection);
                  
              }
-            camDir.setY(0); // set y as 0 
+            //camDir.setY(0); // set y as 0 
             camDir = camDir.normalize().multLocal(0.2f); 
 
 
@@ -399,7 +407,7 @@ public final class CharacterMainJMonkey
     
         
     //by Polit
-    public void initAnimacio(){
+    //public void initAnimacio(){
         //controlAnim = playerModelLoad.getControl(AnimControl.class);
         //System.out.println("Model carregat: " + playerModelLoad);
         //System.out.println("ControlAnimacio: " + controlAnim);
@@ -409,7 +417,7 @@ public final class CharacterMainJMonkey
         //channelAnim.setSpeed(0f);
         //channelAnim.setLoopMode(LoopMode.Loop);
         
-    }
+    //}
     
     /*
     Runnable deleteRedSpot = new Runnable() {
@@ -483,25 +491,25 @@ public final class CharacterMainJMonkey
      private void carregaModel(String model){
         pivot.detachChild(playerModelLoad);
         if (model.equals("escopeta")){
-            playerModelLoad = (Node) app.getAssetManager().loadModel("Character/porra.j3o");
+            playerModelLoad = (Node) app.getAssetManager().loadModel("Character/playerPistola.j3o");
             playerModelLoad.move(0f, -5.5f, 0f); // setting correct position in order to appears on the floor
-            shootActivated = false;
+            //shootActivated = false;
         }
         if (model.equals("pistola")){
             playerModelLoad = (Node) app.getAssetManager().loadModel("Character/playerPistola.j3o");
             playerModelLoad.move(0f, -5.5f, 0f); // setting correct position in order to appears on the floor
-            shootActivated = true;
+            //shootActivated = true;
             // -----> DESCOMENTAR LA SIGUIENTE LINEAS SI NO OS GUSTA LA IDEA DE UNA MARCA POR CADA TIRO - ROCIO
             //inicialitzarMarcaCollisio();  // call shooting red mark method
             // <-------
         }
         if (model.equals("antidot")){
-            playerModelLoad = (Node) app.getAssetManager().loadModel("Scenes/antidoto.j3o");
+            playerModelLoad = (Node) app.getAssetManager().loadModel("Character/playerAntidoto.j3o");
             playerModelLoad.move(0f, -5.5f, 0f);
-            shootActivated = true;
+            //shootActivated = true;
         }
         
-        shootListenerMappingManagement(shootActivated);
+        // @ernest --> ja no cal shootListenerMappingManagement(shootActivated);
         pivot.attachChild(playerModelLoad);
         //app.getRootNode().attachChild(pivot);
     }

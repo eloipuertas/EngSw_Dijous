@@ -35,7 +35,7 @@ public class Shotgun implements WeaponInterface {
         this.bulletAppState = bulletAppState;
         this.id = id;
         name = "Shotgun"; // type of weapon is shotgun
-        munition = 3000;
+        munition = 1000;
         
         // creating collision box of gun as cilider shape
         CylinderCollisionShape cilinder = new CylinderCollisionShape(new Vector3f(0.5f,1.5f,1.5f));
