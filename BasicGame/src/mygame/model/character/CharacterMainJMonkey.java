@@ -183,7 +183,13 @@ public final class CharacterMainJMonkey
         vida = vida + value;
         ((Controller)app).getScenarioManager().getGuiPlayer().setSaludGUI(vida);
     }
-
+    
+     public void decrementAmmo(){
+        int municio = ((Controller)app).getScenarioManager().getGuiPlayer().getMunicionGUI();
+        municio = municio - 1;
+        ((Controller)app).getScenarioManager().getGuiPlayer().setMunicionGUI(municio);
+    }
+     
     /**
      * Method which assign keys with character actions through listeners.
      */
@@ -452,6 +458,7 @@ public final class CharacterMainJMonkey
                 }
                 if (resultat.size() > 0) {
                     // The closest collision point is what was truly hit:
+                    decrementAmmo();
                     CollisionResult closest = resultat.getClosestCollision();
                     damageToZombies(closest.getGeometry());
                     // Let's interact - we mark the hit with a red dot.
