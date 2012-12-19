@@ -186,8 +186,13 @@ public final class CharacterMainJMonkey
     
      public void decrementAmmo(){
         int municio = ((Controller)app).getScenarioManager().getGuiPlayer().getMunicionGUI();
+        
         municio = municio - 1;
         ((Controller)app).getScenarioManager().getGuiPlayer().setMunicionGUI(municio);
+        if (municio == 0){
+            app.getInputManager().removeListener(accioDisparar);   
+        }
+        
     }
      
     /**
