@@ -123,6 +123,7 @@ public final class CharacterMainJMonkey
 
         // Creating pivot Node so that our character doesn't float
         playerModelLoad = app.getAssetManager().loadModel("Character/playerPistola.j3o");
+        modelLoad = "pistola";
         
         // Loding our first character model        
         //Material playerMaterial = app.getAssetManager().loadMaterial("Character/Cube.002.j3m");
