@@ -142,7 +142,13 @@ public class MenuPrincipalState extends AbstractAppState implements ScreenContro
     }
     
      
-     
+    public void menuGameOver(){
+        nifty.gotoScreen("muerto");
+    }
+    
+    public void menuWin(){
+        nifty.gotoScreen("win");
+    }
     public void opcionNivelFacil(){
        //SoundManager.clickPlayInstance(rootNode); // Play click
        nifty.gotoScreen("start");

@@ -6,6 +6,7 @@ import com.jme3.util.BufferUtils;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import mygame.States.MenuPrincipalState;
+import mygame.States.MenuPrincipalStateInterface;
 import mygame.States.RunningGameState;
 import mygame.States.RunningGameStateInterface;
 import mygame.States.Scenario.ScenarioInterface;
@@ -28,6 +29,7 @@ public class Controller extends SimpleApplication {
     private CharacterMainInterface playerManager;
     private ScenarioInterface scenarioManager;
     private RunningGameStateInterface runningGameInterface;
+    private MenuPrincipalStateInterface menuPrincipalStateInterface;
 
     
     
@@ -62,6 +64,14 @@ public class Controller extends SimpleApplication {
         this.playerManager = playerManager;
     }
 
+     public MenuPrincipalStateInterface getMenuPrincipalState() {
+        return menuPrincipalStateInterface;
+    }
+    
+    public void setMenuPrincipalStateInterface(MenuPrincipalStateInterface menuPrincipalStateInterface) {
+        this.menuPrincipalStateInterface = menuPrincipalStateInterface;
+    }
+    
     public boolean isIsRunning() {
         return this.isRunning;
     }
