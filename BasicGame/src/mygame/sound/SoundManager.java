@@ -11,6 +11,8 @@ import com.jme3.scene.Node;
  * @author Isa
  */
 public class SoundManager {
+    
+    public static boolean muted;
 
     public static void initAudio(SimpleApplication app){
         AssetManager assetManager = app.getAssetManager();
@@ -312,7 +314,9 @@ public class SoundManager {
         String idS = String.valueOf(id);
 
         AudioNode zombieFootstep = (AudioNode) rootNode.getChild("zombieFootstep"+idS);
-        zombieFootstep.setVolume(0.5f * vol);
+        if (!muted){
+            zombieFootstep.setVolume(0.5f * vol);
+        }
     }
     
     /* Play zombie hurt  */
@@ -336,6 +340,7 @@ public class SoundManager {
     
     /* Mute all sounds, set Volume to 0  */
     public static void muteAllSounds(Node rootNode){
+        muted = true;
         AudioNode click = (AudioNode) rootNode.getChild("click");
         click.setVolume(0);
 
@@ -359,7 +364,7 @@ public class SoundManager {
         
                 
         // For each zombie mute sound and footStep
-        int numZombies = 5;
+        int numZombies = 1;
         for (int i = 0; i < numZombies; ++i){
             String idS = String.valueOf(i);
             
@@ -394,6 +399,7 @@ public class SoundManager {
 
     /* Unmute all sounds, set at the initial volume */
     public static void unMuteAllSounds(Node rootNode){
+        muted = false;
         AudioNode click = (AudioNode) rootNode.getChild("click");
         click.setVolume(1);
 

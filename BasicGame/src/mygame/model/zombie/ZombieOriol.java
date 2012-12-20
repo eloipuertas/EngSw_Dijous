@@ -31,7 +31,6 @@ public class ZombieOriol extends Zombie implements AnimEventListener {
     private static final int DAMAGEDONE = 40;
     
     //for random movement
-    private float dist1=0;
     private boolean randMoveSet = false;
     private Random rand = new Random();
     private int timeLeft;
@@ -44,13 +43,13 @@ public class ZombieOriol extends Zombie implements AnimEventListener {
         
         CapsuleCollisionShape cilinder = new CapsuleCollisionShape(1.5f, 2f, 1);
         zombieControl = new CharacterControl(cilinder, 0.1f);
-        zombieShape = app.getAssetManager().loadModel("Models/oriol/oriol.mesh.j3o");
+        zombieShape = app.getAssetManager().loadModel("Models/Oto/Oto.mesh.xml");
         node1 = new Node();
         node1.attachChild(zombieShape);
-        zombieShape.move(0f, -2.5f, 0f);
+        zombieShape.move(0f, 2.5f, 0f);
         node1.addControl(zombieControl);
 
-        zombieShape.scale(3f);
+        zombieShape.scale(1f);
         colisions = new RigidBodyControl(1f);
         node1.addControl(colisions);
         ccs = new CompoundCollisionShape();
@@ -90,11 +89,14 @@ public class ZombieOriol extends Zombie implements AnimEventListener {
     private void initAnimation() {
 
         control = zombieShape.getControl(AnimControl.class);
+        for (String anim : control.getAnimationNames()){
+            System.out.println(anim);
+        }
         control.addListener(this);
         channel = control.createChannel();
-        channel.setAnim("walk");
+        channel.setAnim("Walk");
         channel.setSpeed(0f);
-        channel.setAnim("stand");
+        //channel.setAnim("stand");
         channel.setSpeed(1f);
         channel.setLoopMode(LoopMode.Loop);
 
@@ -108,7 +110,7 @@ public class ZombieOriol extends Zombie implements AnimEventListener {
 
         float dist = playerPos.distance(zombiePos);
         float angle = zombieControl.getViewDirection().normalize().angleBetween(playerPos.subtract(zombiePos).normalize());
-        dist1=dist;
+
         if (dist < DISTFOLLOW && angle < (ANGLEFOLLOW * Math.PI / 360) || dist < DISTDETECT) {
             Vector3f walkDirection = new Vector3f((playerPos.x - zombiePos.x), 0, (playerPos.z - zombiePos.z));
             zombieControl.setViewDirection(walkDirection);
@@ -116,9 +118,9 @@ public class ZombieOriol extends Zombie implements AnimEventListener {
             if (dist < DISTATTACK) { //near the player, attack and stop
                 if (state != 2) {
                     //((Controller) app).getPlayerManager().doDamage(DAMAGEDONE); //do damage once every animation!!!
-                    channel.setAnim("attack", 0.50f);
+                    channel.setAnim("push", 0.50f);
                     channel.setLoopMode(LoopMode.DontLoop);
-                    System.out.println("attack");
+                    System.out.println("push");
                 }
                 SoundManager.basicZombieFootStepsPause(app.getRootNode(), id);
                 state = 2;//attack
@@ -183,7 +185,7 @@ public class ZombieOriol extends Zombie implements AnimEventListener {
          zombieControl.setWalkDirection(new Vector3f(0, 0, 0));
          //channel.setAnim(null);
          //channel.setAnim("stand"); de moment no te animacio stand
-         //channel.setAnim("walk");
+         //channel.setAnim("Walk");
          }/**/
         if(state!=3){
 //            SoundManager.zombieSoundSetVolume(app.getRootNode(), 7 / dist);
@@ -191,15 +193,18 @@ public class ZombieOriol extends Zombie implements AnimEventListener {
     }
 
     public void onAnimCycleDone(AnimControl control, AnimChannel channel, String animName) {
+        Vector3f zombiePos = zombieControl.getPhysicsLocation();
+        Vector3f playerPos = ((Controller) app).getPlayerManager().getPlayerPosition();
+        float dist1 = playerPos.distance(zombiePos);
 
-        if (animName.equals("walk") && state == 1) {
+        if (animName.equals("Walk") && state == 1) {
             SoundManager.basicZombieFootStepsPlay(app.getRootNode(), id);
-            System.out.println("Zombie walks");
+            //System.out.println("Zombie Walks");
             SoundManager.basicZombieFootStepsSetVolume(app.getRootNode(), id, 7 / dist1);
-            channel.setAnim("walk", 0.50f);
+            channel.setAnim("Walk", 0.50f);
             channel.setLoopMode(LoopMode.DontLoop);
             channel.setSpeed(1f);
-        } else if (animName.equals("walk") && state == 0) {
+        } else if (animName.equals("Walk") && state == 0) {
 
             channel.setAnim("stand", 0.50f);
             channel.setLoopMode(LoopMode.DontLoop);
@@ -211,18 +216,18 @@ public class ZombieOriol extends Zombie implements AnimEventListener {
             channel.setSpeed(0f);
         } else if (animName.equals("stand") && state == 1) {
 
-            channel.setAnim("walk", 0.50f);
+            channel.setAnim("Walk", 0.50f);
             channel.setLoopMode(LoopMode.DontLoop);
             channel.setSpeed(1f);
-        } else if (animName.equals("attack")) {
+        } else if (animName.equals("push")) {
             damagePlayer();
             
-            channel.setAnim("walk", 0.50f);
+            channel.setAnim("Walk", 0.50f);
             channel.setLoopMode(LoopMode.DontLoop);
             channel.setSpeed(1f);
             state = 0;
             SoundManager.basicZombieAttackPlayInstance(app.getRootNode());
-        } else if (animName.equals("death")) {
+        } else if (animName.equals("Dodge")) {
             SoundManager.basicZombieFootStepsPause(app.getRootNode(), id);
             SoundManager.basicZombieSoundPause(app.getRootNode(), id);
             node1.removeControl(colisions);
@@ -272,7 +277,7 @@ public class ZombieOriol extends Zombie implements AnimEventListener {
         //zombieControl.setFallSpeed(1000000f);
         zombieControl.setWalkDirection(new Vector3f(0, 0, 0));
         SoundManager.basicZombieDiePlayInstance(app.getRootNode());
-        channel.setAnim("death");
+        channel.setAnim("Dodge");
         channel.setSpeed(0.4f);
         
         channel.setLoopMode(LoopMode.DontLoop);

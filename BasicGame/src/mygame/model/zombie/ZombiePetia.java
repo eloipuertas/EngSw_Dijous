@@ -31,7 +31,7 @@ public class ZombiePetia extends Zombie implements AnimEventListener {
     private static final int DAMAGEDONE = 40;
     
     //for random movement
-    private float dist1=0;
+    //private float dist1=0;
     private boolean randMoveSet = false;
     private Random rand = new Random();
     private int timeLeft;
@@ -42,15 +42,15 @@ public class ZombiePetia extends Zombie implements AnimEventListener {
     public ZombiePetia(SimpleApplication app, Vector3f position, Vector3f viewDirection, difficulty dif, int i) {
         super(app, position, viewDirection, i);
         
-        CapsuleCollisionShape cilinder = new CapsuleCollisionShape(1.5f, 2f, 1);
+        CapsuleCollisionShape cilinder = new CapsuleCollisionShape(1.5f, 8f, 1);
         zombieControl = new CharacterControl(cilinder, 0.1f);
-        zombieShape = app.getAssetManager().loadModel("Models/zombie2/zombie2.mesh.j3o");
+        zombieShape = app.getAssetManager().loadModel("Models/zombie/new/zombie2.mesh.xml");
         node1 = new Node();
         node1.attachChild(zombieShape);
-        zombieShape.move(0f, -2.5f, 0f);
+        zombieShape.move(0f, -5.5f, 0f);
         node1.addControl(zombieControl);
 
-        zombieShape.scale(3f);
+        zombieShape.scale(6f);
         colisions = new RigidBodyControl(1f);
         node1.addControl(colisions);
         ccs = new CompoundCollisionShape();
@@ -108,7 +108,7 @@ public class ZombiePetia extends Zombie implements AnimEventListener {
 
         float dist = playerPos.distance(zombiePos);
         float angle = zombieControl.getViewDirection().normalize().angleBetween(playerPos.subtract(zombiePos).normalize());
-        dist1=dist;
+
         if (dist < DISTFOLLOW && angle < (ANGLEFOLLOW * Math.PI / 360) || dist < DISTDETECT) {
             Vector3f walkDirection = new Vector3f((playerPos.x - zombiePos.x), 0, (playerPos.z - zombiePos.z));
             zombieControl.setViewDirection(walkDirection);
@@ -191,11 +191,14 @@ public class ZombiePetia extends Zombie implements AnimEventListener {
     }
 
     public void onAnimCycleDone(AnimControl control, AnimChannel channel, String animName) {
+        Vector3f zombiePos = zombieControl.getPhysicsLocation();
+        Vector3f playerPos = ((Controller) app).getPlayerManager().getPlayerPosition();
+        float dist = playerPos.distance(zombiePos);
 
         if (animName.equals("walk") && state == 1) {
             SoundManager.basicZombieFootStepsPlay(app.getRootNode(), id);
             System.out.println("Zombie walks");
-            SoundManager.basicZombieFootStepsSetVolume(app.getRootNode(), id, 7 / dist1);
+            SoundManager.basicZombieFootStepsSetVolume(app.getRootNode(), id, 7 / dist);
             channel.setAnim("walk", 0.50f);
             channel.setLoopMode(LoopMode.DontLoop);
             channel.setSpeed(1f);
@@ -215,7 +218,9 @@ public class ZombiePetia extends Zombie implements AnimEventListener {
             channel.setLoopMode(LoopMode.DontLoop);
             channel.setSpeed(1f);
         } else if (animName.equals("attack")) {
-            damagePlayer();
+            if (dist < DISTATTACK){
+                damagePlayer();
+            }
             
             channel.setAnim("walk", 0.50f);
             channel.setLoopMode(LoopMode.DontLoop);

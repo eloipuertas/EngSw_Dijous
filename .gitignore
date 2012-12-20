@@ -174,3 +174,5 @@ pip-log.txt
 /BasicGame/build/
 /BasicGame/dist/
 >>>>>>> origin/TEAM-F
+/JmeTests/nbproject/private/
+/BasicGame2/nbproject/private/

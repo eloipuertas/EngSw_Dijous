@@ -34,7 +34,7 @@ public class ZombieManager implements ZombieManagerInterface {
         this.app = (SimpleApplication) app;
         bulletAppState = this.app.getStateManager().getState(BulletAppState.class);
         rootNode = this.app.getRootNode();
-        //bulletAppState.getPhysicsSpace().enableDebug(app.getAssetManager());
+       // bulletAppState.getPhysicsSpace().enableDebug(app.getAssetManager());
 //        for (int i = 0; i < numberZombies; i++) {
 //            Zombie z = new Zombie(this.app, 10f * i, 5f, -4f * i, 0.003f * (i + 1));
 //            zombies.add(z);
@@ -47,11 +47,11 @@ public class ZombieManager implements ZombieManagerInterface {
         addZombieBasic(new Vector3f(15f, 5f, 10f), new Vector3f(1f, 0f, 1f), difficulty.high);
         addZombieBasic(new Vector3f(0f, 5f, 10f), new Vector3f(-1f, 0f, 1f), difficulty.high);
         addZombieBasic(new Vector3f(0f, 5f, 10f), new Vector3f(0f, 0f, -1f), difficulty.low);
-        
-        addZombieBasic(new Vector3f(20f, 1f, 15f), new Vector3f(0f, 0f, 1f), difficulty.low);
-        addZombiePetia(new Vector3f(20f, 1f, 10f), new Vector3f(0f, 0f, 1f), difficulty.high);
-        addZombieOriol(new Vector3f(15f, 1f, 20f), new Vector3f(0f, 0f, 1f), difficulty.high);
-/**/
+/**/        
+        //addZombieBasic(new Vector3f(20f, 1f, 15f), new Vector3f(0f, 0f, 1f), difficulty.low);
+        //addZombiePetia(new Vector3f(20f, 1f, 10f), new Vector3f(0f, 0f, 1f), difficulty.high);
+        //addZombieOriol(new Vector3f(15f, 1f, 20f), new Vector3f(0f, 0f, 1f), difficulty.high);
+
 
 
         setZombiColission();

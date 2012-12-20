@@ -29,7 +29,6 @@ public class ZombieBasic extends Zombie implements AnimEventListener {
     private static final int DISTATTACK = 7;
     private static final int DAMAGEDONE = 10;
     //for random movement
-    private float dist1 = 0;
     private boolean randMoveSet = false;
     private Random rand = new Random();
     private int timeLeft;
@@ -107,7 +106,7 @@ public class ZombieBasic extends Zombie implements AnimEventListener {
 
         float dist = playerPos.distance(zombiePos);
         float angle = zombieControl.getViewDirection().normalize().angleBetween(playerPos.subtract(zombiePos).normalize());
-        dist1 = dist;
+
         if (dist < DISTFOLLOW && angle < (ANGLEFOLLOW * Math.PI / 360) || dist < DISTDETECT) {
             Vector3f walkDirection = new Vector3f((playerPos.x - zombiePos.x), 0, (playerPos.z - zombiePos.z));
             zombieControl.setViewDirection(walkDirection);
@@ -191,6 +190,10 @@ public class ZombieBasic extends Zombie implements AnimEventListener {
 
     public void onAnimCycleDone(AnimControl control, AnimChannel channel, String animName) {
 
+        Vector3f zombiePos = zombieControl.getPhysicsLocation();
+        Vector3f playerPos = ((Controller) app).getPlayerManager().getPlayerPosition();
+        float dist1 = playerPos.distance(zombiePos);
+        
         if (animName.equals("walk") && state == 1) {
             SoundManager.basicZombieFootStepsPlay(app.getRootNode(), id);
             System.out.println("Zombie walks");
