@@ -77,6 +77,7 @@ public class Controller extends SimpleApplication {
     public void setIsRunning(boolean isRunning) {
         this.isRunning = isRunning;
         runningGame.setIsRunningGame(isRunning);
+       
     }
     //===========================================
     
@@ -141,7 +142,7 @@ public class Controller extends SimpleApplication {
       }
       */
       
-      runningGame.updateRunningGame();   
+      runningGame.updateRunningGame();  
     
   }
         //rootNode.attachChild(audio_environment);

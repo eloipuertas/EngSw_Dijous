@@ -11,5 +11,6 @@ package mygame.States;
 public interface RunningGameStateInterface {
 
     public int getDifficulty();
-    public void setDifficulty(int difficulty);     
+    public void setDifficulty(int difficulty);
+    
 }

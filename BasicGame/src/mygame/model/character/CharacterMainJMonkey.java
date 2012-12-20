@@ -38,6 +38,7 @@ import java.awt.GraphicsEnvironment;
 import java.util.ArrayList;
 import java.util.List;
 import mygame.Controller;
+import mygame.States.RunningGameState;
 import mygame.States.Scenario.Scenario;
 import mygame.model.weapon.WeaponInterface;
 import mygame.model.zombie.ZombieInterface;
@@ -176,6 +177,7 @@ public final class CharacterMainJMonkey
             isPaused = !isPaused;
             ((Controller)app).setIsRunning(isPaused);
             ((Controller)app).getMenuPrincipalState().menuGameOver();
+            
         }
     }
 

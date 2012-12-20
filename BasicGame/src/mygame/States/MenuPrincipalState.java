@@ -180,7 +180,7 @@ public class MenuPrincipalState extends AbstractAppState implements ScreenContro
        this.app.getInputManager().setCursorVisible(false);
        this.setIsRunningMenuPrincipal(false);
        ((Controller)app).getRunningGameState().setDifficulty(difficulty);
-       
+       ((Controller)app).getScenarioManager().getGuiPlayer().setSaludGUI(100);
     }
     
     /* @Emilio muestra menú pausa, pero no pausa el juego solo el movimiento
@@ -202,11 +202,15 @@ public class MenuPrincipalState extends AbstractAppState implements ScreenContro
         System.out.println(" -- Aplicación cerrada.");
         Thread.currentThread().sleep(1000); // Sleep de un segundo que da tiempo al sonido para que se reproduzca
         this.app.stop();
+        
     }
     
     public void menuGameOver(){
-        System.out.println("holaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
         nifty.gotoScreen("muerto");
+    }
+    
+    public void menuWin(){
+        nifty.gotoScreen("win");
     }
     // @Emilio de momento esto no es necesario
     /*public void ayuda(){
