@@ -127,9 +127,11 @@ public final class CharacterMainJMonkey
         //Material playerMaterial = app.getAssetManager().loadMaterial("Character/Cube.002.j3m");
         pivot.attachChild(playerModelLoad);  // attach 'player model porra' node as a child of pivot node of character
         pivot.addControl(playerControl); // setting control
-        playerModelLoad.move(0f, -5.5f, 0f); // setting correct position in order to appears on the floor
+        playerModelLoad.move(0f, -5.5f, 0f);
+
         // Positionig char and attaching pivot
-        playerControl.setPhysicsLocation(new Vector3f(0, 5, 0));
+        //playerControl.setPhysicsLocation(new Vector3f(0, 5, 0));
+        playerControl.setPhysicsLocation(new Vector3f(-42.874153f, -4.0098057f, 116.69594f));
         bulletAppState.getPhysicsSpace().add(playerControl);
         app.getRootNode().attachChild(pivot);
           
@@ -169,12 +171,11 @@ public final class CharacterMainJMonkey
         vida = vida - value;
         ((Controller)app).getScenarioManager().getGuiPlayer().setSaludGUI(vida);
         if (vida <=0){
-            //Ara mateix, com que no tenim animacio de morir, i que no se que passa
-            //quan ens morim, el jugador no mor, i crido a pausa, per veure un canvi
-            //despres de quedarnos sense vida.
-            
+             
             isPaused = !isPaused;
             ((Controller)app).setIsRunning(isPaused);
+            //((Controller)app).getMenuPrincipalState().menuGameOver();
+            //ver();
         }
     }
     
