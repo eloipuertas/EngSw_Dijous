@@ -15,6 +15,7 @@ import com.jme3.bullet.util.CollisionShapeFactory;
 import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.light.SpotLight;
+import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
@@ -56,7 +57,11 @@ public class Scenario {
         
         CollisionShape sceneShape =
                 CollisionShapeFactory.createMeshShape((Node) sceneModel);
+        Material mat_lit = new Material(
+    assetManager, "Common/MatDefs/Light/Lighting.j3md");
 
+//mat_lit.setFloat("m_Shininess", 5f);               
+//sceneModel.setMaterial(mat_lit);
         landscape = new RigidBodyControl(sceneShape, 0);
         sceneModel.addControl(landscape);
         sceneModel.setName("Escenario");  
@@ -85,6 +90,7 @@ public class Scenario {
         spot.setDirection(this.app.getCamera().getDirection());
         this.rootNode.addLight(spot);
         this.rootNode.setShadowMode(this.rootNode.getShadowMode().CastAndReceive);
+        
         // We add light so we see the scene
         /*AmbientLight al = new AmbientLight();
         al.setColor(ColorRGBA.White.mult(100.3f));
