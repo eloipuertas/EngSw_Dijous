@@ -157,10 +157,18 @@ public final class CharacterMainJMonkey
         for(ZombieInterface z: zombiesMI){
            //System.out.println("ZombiePositon: " + z.getZombieShape().getWorldTranslation());
            //System.out.println("GeometryPosition: " + g.getWorldTranslation());
-           if(z.getZombieShape().getWorldTranslation().equals(g.getWorldTranslation())){
-               z.doDamage(50, true);
+           if (modelLoad.equals("pistola")){
+                if(z.getZombieShape().getWorldTranslation().equals(g.getWorldTranslation())){
+                    z.doDamage(50, true);
+                }
            }
-
+           
+           if (modelLoad.equals("escopeta")){
+                if(z.getZombieShape().getWorldTranslation().equals(g.getWorldTranslation())){
+                    z.doDamage(70, true);
+                }
+           }
+           
         }
     }
     
@@ -174,6 +182,7 @@ public final class CharacterMainJMonkey
              
             isPaused = !isPaused;
             ((Controller)app).setIsRunning(isPaused);
+            //Comentat fins que tinguem el merge
             //((Controller)app).getMenuPrincipalState().menuGameOver();
             //ver();
         }
