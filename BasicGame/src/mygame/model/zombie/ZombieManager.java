@@ -50,7 +50,7 @@ public class ZombieManager implements ZombieManagerInterface {
 /**/        
         //addZombieBasic(new Vector3f(20f, 1f, 15f), new Vector3f(0f, 0f, 1f), difficulty.low);
         //addZombiePetia(new Vector3f(20f, 1f, 10f), new Vector3f(0f, 0f, 1f), difficulty.high);
-        //addZombieOriol(new Vector3f(15f, 1f, 20f), new Vector3f(0f, 0f, 1f), difficulty.high);
+        addZombieOriol(new Vector3f(15f, 1f, 20f), new Vector3f(0f, 0f, 1f), difficulty.high);
 
 
 

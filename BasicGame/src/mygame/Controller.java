@@ -3,6 +3,8 @@ package mygame;
 import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.util.BufferUtils;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import mygame.States.MenuPrincipalState;
 import mygame.States.RunningGameState;
 import mygame.States.RunningGameStateInterface;
@@ -71,6 +73,7 @@ public class Controller extends SimpleApplication {
     //===========================================
     
     public static void main(String[] args) {
+        Logger.getLogger("").setLevel(Level.SEVERE);
         Controller app = new Controller();
         app.start();
     }

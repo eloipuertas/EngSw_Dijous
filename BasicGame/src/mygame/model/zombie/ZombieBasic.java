@@ -217,7 +217,8 @@ public class ZombieBasic extends Zombie implements AnimEventListener {
             channel.setLoopMode(LoopMode.DontLoop);
             channel.setSpeed(1f);
         } else if (animName.equals("attack")) {
-            damagePlayer();
+            if (dist1 < DISTATTACK)
+                damagePlayer();
 
             channel.setAnim("walk", 0.50f);
             channel.setLoopMode(LoopMode.DontLoop);
