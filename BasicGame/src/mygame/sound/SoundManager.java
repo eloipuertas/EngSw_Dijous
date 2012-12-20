@@ -34,7 +34,7 @@ public class SoundManager {
         // Initialize gothic tune
         AudioNode gothicTune = new AudioNode(assetManager,
             "Sounds/Songs/Dark_music_Vampirical.ogg",true);
-        gothicTune.setVolume(0);
+        gothicTune.setVolume(0.3f);
         gothicTune.setName("gothicTune");
         rootNode.attachChild(gothicTune);
         

@@ -88,7 +88,7 @@ public final class CharacterMainJMonkey
     private AnimChannel channelAnim;
     private AnimControl controlAnim;
     private ArrayList<ZombieInterface> zombiesMI;
-    
+    boolean firstTime = false;
 
     /**
      * Initialize method. Main method called in RunningGameState. It initializes
@@ -123,7 +123,7 @@ public final class CharacterMainJMonkey
 
         // Creating pivot Node so that our character doesn't float
         playerModelLoad = app.getAssetManager().loadModel("Character/playerPistola.j3o");
-           
+        
         // Loding our first character model        
         //Material playerMaterial = app.getAssetManager().loadMaterial("Character/Cube.002.j3m");
         pivot.attachChild(playerModelLoad);  // attach 'player model porra' node as a child of pivot node of character
@@ -167,6 +167,12 @@ public final class CharacterMainJMonkey
            if (modelLoad.equals("escopeta")){
                 if(z.getZombieShape().getWorldTranslation().equals(g.getWorldTranslation())){
                     z.doDamage(70, true);
+                }
+           }
+           
+           if (modelLoad.equals("antidot")){
+                if(z.getZombieShape().getWorldTranslation().equals(g.getWorldTranslation())){
+                    z.doDamage(0, false);
                 }
            }
            
@@ -236,8 +242,10 @@ public final class CharacterMainJMonkey
         app.getInputManager().addListener(this, "Mute");
         app.getInputManager().addListener(this, "Paused");
         
+
         app.getInputManager().addMapping("Shoot", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
         app.getInputManager().addListener(accioDisparar, "Shoot");
+
         
         
     }
@@ -455,7 +463,7 @@ public final class CharacterMainJMonkey
         @SuppressWarnings("empty-statement")
         public void onAction(String name, boolean keyPressed, float tpf) {
             // If receives a 'Shoot action
-            if (name.equals("Shoot") && !keyPressed) {
+            if (name.equals("Shoot") && !keyPressed && firstTime) {
                 // Creating collision box and peephole
                 CollisionResults resultat = new CollisionResults();
                 Ray raig = new Ray(app.getCamera().getLocation(), app.getCamera().getDirection());
@@ -472,6 +480,14 @@ public final class CharacterMainJMonkey
                 }
                 if (resultat.size() > 0) {
                     // The closest collision point is what was truly hit:
+                    
+                    if (modelLoad.equals("pistola")){
+                        SoundManager.shotGunPlayInstance(app.getRootNode());
+                    }else if (modelLoad.equals("escopeta")){
+                        SoundManager.shotMachineGunPlayInstance(app.getRootNode());
+                    }else{
+                        SoundManager.shotGunPlayInstance(app.getRootNode());
+                    }
                     decrementAmmo();
                     CollisionResult closest = resultat.getClosestCollision();
                     damageToZombies(closest.getGeometry());
@@ -505,6 +521,8 @@ public final class CharacterMainJMonkey
                     // No hits? Then remove the red mark.
                     app.getRootNode().detachChild(marcaVermella);
                 }*/
+            }else{
+                firstTime = true;
             }
         }
     };
@@ -541,17 +559,19 @@ public final class CharacterMainJMonkey
                carregaModel("pistola");
                modelLoad = "pistola";
                System.out.println("PISTOLA");
+               SoundManager.changeToGunPlayInstance(app.getRootNode());
            } 
            if (name.equals("Weapon2") && !keyPressed) {
                carregaModel("escopeta");
                modelLoad = "escopeta";
                System.out.println("ESCOPETA");
-
+               SoundManager.changeToMachineGunPlayInstance(app.getRootNode());
            }
            if (name.equals("Antidote") && !keyPressed) {
                carregaModel("antidot");
                modelLoad = "antidot";
                System.out.println("ANTIDOT");
+               SoundManager.changeToGunPlayInstance(app.getRootNode());
            }
         }
     };
