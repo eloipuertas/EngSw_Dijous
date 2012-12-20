@@ -118,7 +118,7 @@ public class ZombiePetia extends Zombie implements AnimEventListener {
                     //((Controller) app).getPlayerManager().doDamage(DAMAGEDONE); //do damage once every animation!!!
                     channel.setAnim("attack", 0.50f);
                     channel.setLoopMode(LoopMode.DontLoop);
-                    System.out.println("attack");
+                    //System.out.println("attack");
                 }
                 SoundManager.basicZombieFootStepsPause(app.getRootNode(), id);
                 state = 2;//attack
@@ -139,7 +139,7 @@ public class ZombiePetia extends Zombie implements AnimEventListener {
             state = 1;//move
 
             if (!randMoveSet) {
-                System.out.println("set random move " + moveDirection);
+                //System.out.println("set random move " + moveDirection);
                 rand = new Random();
                 timeLeft = rand.nextInt(400) + 100;
 
@@ -197,7 +197,7 @@ public class ZombiePetia extends Zombie implements AnimEventListener {
 
         if (animName.equals("walk") && state == 1) {
             SoundManager.basicZombieFootStepsPlay(app.getRootNode(), id);
-            System.out.println("Zombie walks");
+            //System.out.println("Zombie walks");
             SoundManager.basicZombieFootStepsSetVolume(app.getRootNode(), id, 7 / dist);
             channel.setAnim("walk", 0.50f);
             channel.setLoopMode(LoopMode.DontLoop);
@@ -245,7 +245,7 @@ public class ZombiePetia extends Zombie implements AnimEventListener {
     }
 
     public void doDamage(int damage, boolean distance) {
-        System.out.println("zombie class -> damage done");
+        //System.out.println("zombie class -> damage done");
         if(state!=3){
             if (distance) { //long range, allways does damage
                 hitpoints = hitpoints - damage;
@@ -281,7 +281,7 @@ public class ZombiePetia extends Zombie implements AnimEventListener {
         channel.setSpeed(0.4f);
         
         channel.setLoopMode(LoopMode.DontLoop);
-        System.out.println(((Controller) app).getZombieManager());
+        //System.out.println(((Controller) app).getZombieManager());
     } 
     
     public void setDifficulty(difficulty dif) {

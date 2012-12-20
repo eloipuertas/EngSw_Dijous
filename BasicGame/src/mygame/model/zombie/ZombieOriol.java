@@ -89,9 +89,7 @@ public class ZombieOriol extends Zombie implements AnimEventListener {
     private void initAnimation() {
 
         control = zombieShape.getControl(AnimControl.class);
-        for (String anim : control.getAnimationNames()){
-            System.out.println(anim);
-        }
+
         control.addListener(this);
         channel = control.createChannel();
         channel.setAnim("Walk");
@@ -120,7 +118,7 @@ public class ZombieOriol extends Zombie implements AnimEventListener {
                     //((Controller) app).getPlayerManager().doDamage(DAMAGEDONE); //do damage once every animation!!!
                     channel.setAnim("push", 0.50f);
                     channel.setLoopMode(LoopMode.DontLoop);
-                    System.out.println("push");
+                    //System.out.println("push");
                 }
                 SoundManager.basicZombieFootStepsPause(app.getRootNode(), id);
                 state = 2;//attack
@@ -248,7 +246,7 @@ public class ZombieOriol extends Zombie implements AnimEventListener {
     }
 
     public void doDamage(int damage, boolean distance) {
-        System.out.println("zombie class -> damage done");
+        //System.out.println("zombie class -> damage done");
         if(state!=3){
             if (distance) { //long range, allways does damage
                 hitpoints = hitpoints - damage;
@@ -284,7 +282,7 @@ public class ZombieOriol extends Zombie implements AnimEventListener {
         channel.setSpeed(0.4f);
         
         channel.setLoopMode(LoopMode.DontLoop);
-        System.out.println(((Controller) app).getZombieManager());
+        //System.out.println(((Controller) app).getZombieManager());
     }
     
     public void setDifficulty(difficulty dif) {
