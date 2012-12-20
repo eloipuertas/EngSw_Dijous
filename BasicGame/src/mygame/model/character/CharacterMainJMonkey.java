@@ -175,6 +175,7 @@ public final class CharacterMainJMonkey
             
             isPaused = !isPaused;
             ((Controller)app).setIsRunning(isPaused);
+            ((Controller)app).getMenuPrincipalState().menuGameOver();
         }
     }
 

@@ -204,6 +204,10 @@ public class MenuPrincipalState extends AbstractAppState implements ScreenContro
         this.app.stop();
     }
     
+    public void menuGameOver(){
+        System.out.println("holaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+        nifty.gotoScreen("muerto");
+    }
     // @Emilio de momento esto no es necesario
     /*public void ayuda(){
         nifty.gotoScreen("ayuda");

@@ -169,6 +169,14 @@
         </panel>
     </layer>
   </screen>
+  <screen id="muerto" controller="mygame.Main" >
+    <layer id="background" backgroundColor="#0000">
+      <!-- ... -->
+    </layer>
+     <image filename="Interface/MenuPrincipal/game_over.png" 
+                valign="center" align="center" height="100%" width="100%" >
+            </image> 
+  </screen>
 
   <screen id="end">
    

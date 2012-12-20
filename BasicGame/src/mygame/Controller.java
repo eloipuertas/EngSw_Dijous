@@ -4,6 +4,7 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.util.BufferUtils;
 import mygame.States.MenuPrincipalState;
+import mygame.States.MenuPrincipalStateInterface;
 import mygame.States.RunningGameState;
 import mygame.States.RunningGameStateInterface;
 import mygame.States.Scenario.ScenarioInterface;
@@ -26,16 +27,9 @@ public class Controller extends SimpleApplication {
     private CharacterMainInterface playerManager;
     private ScenarioInterface scenarioManager;
     private RunningGameStateInterface runningGameInterface;
+    private MenuPrincipalStateInterface menuPrincipalStateInterface;
 
-    
-    
-    public RunningGameStateInterface getRunningGameState() {
-        return runningGameInterface;
-    }
-    
-    public void setRunningGameStateInterface(RunningGameStateInterface runningGameInterface) {
-        this.runningGameInterface = runningGameInterface;
-    }
+   
     public ScenarioInterface getScenarioManager() {
         return this.scenarioManager;
     }
@@ -60,6 +54,22 @@ public class Controller extends SimpleApplication {
         this.playerManager = playerManager;
     }
 
+        public RunningGameStateInterface getRunningGameState() {
+        return runningGameInterface;
+    }
+    
+    public void setRunningGameStateInterface(RunningGameStateInterface runningGameInterface) {
+        this.runningGameInterface = runningGameInterface;
+    }
+    
+    public MenuPrincipalStateInterface getMenuPrincipalState() {
+        return menuPrincipalStateInterface;
+    }
+    
+    public void setMenuPrincipalStateInterface(MenuPrincipalStateInterface menuPrincipalStateInterface) {
+        this.menuPrincipalStateInterface = menuPrincipalStateInterface;
+    }
+    
     public boolean isIsRunning() {
         return this.isRunning;
     }
@@ -87,7 +97,7 @@ public class Controller extends SimpleApplication {
         runningGame = new RunningGameState(this);
         setRunningGameStateInterface(runningGame);
         
-       //runningGame  = new RunningGameState(this);
+
         
         //Mostramos el Menu Principal
         stateManager.attach(menuPrincipal);

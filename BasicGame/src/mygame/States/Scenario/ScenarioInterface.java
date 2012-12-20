@@ -17,5 +17,4 @@ public interface ScenarioInterface {
     public void setObjetos(ObjectsInGame objetos);
     public Scenario getScenario();
     public void setScenario(Scenario scenario);
-    
 }
