@@ -238,7 +238,6 @@ public class ZombieOriol extends Zombie implements AnimEventListener {
 
             ((Controller) app).getZombieManager().deleteZombie(this);
             
-            //((Controller)app).getMenuPrincipalState().menuGameOver();
         }
     }
 
@@ -258,17 +257,13 @@ public class ZombieOriol extends Zombie implements AnimEventListener {
                     SoundManager.basicZombieHurtPlayInstance(app.getRootNode());
                 }
             } else {
-                Vector3f zombiePos = zombieControl.getPhysicsLocation();
-                Vector3f playerPos = ((Controller) app).getPlayerManager().getPlayerPosition();
+                //Vector3f zombiePos = zombieControl.getPhysicsLocation();
+                //Vector3f playerPos = ((Controller) app).getPlayerManager().getPlayerPosition();
 
-                if (playerPos.distance(zombiePos) < 10) {
-                    hitpoints = hitpoints - damage;
-                    if (hitpoints <= 0) {
-                        killZombie();
-                    }
-                    else{
-                        SoundManager.basicZombieHurtPlayInstance(app.getRootNode());
-                    }
+
+                //hitpoints = hitpoints - damage;
+                if (hitpoints <= 0) {                      
+                    ((Controller)app).getMenuPrincipalState().menuWin();
                 }
             }
         }
