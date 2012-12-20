@@ -43,7 +43,7 @@ public class ZombieOriol extends Zombie implements AnimEventListener {
         
         CapsuleCollisionShape cilinder = new CapsuleCollisionShape(1.5f, 2f, 1);
         zombieControl = new CharacterControl(cilinder, 0.1f);
-        zombieShape = app.getAssetManager().loadModel("Models/Oto/Oto.mesh.xml");
+        zombieShape = app.getAssetManager().loadModel("Models/oriol/oriol.mesh.j3o");
         node1 = new Node();
         node1.attachChild(zombieShape);
         zombieShape.move(0f, 2.5f, 0f);
@@ -263,7 +263,7 @@ public class ZombieOriol extends Zombie implements AnimEventListener {
 
                 //hitpoints = hitpoints - damage;
                 if (hitpoints <= 0) {                      
-                    ((Controller)app).getMenuPrincipalState().menuWin();
+                    //((Controller)app).getMenuPrincipalState().menuWin();
                 }
             }
         }
