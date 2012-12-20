@@ -218,14 +218,15 @@ public class ZombieOriol extends Zombie implements AnimEventListener {
             channel.setLoopMode(LoopMode.DontLoop);
             channel.setSpeed(1f);
         } else if (animName.equals("push")) {
-            if (dist1 < DISTATTACK)
+            if (dist1 < DISTATTACK){
                 damagePlayer();
+                SoundManager.basicZombieAttackPlayInstance(app.getRootNode());
+            }
             
             channel.setAnim("Walk", 0.50f);
             channel.setLoopMode(LoopMode.DontLoop);
             channel.setSpeed(1f);
             state = 0;
-            SoundManager.basicZombieAttackPlayInstance(app.getRootNode());
         } else if (animName.equals("Dodge")) {
             SoundManager.basicZombieFootStepsPause(app.getRootNode(), id);
             SoundManager.basicZombieSoundPause(app.getRootNode(), id);

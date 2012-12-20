@@ -219,6 +219,7 @@ public class ZombiePetia extends Zombie implements AnimEventListener {
             channel.setSpeed(1f);
         } else if (animName.equals("attack")) {
             if (dist < DISTATTACK){
+                SoundManager.basicZombieAttackPlayInstance(app.getRootNode());
                 damagePlayer();
             }
             
@@ -226,7 +227,6 @@ public class ZombiePetia extends Zombie implements AnimEventListener {
             channel.setLoopMode(LoopMode.DontLoop);
             channel.setSpeed(1f);
             state = 0;
-            SoundManager.basicZombieAttackPlayInstance(app.getRootNode());
         } else if (animName.equals("death")) {
             SoundManager.basicZombieFootStepsPause(app.getRootNode(), id);
             SoundManager.basicZombieSoundPause(app.getRootNode(), id);
