@@ -44,7 +44,7 @@ public interface CharacterMainInterface {
     public void personatgeUpdate();
     public Vector3f getPlayerPosition();
     public void addWeapon(WeaponInterface weapon);
-    public void controlChangeWeapons();
+    public void controlChangeWeapons(int n);
     
     //Stefan: Nuevo para pause del grupo G
     public boolean isPaused();
@@ -57,4 +57,5 @@ public interface CharacterMainInterface {
      */
     public Node getShootables();
     public void doDamage(int value);
+    public void incrementLife(int value);
 }

@@ -20,7 +20,7 @@ public class SoundManager {
 
         // Initialize footsteps
         AudioNode footSteps = new AudioNode(assetManager,
-"Sounds/Effects/footsteps.wav",false);
+            "Sounds/Effects/footsteps.wav",false);
         footSteps.setLooping(true);
         footSteps.setVolume(0.5f);
         footSteps.setName("footSteps");
@@ -28,21 +28,21 @@ public class SoundManager {
 
         // Initiliaze click sound
         AudioNode click = new AudioNode(assetManager,
-"Sounds/Effects/button-click.wav",false);
+            "Sounds/Effects/button-click.wav",false);
         click.setLooping(true);
         click.setName("click");
         rootNode.attachChild(click);
 
         // Initialize gothic tune
         AudioNode gothicTune = new AudioNode(assetManager,
-"Sounds/Songs/Dark_music_Vampirical.ogg",true);
+            "Sounds/Songs/Dark_music_Vampirical.ogg",true);
         gothicTune.setVolume(0.3f);
         gothicTune.setName("gothicTune");
         rootNode.attachChild(gothicTune);
         
         // Initiliaze zombie hurt
         AudioNode zombieHurt = new AudioNode(assetManager,
-"Sounds/Effects/zombieHurt.wav",false);
+            "Sounds/Effects/zombieHurt.wav",false);
         zombieHurt.setLooping(true);
         zombieHurt.setName("zombieHurt");
         zombieHurt.setVolume(0.2f);
@@ -50,12 +50,11 @@ public class SoundManager {
         
         // Initiliaze zombie die
         AudioNode zombieDie = new AudioNode(assetManager,
-"Sounds/Effects/zombieDie.wav",false);
+            "Sounds/Effects/zombieDie.wav",false);
         zombieDie.setLooping(true);
         zombieDie.setName("zombieDie");
         zombieDie.setVolume(0.4f);
         rootNode.attachChild(zombieDie);
-        
         
         // Initialize zombieOriol sound
         AudioNode zombieSoundOriol = new AudioNode(assetManager,
@@ -75,16 +74,16 @@ public class SoundManager {
         
         // Initialize zombieAttack
          AudioNode zombieAttack = new AudioNode(assetManager,
-"Sounds/Effects/zombieAttack1.wav",false);
+            "Sounds/Effects/zombieAttack1.wav",false);
         zombieAttack.setLooping(true);
         zombieAttack.setName("zombieAttack");
         zombieAttack.setVolume(0.4f);
         rootNode.attachChild(zombieAttack);
         
         
-                // Initiliaze zombie hurt Petia
+        // Initiliaze zombie hurt Petia
         AudioNode PetiaZombieHurt = new AudioNode(assetManager,
-"Sounds/Effects/zombiePetiaHurt.wav",false);
+            "Sounds/Effects/zombiePetiaHurt.wav",false);
         PetiaZombieHurt.setLooping(true);
         PetiaZombieHurt.setName("PetiaZombieHurt");
         PetiaZombieHurt.setVolume(0.2f);
@@ -92,15 +91,15 @@ public class SoundManager {
         
         // Initiliaze zombie die Petia
         AudioNode PetiaZombieDie = new AudioNode(assetManager,
-"Sounds/Effects/zombiePetiaDie.wav",false);
+            "Sounds/Effects/zombiePetiaDie.wav",false);
         PetiaZombieDie.setLooping(true);
         PetiaZombieDie.setName("PetiaZombieDie");
         PetiaZombieDie.setVolume(0.4f);
         rootNode.attachChild(PetiaZombieDie);
         
-              // Initialize zombieAttack Petia
+        // Initialize zombieAttack Petia
          AudioNode PetiaZombieAttack = new AudioNode(assetManager,
-"Sounds/Effects/zombieAttack1.wav",false);
+            "Sounds/Effects/zombieAttack1.wav",false);
         PetiaZombieAttack.setLooping(true);
         PetiaZombieAttack.setName("PetiaZombieAttack");
         PetiaZombieAttack.setVolume(0.4f);
@@ -108,7 +107,7 @@ public class SoundManager {
         
         // Initiliaze zombie hurt Oriol
         AudioNode OriolZombieHurt = new AudioNode(assetManager,
-"Sounds/Effects/zombieOriolHurt.wav",false);
+            "Sounds/Effects/zombieOriolHurt.wav",false);
         OriolZombieHurt.setLooping(true);
         OriolZombieHurt.setName("OriolZombieHurt");
         OriolZombieHurt.setVolume(0.2f);
@@ -116,20 +115,60 @@ public class SoundManager {
         
         // Initiliaze zombie die Oriol
         AudioNode OriolZombieDie = new AudioNode(assetManager,
-"Sounds/Effects/zombieOriolDie.wav",false);
+            "Sounds/Effects/zombieOriolDie.wav",false);
         OriolZombieDie.setLooping(true);
         OriolZombieDie.setName("OriolZombieDie");
         OriolZombieDie.setVolume(0.4f);
         rootNode.attachChild(OriolZombieDie);
         
-              // Initialize zombieAttack Petia
+         // Initialize zombieAttack Petia
          AudioNode OriolZombieAttack = new AudioNode(assetManager,
-"Sounds/Effects/zombieAttack1.wav",false);
+            "Sounds/Effects/zombieAttack1.wav",false);
         OriolZombieAttack.setLooping(true);
         OriolZombieAttack.setName("OriolZombieAttack");
         OriolZombieAttack.setVolume(0.4f);
         rootNode.attachChild(OriolZombieAttack);
-   
+        
+        // Initialize reload gun
+        AudioNode reloadGun = new AudioNode(assetManager,
+            "Sounds/Effects/reloadGun.wav",false);
+        reloadGun.setLooping(true);
+        reloadGun.setName("reloadGun");
+        reloadGun.setVolume(0.2f);
+        rootNode.attachChild(reloadGun);
+        
+        // Initialize change to gun
+        AudioNode changeToGun = new AudioNode(assetManager,
+            "Sounds/Effects/changeToGun.wav",false);
+        changeToGun.setLooping(true);
+        changeToGun.setName("changeToGun");
+        changeToGun.setVolume(0.4f);
+        rootNode.attachChild(changeToGun);   
+        
+        // Initialize change to machine gun
+        AudioNode changeToMachineGun = new AudioNode(assetManager,
+            "Sounds/Effects/changeToMachineGun.wav",false);
+        changeToMachineGun.setLooping(true);
+        changeToMachineGun.setName("changeToMachineGun");
+        changeToMachineGun.setVolume(0.4f);
+        rootNode.attachChild(changeToMachineGun);
+        
+        // Initialize Machine gun attack
+        AudioNode shotMachineGun = new AudioNode(assetManager,
+            "Sounds/Effects/shotMachineGun.wav",false);
+        shotMachineGun.setLooping(true);
+        shotMachineGun.setName("shotMachineGun");
+        shotMachineGun.setVolume(0.8f);
+        rootNode.attachChild(shotMachineGun);
+        
+        // Initilaize shot gun
+        AudioNode shotGun = new AudioNode(assetManager,
+            "Sounds/Effects/shotGun.wav",false);
+        shotGun.setLooping(true);
+        shotGun.setName("shotGun");
+        shotGun.setVolume(0.8f);
+        rootNode.attachChild(shotGun);        
+           
     }
     
     
@@ -336,6 +375,37 @@ public class SoundManager {
         AudioNode zombieAttack = (AudioNode) rootNode.getChild("zombieAttack");
         zombieAttack.playInstance();
     }
+    
+        /* Play reload gun */
+    public static void reloadGunPlayInstance(Node rootNode){
+        AudioNode reloadGun = (AudioNode) rootNode.getChild("reloadGun");
+        reloadGun.playInstance();
+    }
+    
+        /* Play shot gun  */
+    public static void shotGunPlayInstance(Node rootNode){
+        AudioNode shotGun = (AudioNode) rootNode.getChild("shotGun");
+        shotGun.playInstance();
+    }
+    
+        /* Play shot machine gun  */
+    public static void shotMachineGunPlayInstance(Node rootNode){
+        AudioNode shotMachineGun = (AudioNode) rootNode.getChild("shotMachineGun");
+        shotMachineGun.playInstance();
+    }
+    
+        /* Play change to gun  */
+    public static void changeToGunPlayInstance(Node rootNode){
+        AudioNode changeToGun = (AudioNode) rootNode.getChild("changeToGun");
+        changeToGun.playInstance();
+    }
+    
+        /* Play change to truncheon  */
+    public static void changeToMachineGunPlayInstance(Node rootNode){
+        AudioNode changeToMachineGun = (AudioNode) rootNode.getChild("changeToMachineGun");
+        changeToMachineGun.playInstance();
+    }
+   
 
     
     /* Mute all sounds, set Volume to 0  */
@@ -394,6 +464,21 @@ public class SoundManager {
         AudioNode OriolZombieAttack = (AudioNode) rootNode.getChild("OriolZombieAttack");
         OriolZombieAttack.setVolume(0);
         
+        AudioNode hitTruncheon = (AudioNode) rootNode.getChild("hitTruncheon");
+        hitTruncheon.setVolume(0);
+        
+        AudioNode changeToGun = (AudioNode) rootNode.getChild("changeToGun");
+        changeToGun.setVolume(0);
+        
+        AudioNode changeToTruncheon = (AudioNode) rootNode.getChild("changeToTruncheon");
+        changeToTruncheon.setVolume(0);
+        
+        AudioNode shotGun = (AudioNode) rootNode.getChild("shotGun");
+        shotGun.setVolume(0);
+        
+        AudioNode reloadGun = (AudioNode) rootNode.getChild("reloadGun");
+        reloadGun.setVolume(0);       
+        
        
     }
 
@@ -442,7 +527,20 @@ public class SoundManager {
         AudioNode OriolZombieAttack = (AudioNode) rootNode.getChild("OriolZombieAttack");
         OriolZombieAttack.setVolume(0.4f);
         
+        AudioNode hitTruncheon = (AudioNode) rootNode.getChild("hitTruncheon");
+        hitTruncheon.setVolume(0.4f);
         
+        AudioNode changeToGun = (AudioNode) rootNode.getChild("changeToGun");
+        changeToGun.setVolume(0.4f);
+        
+        AudioNode changeToTruncheon = (AudioNode) rootNode.getChild("changeToTruncheon");
+        changeToTruncheon.setVolume(0.4f);
+        
+        AudioNode shotGun = (AudioNode) rootNode.getChild("shotGun");
+        shotGun.setVolume(0.8f);
+        
+        AudioNode reloadGun = (AudioNode) rootNode.getChild("reloadGun");
+        reloadGun.setVolume(0.2f);
         
         
     }

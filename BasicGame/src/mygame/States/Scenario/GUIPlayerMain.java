@@ -80,4 +80,12 @@ public class GUIPlayerMain extends AbstractAppState implements ScreenController 
     public int getSaludGUI(){
         return guiPlayer.getSaludGUI();
     }
+    
+    public void setMunicionGUI(int municion){
+        guiPlayer.setMunicionGUI(municion);
+    }
+    
+    public int getMunicionGUI(){
+        return guiPlayer.getMunicionGUI();
+    }
 }

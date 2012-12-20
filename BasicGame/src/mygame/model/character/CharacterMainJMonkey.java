@@ -88,7 +88,7 @@ public final class CharacterMainJMonkey
     private AnimChannel channelAnim;
     private AnimControl controlAnim;
     private ArrayList<ZombieInterface> zombiesMI;
-    
+    boolean firstTime = false;
 
     /**
      * Initialize method. Main method called in RunningGameState. It initializes
@@ -115,21 +115,24 @@ public final class CharacterMainJMonkey
         // Creating and setting character's features as:
         // collision box, jump speed, fall speed and gravity
         CapsuleCollisionShape capsuleShape = new CapsuleCollisionShape(3f, 3.5f, 1);
+        //CapsuleCollisionShape capsuleShape = new CapsuleCollisionShape(3f, 13.5f, 1);
         playerControl = new CharacterControl(capsuleShape, 0.05f);
         playerControl.setJumpSpeed(40);
         playerControl.setFallSpeed(100);
         playerControl.setGravity(100);
 
         // Creating pivot Node so that our character doesn't float
-        playerModelLoad = app.getAssetManager().loadModel("Character/porra.j3o");
-           
+        playerModelLoad = app.getAssetManager().loadModel("Character/playerPistola.j3o");
+        
         // Loding our first character model        
         //Material playerMaterial = app.getAssetManager().loadMaterial("Character/Cube.002.j3m");
         pivot.attachChild(playerModelLoad);  // attach 'player model porra' node as a child of pivot node of character
         pivot.addControl(playerControl); // setting control
-        playerModelLoad.move(-0.5f, -3.75f, 0f); // setting correct position in order to appears on the floor
+        playerModelLoad.move(0f, -5.5f, 0f);
+
         // Positionig char and attaching pivot
-        playerControl.setPhysicsLocation(new Vector3f(0, 5, 0));
+        //playerControl.setPhysicsLocation(new Vector3f(0, 5, 0));
+        playerControl.setPhysicsLocation(new Vector3f(-42.874153f, -4.0098057f, 116.69594f));
         bulletAppState.getPhysicsSpace().add(playerControl);
         app.getRootNode().attachChild(pivot);
           
@@ -137,9 +140,9 @@ public final class CharacterMainJMonkey
         app.getRootNode().attachChild(shootables);
         shootables.attachChild(escenari.getEscenari());        
 
-        isPaused = false;;
+        isPaused = false;
         
-        initAnimacio();
+        //initAnimacio();
     }
     
 
@@ -155,10 +158,24 @@ public final class CharacterMainJMonkey
         for(ZombieInterface z: zombiesMI){
            //System.out.println("ZombiePositon: " + z.getZombieShape().getWorldTranslation());
            //System.out.println("GeometryPosition: " + g.getWorldTranslation());
-           if(z.getZombieShape().getWorldTranslation().equals(g.getWorldTranslation())){
-               z.doDamage(50, true);
+           if (modelLoad.equals("pistola")){
+                if(z.getZombieShape().getWorldTranslation().equals(g.getWorldTranslation())){
+                    z.doDamage(50, true);
+                }
            }
-
+           
+           if (modelLoad.equals("escopeta")){
+                if(z.getZombieShape().getWorldTranslation().equals(g.getWorldTranslation())){
+                    z.doDamage(70, true);
+                }
+           }
+           
+           if (modelLoad.equals("antidot")){
+                if(z.getZombieShape().getWorldTranslation().equals(g.getWorldTranslation())){
+                    z.doDamage(0, false);
+                }
+           }
+           
         }
     }
     
@@ -169,15 +186,30 @@ public final class CharacterMainJMonkey
         vida = vida - value;
         ((Controller)app).getScenarioManager().getGuiPlayer().setSaludGUI(vida);
         if (vida <=0){
-            //Ara mateix, com que no tenim animacio de morir, i que no se que passa
-            //quan ens morim, el jugador no mor, i crido a pausa, per veure un canvi
-            //despres de quedarnos sense vida.
-            
+             
             isPaused = !isPaused;
             ((Controller)app).setIsRunning(isPaused);
+
         }
     }
-
+    
+    public void incrementLife(int value){
+        int vida = ((Controller)app).getScenarioManager().getGuiPlayer().getSaludGUI();
+        vida = vida + value;
+        ((Controller)app).getScenarioManager().getGuiPlayer().setSaludGUI(vida);
+    }
+    
+     public void decrementAmmo(){
+        int municio = ((Controller)app).getScenarioManager().getGuiPlayer().getMunicionGUI();
+        
+        municio = municio - 1;
+        ((Controller)app).getScenarioManager().getGuiPlayer().setMunicionGUI(municio);
+        if (municio == 0){
+            app.getInputManager().removeListener(accioDisparar);   
+        }
+        
+    }
+     
     /**
      * Method which assign keys with character actions through listeners.
      */
@@ -210,36 +242,51 @@ public final class CharacterMainJMonkey
         app.getInputManager().addListener(this, "Mute");
         app.getInputManager().addListener(this, "Paused");
         
+
+        app.getInputManager().addMapping("Shoot", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
+        app.getInputManager().addListener(accioDisparar, "Shoot");
+
+        
+        
     }
     
     
-    /** @Ernest --> Method which adds shoot action listener and mapping. It only used in fire weapons model
+    /** JA NO CAL !! @Ernest --> Method which adds shoot action listener and mapping. It only used in fire weapons model
      */ 
-    public void shootListenerMappingManagement(boolean isActivated) {
-        
+    /*public void shootListenerMappingManagement(boolean isActivated) {
+        // Ernest -> activar listner escopeta i desactvar-lo segons booleà
         if (!created && isActivated) {
-        app.getInputManager().addMapping("Shoot", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
-        app.getInputManager().addListener(accioDisparar, "Shoot");
+        //app.getInputManager().addMapping("Shoot", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
+        //app.getInputManager().addListener(accioDispararEscopeta, "Shoot");
         created = true;
        }
         
         if (created && !isActivated) {
-          app.getInputManager().deleteMapping("Shoot");
+          //app.getInputManager().deleteTrigger(accioDispararEscopeta, null);
           created = false;  
         }
-    }
+    }*/
     
     
     /** @Ernest --> Method wich controls if list of weapons has gun and allows change weapon when players had grabbed a gun 
      */
     
-    public void controlChangeWeapons () {
+    public void controlChangeWeapons (int n) {
             
             app.getInputManager().addMapping("Weapon1", new KeyTrigger(KeyInput.KEY_1));
-            app.getInputManager().addMapping("Weapon2", new KeyTrigger(KeyInput.KEY_2));
-        
             app.getInputManager().addListener(changeWeapon, "Weapon1");
+            
+            //Only active if we have antidot
+            if(n==3) {
+            app.getInputManager().addMapping("Antidote", new KeyTrigger(KeyInput.KEY_3));
+            app.getInputManager().addListener(changeWeapon, "Antidote");
+            }
+            
+            // Only if we have shotgun
+            if(n==2) {
+            app.getInputManager().addMapping("Weapon2", new KeyTrigger(KeyInput.KEY_2));
             app.getInputManager().addListener(changeWeapon, "Weapon2");
+            }
     }
     
     /**
@@ -319,7 +366,7 @@ public final class CharacterMainJMonkey
                  
              }
             //camDir.setY(0); // set y as 0 
-            //camDir = camDir.normalize().multLocal(0.2f); 
+            camDir = camDir.normalize().multLocal(0.2f); 
 
 
             // Setting camera according to action
@@ -388,7 +435,7 @@ public final class CharacterMainJMonkey
     
         
     //by Polit
-    public void initAnimacio(){
+    //public void initAnimacio(){
         //controlAnim = playerModelLoad.getControl(AnimControl.class);
         //System.out.println("Model carregat: " + playerModelLoad);
         //System.out.println("ControlAnimacio: " + controlAnim);
@@ -398,7 +445,7 @@ public final class CharacterMainJMonkey
         //channelAnim.setSpeed(0f);
         //channelAnim.setLoopMode(LoopMode.Loop);
         
-    }
+    //}
     
     /*
     Runnable deleteRedSpot = new Runnable() {
@@ -416,7 +463,7 @@ public final class CharacterMainJMonkey
         @SuppressWarnings("empty-statement")
         public void onAction(String name, boolean keyPressed, float tpf) {
             // If receives a 'Shoot action
-            if (name.equals("Shoot") && !keyPressed) {
+            if (name.equals("Shoot") && !keyPressed && firstTime) {
                 // Creating collision box and peephole
                 CollisionResults resultat = new CollisionResults();
                 Ray raig = new Ray(app.getCamera().getLocation(), app.getCamera().getDirection());
@@ -433,6 +480,15 @@ public final class CharacterMainJMonkey
                 }
                 if (resultat.size() > 0) {
                     // The closest collision point is what was truly hit:
+                    
+                    if (modelLoad.equals("pistola")){
+                        SoundManager.shotGunPlayInstance(app.getRootNode());
+                    }else if (modelLoad.equals("escopeta")){
+                        SoundManager.shotMachineGunPlayInstance(app.getRootNode());
+                    }else{
+                        SoundManager.shotGunPlayInstance(app.getRootNode());
+                    }
+                    decrementAmmo();
                     CollisionResult closest = resultat.getClosestCollision();
                     damageToZombies(closest.getGeometry());
                     // Let's interact - we mark the hit with a red dot.
@@ -442,9 +498,15 @@ public final class CharacterMainJMonkey
                     // <-------
                     
                     // -----> COMENTAR LAS SIGUIENTES 3 LINEAS SI NO OS GUSTA LA IDEA DE UNA MARCA POR CADA TIRO - ROCIO
-                    Geometry redSpot = getNewRedSpot();
-                    redSpot.setLocalTranslation(closest.getContactPoint());
-                    app.getRootNode().attachChild(redSpot); // put red sphere at that point
+                    Geometry shootSpot;
+                    if (modelLoad.equals("antidot")) {
+                        shootSpot = getNewGreenSpot();
+                    } else {
+                        shootSpot = getNewRedSpot();
+                    }
+                    shootSpot.setLocalTranslation(closest.getContactPoint());
+                    closest.getGeometry().getParent().attachChild(shootSpot); // rocio2
+                    //app.getRootNode().attachChild(redSpot); // put red sphere at that point
                     // <-------
                     
                     // -----> DESCOMENTAR LAS SIGUIENTES 2 LINEAS SI NO OS GUSTA LA IDEA DE UNA MARCA POR CADA TIRO
@@ -459,27 +521,34 @@ public final class CharacterMainJMonkey
                     // No hits? Then remove the red mark.
                     app.getRootNode().detachChild(marcaVermella);
                 }*/
+            }else{
+                firstTime = true;
             }
         }
     };
     
      private void carregaModel(String model){
         pivot.detachChild(playerModelLoad);
-        if (model.equals("porra")){
-            playerModelLoad = (Node) app.getAssetManager().loadModel("Character/porra.j3o");
-            playerModelLoad.move(-0.5f, -3.5f, 0f); // setting correct position in order to appears on the floor
-            shootActivated = false;
-        }
         if (model.equals("pistola")){
             playerModelLoad = (Node) app.getAssetManager().loadModel("Character/playerPistola.j3o");
             playerModelLoad.move(0f, -5.5f, 0f); // setting correct position in order to appears on the floor
-            shootActivated = true;
+            //shootActivated = true;
             // -----> DESCOMENTAR LA SIGUIENTE LINEAS SI NO OS GUSTA LA IDEA DE UNA MARCA POR CADA TIRO - ROCIO
             //inicialitzarMarcaCollisio();  // call shooting red mark method
             // <-------
         }
+        if (model.equals("escopeta")){
+            playerModelLoad = (Node) app.getAssetManager().loadModel("Character/playerArma2.j3o");
+            playerModelLoad.move(0f, -5.5f, 0f); // setting correct position in order to appears on the floor
+            //shootActivated = false;
+        }
+        if (model.equals("antidot")){
+            playerModelLoad = (Node) app.getAssetManager().loadModel("Character/playerAntidoto.j3o");
+            playerModelLoad.move(-0.2f, -5.2f, 0f);
+            //shootActivated = true;
+        }
         
-        shootListenerMappingManagement(shootActivated);
+        // @ernest --> ja no cal shootListenerMappingManagement(shootActivated);
         pivot.attachChild(playerModelLoad);
         //app.getRootNode().attachChild(pivot);
     }
@@ -487,15 +556,22 @@ public final class CharacterMainJMonkey
     private ActionListener changeWeapon = new ActionListener() {
         public void onAction(String name, boolean keyPressed, float tpf) {
            if (name.equals("Weapon1") && !keyPressed) {
-               carregaModel("porra");
-               modelLoad = "porra";
-               System.out.println("PORRA");
-           } 
-           if (name.equals("Weapon2") && !keyPressed) {
                carregaModel("pistola");
                modelLoad = "pistola";
                System.out.println("PISTOLA");
-
+               SoundManager.changeToGunPlayInstance(app.getRootNode());
+           } 
+           if (name.equals("Weapon2") && !keyPressed) {
+               carregaModel("escopeta");
+               modelLoad = "escopeta";
+               System.out.println("ESCOPETA");
+               SoundManager.changeToMachineGunPlayInstance(app.getRootNode());
+           }
+           if (name.equals("Antidote") && !keyPressed) {
+               carregaModel("antidot");
+               modelLoad = "antidot";
+               System.out.println("ANTIDOT");
+               SoundManager.changeToGunPlayInstance(app.getRootNode());
            }
         }
     };
@@ -517,6 +593,20 @@ public final class CharacterMainJMonkey
     }
     // <-------
     
+    
+    /**
+     * Method which creates a green SPOT as a sphere. Useful for test if weapon
+     * can shoot
+     */
+    protected Geometry getNewGreenSpot() {
+        // Creating red sphere and set its material
+        Sphere sphere = new Sphere(30, 30, 0.2f);
+        Geometry greenSpot = new Geometry("BOOM!", sphere);
+        Material greenSpot_mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        greenSpot_mat.setColor("Color", ColorRGBA.Green);
+        greenSpot.setMaterial(greenSpot_mat);
+        return greenSpot;
+    }
     
     // -----> DESCOMENTAR LAS SIGUIENTES LINEAS SI NO OS GUSTA LA IDEA DE UNA MARCA POR CADA TIRO - ROCIO
     //protected void inicialitzarMarcaCollisio() {

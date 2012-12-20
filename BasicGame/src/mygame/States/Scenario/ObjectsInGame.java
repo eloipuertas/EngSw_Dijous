@@ -11,7 +11,9 @@ import com.jme3.math.Vector3f;
 import java.util.ArrayList;
 import java.util.List;
 import mygame.model.character.CharacterMainInterface;
+import mygame.model.weapon.Shotgun;
 import mygame.model.weapon.Gun;
+import mygame.model.weapon.Antidot;
 import mygame.model.weapon.WeaponInterface;
 
 /**
@@ -26,7 +28,7 @@ public class ObjectsInGame extends AbstractAppState  {
 
     List<ObjVida> ObjetosVida;
     List<WeaponInterface> weaponsList;
-    ArrayList<ObjAntidoto> ObjetosAntidoto;
+    ArrayList<WeaponInterface> ObjetosAntidoto;
    
     
     
@@ -35,9 +37,9 @@ public class ObjectsInGame extends AbstractAppState  {
         this.bulletAppState = this.app.getStateManager().getState(BulletAppState.class);
         
         //Guardamos los botiquines que creemos en una lista
-        ObjetosAntidoto = new ArrayList<ObjAntidoto>();
-        ObjetosAntidoto.add(new ObjAntidoto(this.bulletAppState,this.app,0,141.61f,-0.65f,-79.91f, 0));
-        ObjetosAntidoto.get(0).addAntidotoToScenario();
+        ObjetosAntidoto = new ArrayList<WeaponInterface>();
+        ObjetosAntidoto.add(new Antidot(this.app, this.bulletAppState, new Vector3f(141.61f, 0f,-79.91f), "antidote"));
+        ObjetosAntidoto.get(0).addWeaponeToScenario();
         
         //Guardamos los botiquines que creemos en una lista
         ObjetosVida = new ArrayList<ObjVida>();
@@ -48,17 +50,20 @@ public class ObjectsInGame extends AbstractAppState  {
         
         //Init weapons
         weaponsList = new ArrayList<WeaponInterface>();
-        weaponsList.add(new Gun(this.app, this.bulletAppState, new Vector3f(-25f, 0f, 0f), 1220, "weapon01"));
+	weaponsList.add(new Shotgun(this.app, this.bulletAppState, new Vector3f(-25f, 0f, 0f), 1000, "weapon01"));
+        //weaponsList.add(new Gun(this.app, this.bulletAppState, new Vector3f(-25f, 0f, 0f), 1000, "weapon01"));
         weaponsList.get(0).addWeaponeToScenario();
     }
     
    public void update(GUIPlayerMain gui, CharacterMainInterface player){
        
        // grab Antidote Kit near player if there is one
-       ObjAntidoto antidoto = getAntidotoNearPlayer(player.getPlayerPosition());
+       WeaponInterface antidoto = getAntidotoNearPlayer(player.getPlayerPosition());
        if (antidoto != null) {
+            player.addWeapon(antidoto);
             antidoto.deleteFromScenario();
-            ObjetosAntidoto.remove(antidoto);
+            player.controlChangeWeapons(3); // activant mapping antidot
+            //ObjetosAntidoto.remove(antidoto);
        }
        
        // grab First-Aid Kit near player if there is one
@@ -73,15 +78,15 @@ public class ObjectsInGame extends AbstractAppState  {
        if (weapon != null) {
             player.addWeapon(weapon);
             weapon.deleteFromScenario();
-            player.controlChangeWeapons();
+            player.controlChangeWeapons(2);
        }
      
     }
     
    
-   public ObjAntidoto getAntidotoNearPlayer(Vector3f playerPosition) {
+   public WeaponInterface getAntidotoNearPlayer(Vector3f playerPosition) {
        
-       for (ObjAntidoto antidoto : ObjetosAntidoto) {
+       for (WeaponInterface antidoto : ObjetosAntidoto) {
            if (antidoto.getPosition().distance(playerPosition) < 5.0f ) {
                return antidoto;
            }

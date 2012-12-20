@@ -35,16 +35,16 @@ public class Gun implements WeaponInterface {
         this.bulletAppState = bulletAppState;
         this.id = id;
         name = "Gun"; // type of weapon is Gun
-        munition = 1220;  // default munition
+        munition = 1000;  // default munition
         
         // creating collision box of gun as cilider shape
         CylinderCollisionShape cilinder = new CylinderCollisionShape(new Vector3f(0.5f,1.5f,1.5f));
         weaponControl = new CharacterControl(cilinder, 1.0f);
         
-        //TODO: Add weapon model
+        //@Ernest--> ja no cal ! TODO: Add weapon model
         // Loading, scaling and adding control for our weapon.
-        weaponShape = (Node) app.getAssetManager().loadModel("Character/Pistola.mesh.xml");
-        weaponShape.scale(0.4f);
+        //weaponShape = (Node) app.getAssetManager().loadModel("Character/Pistola.mesh.xml");
+        //weaponShape.scale(0.4f);
         weaponShape.addControl(weaponControl);
         weaponShape.setName(name);
         
