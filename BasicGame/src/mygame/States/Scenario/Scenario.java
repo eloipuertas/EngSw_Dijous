@@ -40,7 +40,7 @@ public class Scenario {
     private RigidBodyControl landscape;
     private SimpleApplication app;
     private SpotLight spot;
-    private PointLight point;
+  
     
     public Scenario(SimpleApplication app) {
         this.rootNode = app.getRootNode();
@@ -73,7 +73,7 @@ public class Scenario {
     public void setDirectionSpotLight(){
         spot.setPosition(this.app.getCamera().getLocation());               // shine from camera loc
         spot.setDirection(this.app.getCamera().getDirection());
-        point.setPosition(this.app.getCamera().getLocation()); 
+         
     }
     public Spatial getEscenari(){
         return this.sceneModel;
@@ -89,11 +89,7 @@ public class Scenario {
         spot.setPosition(this.app.getCamera().getLocation());
         //spot.setDirection(this.app.getCamera().getDirection());
         this.rootNode.addLight(spot);
-        point = new PointLight();
-        point.setRadius(60f);
-        point.setColor(ColorRGBA.White.mult(1.3f));
-        point.setPosition(this.app.getCamera().getLocation());
-        this.rootNode.addLight(point);
+       
         this.rootNode.setShadowMode(this.rootNode.getShadowMode().CastAndReceive);
         
         // We add light so we see the scene

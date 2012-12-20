@@ -4,6 +4,7 @@
  */
 package mygame.States.Scenario;
 
+import mygame.model.weapon.Shotgun;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.bullet.BulletAppState;
@@ -49,7 +50,7 @@ public class ObjectsInGame extends AbstractAppState  {
         //Init weapons
         weaponsList = new ArrayList<WeaponInterface>();
         //weaponsList.add(new Gun(this.app, this.bulletAppState, new Vector3f(-25f, 0f, 0f), 1220, "weapon01"));
-        weaponsList.add(new Metralleta(this.app, this.bulletAppState, new Vector3f(23.34f, 101.63f, -79.88f), 1220, "weapon02"));
+        weaponsList.add(new Shotgun(this.app, this.bulletAppState, new Vector3f(23.34f, 101.63f, -79.88f), 1220, "weapon02"));
         weaponsList.get(0).addWeaponeToScenario();
     }
     
