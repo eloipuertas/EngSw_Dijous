@@ -502,11 +502,6 @@ public final class CharacterMainJMonkey
     
      private void carregaModel(String model){
         pivot.detachChild(playerModelLoad);
-        if (model.equals("escopeta")){
-            playerModelLoad = (Node) app.getAssetManager().loadModel("Character/playerArma2.j3o");
-            playerModelLoad.move(0f, -5.5f, 0f); // setting correct position in order to appears on the floor
-            //shootActivated = false;
-        }
         if (model.equals("pistola")){
             playerModelLoad = (Node) app.getAssetManager().loadModel("Character/playerPistola.j3o");
             playerModelLoad.move(0f, -5.5f, 0f); // setting correct position in order to appears on the floor
@@ -514,6 +509,11 @@ public final class CharacterMainJMonkey
             // -----> DESCOMENTAR LA SIGUIENTE LINEAS SI NO OS GUSTA LA IDEA DE UNA MARCA POR CADA TIRO - ROCIO
             //inicialitzarMarcaCollisio();  // call shooting red mark method
             // <-------
+        }
+        if (model.equals("escopeta")){
+            playerModelLoad = (Node) app.getAssetManager().loadModel("Character/playerArma2.j3o");
+            playerModelLoad.move(0f, -5.5f, 0f); // setting correct position in order to appears on the floor
+            //shootActivated = false;
         }
         if (model.equals("antidot")){
             playerModelLoad = (Node) app.getAssetManager().loadModel("Character/playerAntidoto.j3o");
@@ -529,14 +529,14 @@ public final class CharacterMainJMonkey
     private ActionListener changeWeapon = new ActionListener() {
         public void onAction(String name, boolean keyPressed, float tpf) {
            if (name.equals("Weapon1") && !keyPressed) {
-               carregaModel("escopeta");
-               modelLoad = "escopeta";
-               System.out.println("ESCOPETA");
-           } 
-           if (name.equals("Weapon2") && !keyPressed) {
                carregaModel("pistola");
                modelLoad = "pistola";
                System.out.println("PISTOLA");
+           } 
+           if (name.equals("Weapon2") && !keyPressed) {
+               carregaModel("escopeta");
+               modelLoad = "escopeta";
+               System.out.println("ESCOPETA");
 
            }
            if (name.equals("Antidote") && !keyPressed) {
