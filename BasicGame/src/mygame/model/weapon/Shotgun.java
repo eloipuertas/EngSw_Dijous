@@ -43,8 +43,9 @@ public class Shotgun implements WeaponInterface {
         
         //TODO: Add weapon model
         // Loading, scaling and adding control for our weapon.
-        weaponShape = (Node) app.getAssetManager().loadModel("Models/Elephant/Elephant.mesh.xml");
-        weaponShape.scale(0.05f);
+        weaponShape = (Node) app.getAssetManager().loadModel("Character/Arma2.j3o");
+        weaponShape.scale(1.5f);
+        //weaponShape.move(0f, -2f, 0f);
         weaponShape.addControl(weaponControl);
         weaponShape.setName(name);
         
@@ -73,14 +74,14 @@ public class Shotgun implements WeaponInterface {
     public void addWeaponeToScenario() {
         bulletAppState.getPhysicsSpace().add(weaponControl);
         app.getRootNode().attachChild(weaponShape); // attach weapon
-        System.out.println("Porra added to scenario!");  // debugging
+        System.out.println("Shotgun added to scenario!");  // debugging
     }
     
     // Method which deletes Gun object from Scenario called in 'ObjectsInGame'
     public void deleteFromScenario() {
         app.getRootNode().detachChild(weaponShape); // detach weapon
         bulletAppState.getPhysicsSpace().remove(weaponControl);
-        System.out.println("Porra deleted from scenario!"); // debugging
+        System.out.println("Shotgun deleted from scenario!"); // debugging
     }
     
 }

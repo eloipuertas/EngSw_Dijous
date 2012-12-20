@@ -503,7 +503,7 @@ public final class CharacterMainJMonkey
      private void carregaModel(String model){
         pivot.detachChild(playerModelLoad);
         if (model.equals("escopeta")){
-            playerModelLoad = (Node) app.getAssetManager().loadModel("Character/playerPistola.j3o");
+            playerModelLoad = (Node) app.getAssetManager().loadModel("Character/playerArma2.j3o");
             playerModelLoad.move(0f, -5.5f, 0f); // setting correct position in order to appears on the floor
             //shootActivated = false;
         }
