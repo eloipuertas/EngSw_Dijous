@@ -14,7 +14,9 @@ import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.bullet.util.CollisionShapeFactory;
 import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
+import com.jme3.light.SpotLight;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.post.FilterPostProcessor;
 import com.jme3.post.ssao.SSAOFilter;
@@ -35,6 +37,7 @@ public class Scenario {
     private Spatial sceneModel;
     private RigidBodyControl landscape;
     private SimpleApplication app;
+    private SpotLight spot;
     
     public Scenario(SimpleApplication app) {
         this.rootNode = app.getRootNode();
@@ -64,20 +67,33 @@ public class Scenario {
         setUpLight();
     }
     
+    public void setDirectionSpotLight(){
+        spot.setPosition(this.app.getCamera().getLocation());               // shine from camera loc
+        spot.setDirection(this.app.getCamera().getDirection());
+    }
     public Spatial getEscenari(){
         return this.sceneModel;
     }
     
     private void setUpLight() {
+        spot = new SpotLight();
+        spot.setSpotRange(100f);
+        spot.setSpotInnerAngle(15f * FastMath.DEG_TO_RAD);
+        spot.setSpotOuterAngle(35f * FastMath.DEG_TO_RAD);
+        spot.setColor(ColorRGBA.White.mult(1.3f));
+        spot.setPosition(this.app.getCamera().getLocation());
+        spot.setDirection(this.app.getCamera().getDirection());
+        this.rootNode.addLight(spot);
+        this.rootNode.setShadowMode(this.rootNode.getShadowMode().CastAndReceive);
         // We add light so we see the scene
-        AmbientLight al = new AmbientLight();
-        al.setColor(ColorRGBA.White.mult(1.3f));
-        rootNode.addLight(al);
+        /*AmbientLight al = new AmbientLight();
+        al.setColor(ColorRGBA.White.mult(100.3f));
+        rootNode.addLight(al);*/
         
-        DirectionalLight dl = new DirectionalLight();
+       /* DirectionalLight dl = new DirectionalLight();
         dl.setColor(ColorRGBA.White);
         dl.setDirection(new Vector3f(2.8f, -2.8f, -2.8f).normalizeLocal());
-        rootNode.addLight(dl);
+        rootNode.addLight(dl);*/
         
         /*FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
         SSAOFilter ssaoFilter = new SSAOFilter(12.94f, 43.92f, 0.33f, 0.61f);
