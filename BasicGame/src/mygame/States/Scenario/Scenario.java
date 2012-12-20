@@ -14,6 +14,7 @@ import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.bullet.util.CollisionShapeFactory;
 import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
+import com.jme3.light.PointLight;
 import com.jme3.light.SpotLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
@@ -39,6 +40,7 @@ public class Scenario {
     private RigidBodyControl landscape;
     private SimpleApplication app;
     private SpotLight spot;
+    private PointLight point;
     
     public Scenario(SimpleApplication app) {
         this.rootNode = app.getRootNode();
@@ -57,11 +59,7 @@ public class Scenario {
         
         CollisionShape sceneShape =
                 CollisionShapeFactory.createMeshShape((Node) sceneModel);
-        Material mat_lit = new Material(
-    assetManager, "Common/MatDefs/Light/Lighting.j3md");
-
-//mat_lit.setFloat("m_Shininess", 5f);               
-//sceneModel.setMaterial(mat_lit);
+     
         landscape = new RigidBodyControl(sceneShape, 0);
         sceneModel.addControl(landscape);
         sceneModel.setName("Escenario");  
@@ -75,6 +73,7 @@ public class Scenario {
     public void setDirectionSpotLight(){
         spot.setPosition(this.app.getCamera().getLocation());               // shine from camera loc
         spot.setDirection(this.app.getCamera().getDirection());
+        point.setPosition(this.app.getCamera().getLocation()); 
     }
     public Spatial getEscenari(){
         return this.sceneModel;
@@ -82,13 +81,19 @@ public class Scenario {
     
     private void setUpLight() {
         spot = new SpotLight();
+       
         spot.setSpotRange(100f);
         spot.setSpotInnerAngle(15f * FastMath.DEG_TO_RAD);
         spot.setSpotOuterAngle(35f * FastMath.DEG_TO_RAD);
         spot.setColor(ColorRGBA.White.mult(1.3f));
         spot.setPosition(this.app.getCamera().getLocation());
-        spot.setDirection(this.app.getCamera().getDirection());
+        //spot.setDirection(this.app.getCamera().getDirection());
         this.rootNode.addLight(spot);
+        point = new PointLight();
+        point.setRadius(60f);
+        point.setColor(ColorRGBA.White.mult(1.3f));
+        point.setPosition(this.app.getCamera().getLocation());
+        this.rootNode.addLight(point);
         this.rootNode.setShadowMode(this.rootNode.getShadowMode().CastAndReceive);
         
         // We add light so we see the scene
