@@ -115,6 +115,7 @@ public final class CharacterMainJMonkey
         // Creating and setting character's features as:
         // collision box, jump speed, fall speed and gravity
         CapsuleCollisionShape capsuleShape = new CapsuleCollisionShape(3f, 3.5f, 1);
+        //CapsuleCollisionShape capsuleShape = new CapsuleCollisionShape(3f, 13.5f, 1);
         playerControl = new CharacterControl(capsuleShape, 0.05f);
         playerControl.setJumpSpeed(40);
         playerControl.setFallSpeed(100);
@@ -182,9 +183,7 @@ public final class CharacterMainJMonkey
              
             isPaused = !isPaused;
             ((Controller)app).setIsRunning(isPaused);
-            //Comentat fins que tinguem el merge
-            //((Controller)app).getMenuPrincipalState().menuGameOver();
-            //ver();
+
         }
     }
     
@@ -527,7 +526,7 @@ public final class CharacterMainJMonkey
         }
         if (model.equals("antidot")){
             playerModelLoad = (Node) app.getAssetManager().loadModel("Character/playerAntidoto.j3o");
-            playerModelLoad.move(0f, -5.5f, 0f);
+            playerModelLoad.move(-0.2f, -5.2f, 0f);
             //shootActivated = true;
         }
         

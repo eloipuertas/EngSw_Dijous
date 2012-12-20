@@ -37,7 +37,7 @@ public class Antidot implements WeaponInterface {
         //TODO: Add antidot model
         // Loading, scaling and adding control for our weapon.
         weaponShape = (Node) app.getAssetManager().loadModel("Scenes/antidoto.j3o");
-        weaponShape.scale(1f);
+        weaponShape.scale(2.5f);
         weaponShape.addControl(weaponControl);
         weaponShape.setName(name);
         
