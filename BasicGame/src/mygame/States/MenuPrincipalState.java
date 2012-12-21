@@ -27,7 +27,7 @@ import mygame.sound.SoundManager;
  * @author Harpo
  */
 public class MenuPrincipalState extends AbstractAppState implements ScreenController,
-        ActionListener
+        ActionListener, MenuPrincipalStateInterface
 {
    
     private SimpleApplication app;  

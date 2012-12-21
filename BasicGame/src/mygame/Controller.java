@@ -94,7 +94,7 @@ public class Controller extends SimpleApplication {
     
         //Menu Principal
         menuPrincipal  = new MenuPrincipalState(this);
-        
+        setMenuPrincipalStateInterface(menuPrincipal);
         //Juego
         //Scenario
         runningGame = new RunningGameState(this);

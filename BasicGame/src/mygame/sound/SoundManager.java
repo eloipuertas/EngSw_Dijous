@@ -434,7 +434,7 @@ public class SoundManager {
         
                 
         // For each zombie mute sound and footStep
-        int numZombies = 1;
+        int numZombies = 9;
         for (int i = 0; i < numZombies; ++i){
             String idS = String.valueOf(i);
             
@@ -464,14 +464,14 @@ public class SoundManager {
         AudioNode OriolZombieAttack = (AudioNode) rootNode.getChild("OriolZombieAttack");
         OriolZombieAttack.setVolume(0);
         
-        AudioNode hitTruncheon = (AudioNode) rootNode.getChild("hitTruncheon");
-        hitTruncheon.setVolume(0);
+        //AudioNode hitTruncheon = (AudioNode) rootNode.getChild("hitTruncheon");
+       // hitTruncheon.setVolume(0);
         
         AudioNode changeToGun = (AudioNode) rootNode.getChild("changeToGun");
         changeToGun.setVolume(0);
         
-        AudioNode changeToTruncheon = (AudioNode) rootNode.getChild("changeToTruncheon");
-        changeToTruncheon.setVolume(0);
+        //AudioNode changeToTruncheon = (AudioNode) rootNode.getChild("changeToTruncheon");
+        //changeToTruncheon.setVolume(0);
         
         AudioNode shotGun = (AudioNode) rootNode.getChild("shotGun");
         shotGun.setVolume(0);

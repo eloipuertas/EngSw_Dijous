@@ -43,14 +43,14 @@ public class ObjectsInGame extends AbstractAppState  {
         
         //Guardamos los botiquines que creemos en una lista
         ObjetosVida = new ArrayList<ObjVida>();
-        ObjetosVida.add(new ObjVida(this.bulletAppState,this.app,1,10.0f,1f,10.0f, 0));
+        ObjetosVida.add(new ObjVida(this.bulletAppState,this.app,1,67.26f,19.16f,-293.66f, 0));
         ObjetosVida.add(new ObjVida(this.bulletAppState,this.app,2,15.0f,1f,17.0f, 1));
         ObjetosVida.get(0).addFirstAidKitToScenario();
         ObjetosVida.get(1).addFirstAidKitToScenario();
         
         //Init weapons
         weaponsList = new ArrayList<WeaponInterface>();
-	weaponsList.add(new Shotgun(this.app, this.bulletAppState, new Vector3f(-25f, 0f, 0f), 1000, "weapon01"));
+	weaponsList.add(new Shotgun(this.app, this.bulletAppState, new Vector3f(23.34f, 101.63f, -79.88f), 1000, "weapon01"));
         //weaponsList.add(new Gun(this.app, this.bulletAppState, new Vector3f(-25f, 0f, 0f), 1000, "weapon01"));
         weaponsList.get(0).addWeaponeToScenario();
     }

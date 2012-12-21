@@ -68,5 +68,7 @@ public class ScenarioManager implements ScenarioInterface {
         if (objetos != null){
                 objetos.update(guiPlayer, ((Controller)app).getPlayerManager());
         }
+        System.out.println(" x:" +((Controller)app).getPlayerManager().getPlayerPosition().x +" y:" + ((Controller)app).getPlayerManager().getPlayerPosition().y+ " z:"+((Controller)app).getPlayerManager().getPlayerPosition().z);    
+        this.scenario.setDirectionSpotLight();
     }
 }

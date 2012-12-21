@@ -262,6 +262,8 @@ public class ZombieOriol extends Zombie implements AnimEventListener {
                 //hitpoints = hitpoints - damage;
                 if (hitpoints <= 0) {
                     ((Controller)app).getMenuPrincipalState().menuWin();
+                    
+                           
                 }
             }
 }
