@@ -116,7 +116,7 @@ public class ZombieOriol extends Zombie implements AnimEventListener {
             if (dist < DISTATTACK) { //near the player, attack and stop
                 if (state != 2) {
                     //((Controller) app).getPlayerManager().doDamage(DAMAGEDONE); //do damage once every animation!!!
-                    channel.setAnim("Push", 0.50f);
+                    channel.setAnim("push", 0.50f);
                     channel.setLoopMode(LoopMode.DontLoop);
                     //System.out.println("push");
                 }

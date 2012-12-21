@@ -192,14 +192,14 @@ public final class CharacterMainJMonkey
         if (vida <=0){
              
             isPaused = !isPaused;
-            
+            ((Controller)app).setIsRunning(isPaused);
             ((Controller)app).getMenuPrincipalState().menuGameOver();
             //((Controller)app).getMenuPrincipalState().menuCreditos();
             
             
             
 
-            //((Controller)app).setIsRunning(isPaused);
+            
            
            // ((Controller)app).getMenuPrincipalState().menuCreditos();
             
