@@ -11,4 +11,5 @@ package mygame.States;
 public interface MenuPrincipalStateInterface {
     public void menuGameOver();
     public void menuWin();
+    public void menuCreditos();
 }

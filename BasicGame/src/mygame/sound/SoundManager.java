@@ -527,14 +527,14 @@ public class SoundManager {
         AudioNode OriolZombieAttack = (AudioNode) rootNode.getChild("OriolZombieAttack");
         OriolZombieAttack.setVolume(0.4f);
         
-        AudioNode hitTruncheon = (AudioNode) rootNode.getChild("hitTruncheon");
-        hitTruncheon.setVolume(0.4f);
+        //AudioNode hitTruncheon = (AudioNode) rootNode.getChild("hitTruncheon");
+        //hitTruncheon.setVolume(0.4f);
         
         AudioNode changeToGun = (AudioNode) rootNode.getChild("changeToGun");
         changeToGun.setVolume(0.4f);
         
-        AudioNode changeToTruncheon = (AudioNode) rootNode.getChild("changeToTruncheon");
-        changeToTruncheon.setVolume(0.4f);
+        //AudioNode changeToTruncheon = (AudioNode) rootNode.getChild("changeToTruncheon");
+        //changeToTruncheon.setVolume(0.4f);
         
         AudioNode shotGun = (AudioNode) rootNode.getChild("shotGun");
         shotGun.setVolume(0.8f);

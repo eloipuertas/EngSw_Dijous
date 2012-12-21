@@ -149,6 +149,10 @@ public class MenuPrincipalState extends AbstractAppState implements ScreenContro
     public void menuWin(){
         nifty.gotoScreen("win");
     }
+    
+    public void menuCreditos(){
+        nifty.gotoScreen("creditos");
+    }
     public void opcionNivelFacil(){
        //SoundManager.clickPlayInstance(rootNode); // Play click
        nifty.gotoScreen("start");
@@ -201,6 +205,8 @@ public class MenuPrincipalState extends AbstractAppState implements ScreenContro
     public void mute(){
         nifty.gotoScreen("mute");
     }
+    
+    
     
     public void quitMenu() throws InterruptedException{
         SoundManager.gothicTunePause(rootNode); // Pause Ghotic Tune
