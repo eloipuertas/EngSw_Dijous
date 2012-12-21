@@ -135,7 +135,7 @@ public class ZombieBasic extends Zombie implements AnimEventListener {
             //random movement
             SoundManager.basicZombieFootStepsPlay(app.getRootNode(), id);
             state = 1;//move
-
+            channel.setSpeed(1f);
             if (!randMoveSet) {
                 //System.out.println("set random move " + moveDirection);
                 rand = new Random();
