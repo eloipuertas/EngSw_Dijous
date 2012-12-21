@@ -37,6 +37,7 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
 import mygame.Controller;
 import mygame.States.Scenario.Scenario;
 import mygame.model.weapon.WeaponInterface;
@@ -191,17 +192,17 @@ public final class CharacterMainJMonkey
         if (vida <=0){
              
             isPaused = !isPaused;
-            ((Controller)app).setIsRunning(isPaused);
+            
             ((Controller)app).getMenuPrincipalState().menuGameOver();
-            long t0,t1,t2;
-            t0=System.currentTimeMillis();
-            do{
-                t1=System.currentTimeMillis();
-            }
-            while (t1-t0<2500);
-            ((Controller)app).getMenuPrincipalState().menuCreditos();
-            ((Controller)app).stop();
-            ((Controller)app).start();
+            //((Controller)app).getMenuPrincipalState().menuCreditos();
+            
+            
+            
+
+            //((Controller)app).setIsRunning(isPaused);
+           
+           // ((Controller)app).getMenuPrincipalState().menuCreditos();
+            
         }
     }
     

@@ -143,15 +143,22 @@ public class MenuPrincipalState extends AbstractAppState implements ScreenContro
     
      
     public void menuGameOver(){
+        this.app.getInputManager().setCursorVisible(true);
         nifty.gotoScreen("muerto");
     }
     
     public void menuWin(){
+        
+        this.app.getInputManager().setCursorVisible(true);
         nifty.gotoScreen("win");
+    }
+    public void endGame(){
+        this.app.stop();
     }
     
     public void menuCreditos(){
         nifty.gotoScreen("creditos");
+        
     }
     public void opcionNivelFacil(){
        //SoundManager.clickPlayInstance(rootNode); // Play click
