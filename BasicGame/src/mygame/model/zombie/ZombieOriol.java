@@ -236,7 +236,7 @@ public class ZombieOriol extends Zombie implements AnimEventListener {
             this.app.getStateManager().getState(BulletAppState.class).getPhysicsSpace().remove(colisions);
             this.app.getStateManager().getState(BulletAppState.class).getPhysicsSpace().remove(zombieControl);
 
-            ((Controller) app).getZombieManager().deleteZombie(this);
+            //((Controller) app).getZombieManager().deleteZombie(this);
             
         }
     }
@@ -247,8 +247,7 @@ public class ZombieOriol extends Zombie implements AnimEventListener {
 
     public void doDamage(int damage, boolean distance) {
         //System.out.println("zombie class -> damage done");
-        if(state!=3){
-            if (distance) { //long range, allways does damage
+            if (distance&&state!=3) { //long range, allways does damage
                 hitpoints = hitpoints - damage;
                 if (hitpoints <= 0) {
                     killZombie();
@@ -256,18 +255,16 @@ public class ZombieOriol extends Zombie implements AnimEventListener {
                 else{
                     SoundManager.basicZombieHurtPlayInstance(app.getRootNode());
                 }
-            } else {
+            }if (!distance&&state==3) {
                 //Vector3f zombiePos = zombieControl.getPhysicsLocation();
                 //Vector3f playerPos = ((Controller) app).getPlayerManager().getPlayerPosition();
-
-
+                
                 //hitpoints = hitpoints - damage;
-                if (hitpoints <= 0) {                      
+                if (hitpoints <= 0) {
                     ((Controller)app).getMenuPrincipalState().menuWin();
                 }
             }
-        }
-    }
+}
 
     public void killZombie() {
         state = 3;
