@@ -193,15 +193,15 @@ public final class CharacterMainJMonkey
             isPaused = !isPaused;
             ((Controller)app).setIsRunning(isPaused);
             ((Controller)app).getMenuPrincipalState().menuGameOver();
-            long t0,t1;
+            long t0,t1,t2;
             t0=System.currentTimeMillis();
             do{
                 t1=System.currentTimeMillis();
             }
-            while (t1-t0<1000);
+            while (t1-t0<2500);
             ((Controller)app).getMenuPrincipalState().menuCreditos();
-            ((Controller)app).start();
             ((Controller)app).stop();
+            ((Controller)app).start();
         }
     }
     
