@@ -89,6 +89,8 @@ public final class CharacterMainJMonkey
     private AnimControl controlAnim;
     private ArrayList<ZombieInterface> zombiesMI;
     boolean firstTime = false;
+    private Geometry redSpot;
+    private Geometry greenSpot;
 
     /**
      * Initialize method. Main method called in RunningGameState. It initializes
@@ -506,8 +508,7 @@ public final class CharacterMainJMonkey
                         shootSpot = getNewRedSpot();
                     }
                     shootSpot.setLocalTranslation(closest.getContactPoint());
-                    closest.getGeometry().getParent().attachChild(shootSpot); // rocio2
-                    //app.getRootNode().attachChild(redSpot); // put red sphere at that point
+                    app.getRootNode().attachChild(shootSpot); // put red sphere at that point
                     // <-------
                     
                     // -----> DESCOMENTAR LAS SIGUIENTES 2 LINEAS SI NO OS GUSTA LA IDEA DE UNA MARCA POR CADA TIRO
@@ -584,13 +585,15 @@ public final class CharacterMainJMonkey
      * can shoot
      */
     protected Geometry getNewRedSpot() {
-        // Creating red sphere and set its material
-        Sphere sphere = new Sphere(30, 30, 0.2f);
-        Geometry redSpot = new Geometry("BOOM!", sphere);
-        Material redSpot_mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-        redSpot_mat.setColor("Color", ColorRGBA.Red);
-        redSpot.setMaterial(redSpot_mat);
-        return redSpot;
+	if (redSpot == null) {
+	        // Creating red sphere and set its material
+        	Sphere sphere = new Sphere(30, 30, 0.2f);
+        	redSpot = new Geometry("BOOM!", sphere);
+        	Material redSpot_mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        	redSpot_mat.setColor("Color", ColorRGBA.Red);
+        	redSpot.setMaterial(redSpot_mat);
+        }
+	return redSpot;
     }
     // <-------
     
@@ -600,13 +603,15 @@ public final class CharacterMainJMonkey
      * can shoot
      */
     protected Geometry getNewGreenSpot() {
-        // Creating red sphere and set its material
-        Sphere sphere = new Sphere(30, 30, 0.2f);
-        Geometry greenSpot = new Geometry("BOOM!", sphere);
-        Material greenSpot_mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-        greenSpot_mat.setColor("Color", ColorRGBA.Green);
-        greenSpot.setMaterial(greenSpot_mat);
-        return greenSpot;
+	if (greenSpot == null) {
+	        // Creating red sphere and set its material
+        	Sphere sphere = new Sphere(30, 30, 0.2f);
+        	greenSpot = new Geometry("BOOM!", sphere);
+        	Material greenSpot_mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        	greenSpot_mat.setColor("Color", ColorRGBA.Green);
+        	greenSpot.setMaterial(greenSpot_mat);
+        }
+	return greenSpot;
     }
     
     // -----> DESCOMENTAR LAS SIGUIENTES LINEAS SI NO OS GUSTA LA IDEA DE UNA MARCA POR CADA TIRO - ROCIO
