@@ -41,15 +41,15 @@ public class ZombieOriol extends Zombie implements AnimEventListener {
     public ZombieOriol(SimpleApplication app, Vector3f position, Vector3f viewDirection, difficulty dif, int i) {
         super(app, position, viewDirection, i);
         
-        CapsuleCollisionShape cilinder = new CapsuleCollisionShape(1.5f, 4f, 1);
+        CapsuleCollisionShape cilinder = new CapsuleCollisionShape(1.5f, 7f, 1);
         zombieControl = new CharacterControl(cilinder, 0.1f);
-        zombieShape = app.getAssetManager().loadModel("Models/oriol/oriol.mesh.j3o");
+        zombieShape = app.getAssetManager().loadModel("Models/Oto/Oto.mesh.xml");
         node1 = new Node();
         node1.attachChild(zombieShape);
-        zombieShape.move(0f, -2.9f, 0f);
+        //zombieShape.move(0f, 2.5f, 0f);
         node1.addControl(zombieControl);
 
-        zombieShape.scale(4f);
+        //zombieShape.scale(1f);
         colisions = new RigidBodyControl(1f);
         node1.addControl(colisions);
         ccs = new CompoundCollisionShape();
@@ -92,7 +92,7 @@ public class ZombieOriol extends Zombie implements AnimEventListener {
         for (String anim : control.getAnimationNames()) { System.out.println(anim); }
         control.addListener(this);
         channel = control.createChannel();
-        channel.setAnim("walk");
+        channel.setAnim("Walk");
         channel.setSpeed(0f);
         //channel.setAnim("stand");
         channel.setSpeed(1f);
@@ -116,7 +116,7 @@ public class ZombieOriol extends Zombie implements AnimEventListener {
             if (dist < DISTATTACK) { //near the player, attack and stop
                 if (state != 2) {
                     //((Controller) app).getPlayerManager().doDamage(DAMAGEDONE); //do damage once every animation!!!
-                    channel.setAnim("attack", 0.50f);
+                    channel.setAnim("Push", 0.50f);
                     channel.setLoopMode(LoopMode.DontLoop);
                     //System.out.println("push");
                 }
@@ -195,14 +195,14 @@ public class ZombieOriol extends Zombie implements AnimEventListener {
         Vector3f playerPos = ((Controller) app).getPlayerManager().getPlayerPosition();
         float dist1 = playerPos.distance(zombiePos);
 
-        if (animName.equals("walk") && state == 1) {
+        if (animName.equals("Walk") && state == 1) {
             SoundManager.basicZombieFootStepsPlay(app.getRootNode(), id);
             //System.out.println("Zombie Walks");
             SoundManager.basicZombieFootStepsSetVolume(app.getRootNode(), id, 7 / dist1);
-            channel.setAnim("walk", 0.50f);
+            channel.setAnim("Walk", 0.50f);
             channel.setLoopMode(LoopMode.DontLoop);
             channel.setSpeed(1f);
-        } else if (animName.equals("walk") && state == 0) {
+        } else if (animName.equals("Walk") && state == 0) {
 
             channel.setAnim("stand", 0.50f);
             channel.setLoopMode(LoopMode.DontLoop);
@@ -214,20 +214,20 @@ public class ZombieOriol extends Zombie implements AnimEventListener {
             channel.setSpeed(0f);
         } else if (animName.equals("stand") && state == 1) {
 
-            channel.setAnim("walk", 0.50f);
+            channel.setAnim("Walk", 0.50f);
             channel.setLoopMode(LoopMode.DontLoop);
             channel.setSpeed(1f);
-        } else if (animName.equals("attack")) {
+        } else if (animName.equals("push")) {
             if (dist1 < DISTATTACK){
                 damagePlayer();
                 SoundManager.basicZombieAttackPlayInstance(app.getRootNode());
             }
             
-            channel.setAnim("walk", 0.50f);
+            channel.setAnim("Walk", 0.50f);
             channel.setLoopMode(LoopMode.DontLoop);
             channel.setSpeed(1f);
             state = 0;
-        } else if (animName.equals("death")) {
+        } else if (animName.equals("Dodge")) {
             SoundManager.basicZombieFootStepsPause(app.getRootNode(), id);
             SoundManager.basicZombieSoundPause(app.getRootNode(), id);
             node1.removeControl(colisions);
@@ -273,7 +273,7 @@ public class ZombieOriol extends Zombie implements AnimEventListener {
         //zombieControl.setFallSpeed(1000000f);
         zombieControl.setWalkDirection(new Vector3f(0, 0, 0));
         SoundManager.basicZombieDiePlayInstance(app.getRootNode());
-        channel.setAnim("death");
+        channel.setAnim("Dodge");
         channel.setSpeed(0.4f);
         
         channel.setLoopMode(LoopMode.DontLoop);

@@ -44,7 +44,7 @@ public class ZombiePetia extends Zombie implements AnimEventListener {
         
         CapsuleCollisionShape cilinder = new CapsuleCollisionShape(1.5f, 8f, 1);
         zombieControl = new CharacterControl(cilinder, 0.1f);
-        zombieShape = app.getAssetManager().loadModel("Models/zombie/new/zombie2.mesh.xml");
+        zombieShape = app.getAssetManager().loadModel("Models/oriol/oriol.mesh.j3o");
         node1 = new Node();
         node1.attachChild(zombieShape);
         zombieShape.move(0f, -5.5f, 0f);
